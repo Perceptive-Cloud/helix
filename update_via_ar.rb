@@ -1,5 +1,6 @@
 require './video.rb'
-GUID = 'bc3f6246c3ed2'
+FILENAME = './helix.yml'
+GUID     = YAML.load(File.open(FILENAME))['video_id']
 
 v = Video.find(GUID)
 v.put(:update_single_field, { field: 'title', value: 'before AR update' })
