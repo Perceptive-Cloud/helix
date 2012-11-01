@@ -3,6 +3,8 @@ FILENAME = './helix.yml'
 GUID     = YAML.load(File.open(FILENAME))['video_id']
 
 v = Video.find(GUID)
+puts v.inspect
+exit 0
 v.put(:update_single_field, { field: 'title', value: 'before AR update' })
 v.reload
 puts "Video #{GUID} title is '#{v.title}'"
