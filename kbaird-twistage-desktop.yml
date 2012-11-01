@@ -1,3 +1,4 @@
 site: 'http://localhost:3000'
-user: 'admin'
+user: 'corcoran-admin@twistage.com'
 password: 'Testing1'
+license_key: '441a869594091'
