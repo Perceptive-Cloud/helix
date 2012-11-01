@@ -1,9 +1,9 @@
 require 'active_resource'
 require 'yaml'
-require './auth_with_api.rb'
+require './auth_via_signature.rb'
 
 class Video < ActiveResource::Base
-  include ActiveResource::Extend::AuthWithApi
+  include ActiveResource::Extend::AuthViaSignature
 
   unless defined?(self::CREDENTIALS)
     FILENAME      = './helix.yml'

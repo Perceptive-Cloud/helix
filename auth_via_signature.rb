@@ -1,6 +1,6 @@
 module ActiveResource
   module Extend
-    module AuthWithApi
+    module AuthViaSignature
       module ClassMethods
         def element_path_with_auth(id, prefix_options = {}, query_options = {})
           query_options.merge!({:signature => self.signature})
