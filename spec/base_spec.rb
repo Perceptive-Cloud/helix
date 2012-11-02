@@ -9,7 +9,7 @@ describe Helix::Base do
   describe ".find" do
     let(:meth) { :find }
     subject { klass.method(meth) }
-    its(:arity) { should eq(-2) }
+    its(:arity) { should eq(1) }
     context "when given a guid" do
       subject { klass }
       let(:guid) { :a_guid }

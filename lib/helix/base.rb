@@ -12,7 +12,7 @@ module Helix
 
     attr_accessor :attributes
 
-    def self.find(guid, opts={})
+    def self.find(guid)
       item = self.new(attributes: { guid_name => guid })
       item.load
     end
