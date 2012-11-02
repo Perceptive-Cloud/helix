@@ -6,8 +6,8 @@ module Helix
   class Base
 
     unless defined?(self::CREDENTIALS)
-      #FILENAME    = './helix.yml'
-      CREDENTIALS = {}#YAML.load(File.open(FILENAME))
+      FILENAME    = '/home/kbaird/sandbox/Twistage/Helix.git/helix.yml'
+      CREDENTIALS = YAML.load(File.open(FILENAME))
     end
 
     attr_accessor :attributes
