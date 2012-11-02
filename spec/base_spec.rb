@@ -7,12 +7,12 @@ describe Helix::Base do
   subject { klass }
 
   describe ".find" do
-    subject { klass.method(:find) }
+    let(:meth) { :find }
+    subject { klass.method(meth) }
     its(:arity) { should eq(-2) }
     context "when given a guid" do
       subject { klass }
       let(:guid) { :a_guid }
-      let(:meth) { :find }
       let(:mock_instance) { mock(Object, :load => nil) }
       it "should instantiate with attributes: { guid_name => the_guid }" do
         klass.should_receive(:guid_name) { :the_guid_name }
@@ -31,5 +31,36 @@ describe Helix::Base do
   describe "Constants"
 
   # attr_accessor attributes
+
+  describe "an instance" do
+    let(:obj) { klass.new({}) }
+
+    describe "#guid" do
+      let(:meth) { :guid }
+      it "should return @attributes[guid_name]" do
+        mock_attributes = mock(Object)
+        obj.instance_variable_set(:@attributes, mock_attributes)
+        obj.should_receive(:guid_name) { :the_guid_name }
+        mock_attributes.should_receive(:[]).with(:the_guid_name) { :expected }
+        expect(obj.send(meth)).to eq(:expected)
+      end
+    end
+
+    describe "#method_missing" do
+      let(:meth) { :method_missing }
+      subject { obj.method(meth) }
+      its(:arity) { should eq(1) }
+      context "when given method_sym" do
+        let(:method_sym) { :method_sym }
+        it "should return @attributes[method_sym.to_s]" do
+          mock_attributes = mock(Object)
+          obj.instance_variable_set(:@attributes, mock_attributes)
+          mock_attributes.should_receive(:[]).with(method_sym.to_s) { :expected }
+          expect(obj.send(meth, method_sym)).to eq(:expected)
+        end
+      end
+    end
+
+  end
 
 end
