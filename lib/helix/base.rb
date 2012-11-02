@@ -6,7 +6,7 @@ module Helix
   class Base
 
     unless defined?(self::CREDENTIALS)
-      FILENAME    = '/home/kbaird/sandbox/Twistage/Helix.git/helix.yml'
+      FILENAME    = './helix.yml'
       CREDENTIALS = YAML.load(File.open(FILENAME))
     end
 
