@@ -17,12 +17,16 @@ module Helix
       item.load
     end
 
+    def self.get_response(url, opts={})
+      params      = opts.merge(signature: signature)
+      response    = RestClient.get(url, params: params)
+      JSON.parse(response)
+    end
+
     def self.find_all(opts)
       # TODO: DRY up w/load
       url         = "#{CREDENTIALS['site']}/#{plural_media_type}.json"
-      params      = opts.merge(signature: signature)
-      response    = RestClient.get(url, params: params)
-      data_sets   = JSON.parse(response)
+      data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end
 
@@ -42,9 +46,7 @@ module Helix
     def load(opts={})
       # TODO: DRY up w/find_all
       url         = "#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json"
-      params      = opts.merge(signature: signature)
-      response    = RestClient.get(url, params: params)
-      @attributes = JSON.parse(response)
+      @attributes = Helix::Base.get_response(url, opts)
       self
     end
     alias_method :reload, :load
