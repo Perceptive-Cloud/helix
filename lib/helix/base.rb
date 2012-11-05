@@ -12,12 +12,12 @@ module Helix
 
     attr_accessor :attributes
 
-    def self.url
-      "#{CREDENTIALS['site']}/#{plural_media_type}"
-    end
-
     def self.create(attributes={})
       RestClient.post()
+    end
+
+    def self.url
+      "#{CREDENTIALS['site']}/#{plural_media_type}"
     end
 
     def destroy
