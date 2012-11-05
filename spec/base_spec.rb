@@ -229,28 +229,26 @@ describe Helix::Base do
       before(:each) do
         obj.stub(:signature) { 'some_sig' }
         obj.stub(:media_type_sym) { :video }
+        klass.stub(:build_url) { :expected_url }
       end
-      context "when given no argument" do
+      shared_examples_for "builds URL for update" do
         it "should build_url(format: :xml)" do
           klass.should_receive(:build_url).with(format: :xml)
           RestClient.stub(:put)
           obj.send(meth)
         end
+      end
+      context "when given no argument" do
+        it_behaves_like "builds URL for update"
         it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: {}}) and return instance of klass" do
-          klass.stub(:build_url) { :expected_url }
           RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: {}})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
-        it "should build_url(format: :xml)" do
-          klass.should_receive(:build_url).with(format: :xml)
-          RestClient.stub(:put)
-          obj.send(meth)
-        end
+        it_behaves_like "builds URL for update"
         it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: opts}) and return instance of klass" do
-          klass.stub(:build_url) { :expected_url }
           RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: opts})
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
