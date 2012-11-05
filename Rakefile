@@ -4,6 +4,12 @@ require 'rake/clean'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
 
+task :rebuild_gem do
+  `sudo gem uni helix`
+  `gem build helix.gemspec`
+  `sudo gem i helix-*.gem`
+end
+
 RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
