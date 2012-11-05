@@ -36,7 +36,6 @@ module Helix
     end
 
     def self.find_all(opts)
-      # TODO: DRY up w/load
       url         = self.build_url(format: :json)
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
@@ -56,8 +55,7 @@ module Helix
     end
 
     def load(opts={})
-      # TODO: DRY up w/find_all
-      url         = "#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json"
+      url         = Helix::Base.build_url(format: :json, guid: guid)
       @attributes = Helix::Base.get_response(url, opts)
       self
     end
@@ -69,6 +67,7 @@ module Helix
 
     def signature
       # TODO: Memoize (if it's valid)
+      # TODO: read vs. read/write
       url = "#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
       # FIXME: Replace Net::HTTP with our own connection abstraction
       @signature = Net::HTTP.get_response(URI.parse(url)).body

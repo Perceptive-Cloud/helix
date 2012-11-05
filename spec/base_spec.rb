@@ -168,23 +168,36 @@ describe Helix::Base do
       let(:meth)  { :load }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
-      let(:url)   { "#{site_url}.json" }
+      before(:each) do
+        obj.stub(:guid)           { 'some_guid'   }
+        obj.stub(:signature)      { 'some_sig'    }
+        obj.stub(:media_type_sym) { :video        }
+        klass.stub(:build_url)    { :expected_url }
+        klass.stub(:get_response) { :expected_url }
+      end
+      shared_examples_for "builds URL for load" do
+        it "should call #guid" do
+          obj.should_receive(:guid) { 'some_guid' }
+          obj.send(meth)
+        end
+        it "should build_url(format: :json, guid: the_guid)" do
+          klass.should_receive(:build_url).with(format: :json, guid: 'some_guid')
+          RestClient.stub(:put)
+          obj.send(meth)
+        end
+      end
       context "when given no argument" do
-        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
-        it "should call .get_response(#{url}, {}) and return instance of klass" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
-          klass.should_receive(:get_response).with(url, {})
+        it_behaves_like "builds URL for load"
+        it "should call klass.get_response(output_of_build_url, {}) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, {})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
-        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
-        it "should call .get_response(#{url}, opts) and return instance of klass" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
-          klass.should_receive(:get_response).with(url, opts)
+        it_behaves_like "builds URL for load"
+        it "should call klass.get_response(output_of_build_url, opts) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, opts)
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
       end
@@ -225,7 +238,6 @@ describe Helix::Base do
       let(:meth)  { :update }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
-      display_url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.xml]
       before(:each) do
         obj.stub(:signature) { 'some_sig' }
         obj.stub(:media_type_sym) { :video }
