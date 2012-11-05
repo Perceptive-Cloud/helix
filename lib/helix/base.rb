@@ -15,7 +15,7 @@ module Helix
     def self.create(attributes={})
       url       = "#{self.klass_url}/create_many.xml"
       response  = RestClient.post(url, attributes.merge(signature: signature))
-      item      = self.new(attributes: attributes)
+      self.new(attributes: attributes)
     end
 
     def self.build_url(opts={})
