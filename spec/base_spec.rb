@@ -105,10 +105,25 @@ describe Helix::Base do
 
   describe ".url" do
     let(:meth)  { :url }
-    subject     { klass.send(meth) }
+    subject     { klass.method(meth) }
+    its(:arity) { should be(-1) }
     before      { klass.stub(:plural_media_type) { "klasses" } }
-    let(:url)   {"#{klass::CREDENTIALS['site']}/klasses"}
-    it          { should eq(url) }
+    context "when given NO opts" do
+      subject { klass.send(meth) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts of {}" do
+      subject { klass.send(meth, {}) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts[:format] of :json" do
+      subject { klass.send(meth, format: :json) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts[:format] of :xml" do
+      subject { klass.send(meth, format: :xml) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.xml") }
+    end
   end
 
   describe ".signature" do

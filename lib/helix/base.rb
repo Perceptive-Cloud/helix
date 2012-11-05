@@ -16,8 +16,9 @@ module Helix
       RestClient.post()
     end
 
-    def self.url
-      "#{CREDENTIALS['site']}/#{plural_media_type}"
+    def self.url(opts={})
+      opts[:format] ||= :json
+      "#{CREDENTIALS['site']}/#{plural_media_type}.#{opts[:format]}"
     end
 
     def destroy
