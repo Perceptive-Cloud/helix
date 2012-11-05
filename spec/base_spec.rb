@@ -114,7 +114,10 @@ describe Helix::Base do
     subject     { klass.method(meth) }
     its(:arity) { should be(-1) }
     klass = Helix::Base
-    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format,guid,action|
+    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format,more_opts|
+      more_opts ||= {}
+      guid   = more_opts[:guid]
+      action = more_opts[:action]
       context "and CREDENTIALS has a key for 'reseller'" do
         before(:each) do klass::CREDENTIALS['reseller'] = 're_id' end
         context "and CREDENTIALS has a key for 'company'" do
@@ -170,7 +173,15 @@ describe Helix::Base do
     end
     context "when given opts of {guid: :the_guid}" do
       subject { klass.send(meth, {guid: :the_guid}) }
-      it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json, :the_guid
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json, {guid: :the_guid}
+    end
+    context "when given opts of {action: :the_action}" do
+      subject { klass.send(meth, {action: :the_action}) }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json, {action: :the_action}
+    end
+    context "when given opts of {guid: :the_guid, action: :the_action}" do
+      subject { klass.send(meth, {guid: :the_guid, action: :the_action}) }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json, {guid: :the_guid, action: :the_action}
     end
     [ :videos, :tracks ].each do |media_type|
       context "when given opts[:media_type] of :#{media_type}" do
@@ -179,7 +190,15 @@ describe Helix::Base do
       end
       context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
         subject { klass.send(meth, media_type: media_type, guid: :the_guid) }
-        it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json, :the_guid
+        it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json, {guid: :the_guid}
+      end
+      context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
+        subject { klass.send(meth, media_type: media_type, action: :the_action) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json, {action: :the_action}
+      end
+      context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
+        subject { klass.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
       end
     end
     [ :json, :xml ].each do |format|
@@ -189,7 +208,15 @@ describe Helix::Base do
       end
       context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
         subject { klass.send(meth, format: format, guid: :the_guid) }
-        it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format, :the_guid
+        it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format, {guid: :the_guid}
+      end
+      context "when given opts[:format] of :#{format} and opts[:action] of :the_action" do
+        subject { klass.send(meth, format: format, action: :the_action) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format, {action: :the_action}
+      end
+      context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
+        subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format, {guid: :the_guid, action: :the_action}
       end
       [ :videos, :tracks ].each do |media_type|
         context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
@@ -198,7 +225,15 @@ describe Helix::Base do
         end
         context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
           subject { klass.send(meth, format: format, guid: :the_guid, media_type: media_type) }
-          it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format, :the_guid
+          it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format, {guid: :the_guid}
+        end
+        context "when given opts[:format] of :#{format}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format, {action: :the_action}
+        end
+        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format, {guid: :the_guid, action: :the_action}
         end
       end
     end
