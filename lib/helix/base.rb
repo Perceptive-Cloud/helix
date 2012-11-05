@@ -19,14 +19,15 @@ module Helix
     end
 
     def self.build_url(opts={})
-      opts[:format] ||= :json
+      opts[:format]     ||= :json
+      opts[:media_type] ||= :videos
       base_url  = CREDENTIALS['site']
       base_url += "/resellers/#{CREDENTIALS['reseller']}" if CREDENTIALS['reseller']
       if CREDENTIALS['company']
         base_url += "/companies/#{CREDENTIALS['company']}"
         base_url += "/libraries/#{CREDENTIALS['library']}" if CREDENTIALS['library']
       end
-      "#{base_url}/#{plural_media_type}.#{opts[:format]}"
+      "#{base_url}/#{opts[:media_type]}.#{opts[:format]}"
     end
 
     def destroy
@@ -66,7 +67,7 @@ module Helix
     end
 
     def load(opts={})
-      url         = Helix::Base.build_url(format: :json, guid: guid)
+      url         = Helix::Base.build_url(format: :json, guid: guid, media_type: plural_media_type)
       @attributes = Helix::Base.get_response(url, opts)
       self
     end
