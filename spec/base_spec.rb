@@ -179,18 +179,19 @@ describe Helix::Base do
 
   # attr_accessor attributes
 
-  describe "#destroy" do
-    let(:meth)  { :destroy }
-    subject     { obj.method(meth) }
-    it "should delete the record" do
-      #url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}"
-      #RestClient.should_receive(:delete).with(url)
-      #expect(obj.method(meth)).to be_nil
-    end
-  end
 
   describe "an instance" do
     let(:obj) { klass.new({}) }
+
+    describe "#destroy" do
+      let(:meth)  { :destroy }
+      subject     { obj.method(meth) }
+      it "should delete the record" do
+        url = klass.build_url
+        RestClient.should_receive(:delete).with(url)
+        expect(obj.send(meth)).to be_nil
+      end
+    end
 
     describe "#guid" do
       let(:meth) { :guid }

@@ -31,7 +31,7 @@ module Helix
     end
 
     def destroy
-      url = "#{Helix::Base.klass_url}/#{guid}"
+      url = Helix::Base.build_url
       RestClient.delete(url)
       nil
     end
