@@ -89,10 +89,10 @@ describe Helix::Base do
     subject     { klass.method(meth) }
     its(:arity) { should eq(-2) }
     context "when given a url and options" do
-      subject { klass }
-      let(:string) { String.new }
-      let(:opts) { Hash.new }
-      let(:params) { { params: { signature: string } } }
+      subject             { klass }
+      let(:string)        { String.new }
+      let(:opts)          { Hash.new }
+      let(:params)        { { params: { signature: string } } }
       let(:returned_json) { '{"key": "val"}' }
       let(:json_parsed)   { { "key" => "val" } }
       it "should call RestClient.get and return a hash from parsed JSON" do
@@ -105,8 +105,10 @@ describe Helix::Base do
 
   describe ".klass_url" do
     let(:meth)  { :klass_url }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(0) }
+    subject     { klass.send(meth) }
+    before      { klass.stub(:plural_media_type) { "klasses" } }
+    let(:url)   {"#{klass::CREDENTIALS['site']}/klasses"}
+    it          { should eq(url) }
   end
 
   describe ".signature" do
