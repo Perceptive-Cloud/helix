@@ -12,6 +12,17 @@ module Helix
 
     attr_accessor :attributes
 
+    def self.klass_url
+      "#{CREDENTIALS['site']}/#{plural_media_type}"
+    end
+
+    def self.create(attributes={})
+      RestClient.post()
+    end
+
+    def destroy
+    end
+
     def self.find(guid)
       item = self.new(attributes: { guid_name => guid })
       item.load
@@ -25,7 +36,7 @@ module Helix
 
     def self.find_all(opts)
       # TODO: DRY up w/load
-      url         = "#{CREDENTIALS['site']}/#{plural_media_type}.json"
+      url         = "#{self.klass_url}.json"
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end
