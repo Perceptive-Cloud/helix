@@ -226,20 +226,32 @@ describe Helix::Base do
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
       display_url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.xml]
+      before(:each) do
+        obj.stub(:signature) { 'some_sig' }
+        obj.stub(:media_type_sym) { :video }
+      end
       context "when given no argument" do
-        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: {}}) and return instance of klass" do
-          set_stubs(obj, :even_sig)
-          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
-          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: {}})
+        it "should build_url(format: :xml)" do
+          klass.should_receive(:build_url).with(format: :xml)
+          RestClient.stub(:put)
+          obj.send(meth)
+        end
+        it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: {}}) and return instance of klass" do
+          klass.stub(:build_url) { :expected_url }
+          RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: {}})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
-        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: opts}) and return instance of klass" do
-          set_stubs(obj, :even_sig)
-          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
-          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: opts})
+        it "should build_url(format: :xml)" do
+          klass.should_receive(:build_url).with(format: :xml)
+          RestClient.stub(:put)
+          obj.send(meth)
+        end
+        it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: opts}) and return instance of klass" do
+          klass.stub(:build_url) { :expected_url }
+          RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: opts})
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
       end
