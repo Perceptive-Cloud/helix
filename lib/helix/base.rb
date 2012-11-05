@@ -16,7 +16,8 @@ module Helix
       url       = self.build_url( action:     :create_many,
                                   media_type: plural_media_type)
       response  = RestClient.post(url, attributes.merge(signature: signature))
-      self.new(attributes: attributes)
+      attrs     = JSON.parse(response)
+      self.new({attributes: attrs[media_type_sym]})
     end
 
     def self.build_url(opts={})

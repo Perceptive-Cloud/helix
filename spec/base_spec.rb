@@ -16,15 +16,24 @@ describe Helix::Base do
   subject { klass }
 
   describe ".create" do
-    let(:meth)  { :create }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(-1) }
-    #it "should make an api call get the instance data" do
-    #  params  = Hash.new
-    #  url     = klass.build_url( action:     :create_many,
-    #                             media_type: plural_media_type)
-    #  RestClient.should_receive(:post).with(urm, params)
-    #end
+    let(:meth)                  { :create }
+    subject                     { klass.method(meth) }
+    its(:arity)                 { should eq(-1) }
+    let(:resp_value)            { { klass: { attribute: :value } } }
+    let(:resp_json)             { "JSON" }
+    let(:params)                { { signature: "some_sig" } }
+    before do 
+      klass.stub(:signature)          { "some_sig" }
+      klass.stub(:plural_media_type)  { :klasses }
+      klass.stub(:media_type_sym)     { :klass }
+    end
+    it "should do an HTTP post call and parse response" do
+      url = klass.build_url(action:     :create_many,
+                            media_type: :klasses)
+      RestClient.should_receive(:post).with(url, params) { resp_json }
+      JSON.should_receive(:parse).with(resp_json) { resp_value }
+      klass.send(meth)
+    end
     #it "should create an klass instance and save it" do
     #  obj = klass.send(meth)
     #  expect(obj).to be_an_instance_of(klass)
