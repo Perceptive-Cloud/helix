@@ -12,7 +12,7 @@ module Helix
 
     attr_accessor :attributes
 
-    def self.klass_url
+    def self.url
       "#{CREDENTIALS['site']}/#{plural_media_type}"
     end
 
@@ -36,7 +36,7 @@ module Helix
 
     def self.find_all(opts)
       # TODO: DRY up w/load
-      url         = "#{self.klass_url}.json"
+      url         = "#{self.url}.json"
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end

@@ -103,8 +103,8 @@ describe Helix::Base do
     end
   end
 
-  describe ".klass_url" do
-    let(:meth)  { :klass_url }
+  describe ".url" do
+    let(:meth)  { :url }
     subject     { klass.send(meth) }
     before      { klass.stub(:plural_media_type) { "klasses" } }
     let(:url)   {"#{klass::CREDENTIALS['site']}/klasses"}
