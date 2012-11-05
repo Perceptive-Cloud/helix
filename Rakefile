@@ -10,6 +10,12 @@ task :rebuild_gem do
   `sudo gem i helix-*.gem`
 end
 
+task :rvm_rebuild_gem do
+  `gem uni helix`
+  `gem build helix.gemspec`
+  `gem i helix-*.gem`
+end
+
 RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
