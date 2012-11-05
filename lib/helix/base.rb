@@ -73,8 +73,8 @@ module Helix
     end
 
     def load(opts={})
-      url         = Helix::Base.build_url(format:     :json, 
-                                          guid:       guid, 
+      url         = Helix::Base.build_url(format:     :json,
+                                          guid:       guid,
                                           media_type: plural_media_type)
       @attributes = Helix::Base.get_response(url, opts)
       self
