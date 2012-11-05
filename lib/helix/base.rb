@@ -17,10 +17,15 @@ module Helix
     end
 
     def self.create(attributes={})
-      RestClient.post()
+      url       = "#{self.klass_url}/create_many.xml"
+      response  = RestClient.post(url, attributes.merge(signature: signature))
+      item      = self.new(attributes: attributes)
     end
 
     def destroy
+      url = "#{Helix::Base.klass_url}/#{guid}"
+      RestClient.delete(url)
+      nil
     end
 
     def self.find(guid)
@@ -56,7 +61,7 @@ module Helix
 
     def load(opts={})
       # TODO: DRY up w/find_all
-      url         = "#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json"
+      url         = "#{Helix::Base.klass_url}/#{guid}.json"
       @attributes = Helix::Base.get_response(url, opts)
       self
     end
@@ -74,7 +79,7 @@ module Helix
     end
 
     def update(opts={})
-      url    = "#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.xml"
+      url    = "#{Helix::Base.klass_url}/#{guid}.xml"
       params = {signature: signature}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self
