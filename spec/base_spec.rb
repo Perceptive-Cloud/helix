@@ -22,7 +22,7 @@ describe Helix::Base do
     let(:resp_value)            { { klass: { attribute: :value } } }
     let(:resp_json)             { "JSON" }
     let(:params)                { { signature: "some_sig" } }
-    before do 
+    before(:each) do 
       klass.stub(:signature)          { "some_sig" }
       klass.stub(:plural_media_type)  { :klasses }
       klass.stub(:media_type_sym)     { :klass }
@@ -34,11 +34,15 @@ describe Helix::Base do
       JSON.should_receive(:parse).with(resp_json) { resp_value }
       klass.send(meth)
     end
-    #it "should create an klass instance and save it" do
-    #  obj = klass.send(meth)
-    #  expect(obj).to be_an_instance_of(klass)
-    #  expect(klass.find(obj.id)).to be_an_instance_of(klass)
-    #end
+    let(:expected)            { { attributes: { attribute: :value } } }
+    before do
+      RestClient.stub(:post)  { resp_json }
+      JSON.stub(:parse)       { resp_value }
+    end
+    it "should call new" do
+      klass.should_receive(:new).with(expected)
+      klass.send(meth)
+    end
   end
 
   describe ".find" do
