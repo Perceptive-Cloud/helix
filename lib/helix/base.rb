@@ -37,7 +37,7 @@ module Helix
 
     def self.find_all(opts)
       # TODO: DRY up w/load
-      url         = "#{self.build_url}.json"
+      url         = self.build_url(format: :json)
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end
