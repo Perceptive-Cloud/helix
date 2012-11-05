@@ -16,7 +16,7 @@ module Helix
       RestClient.post()
     end
 
-    def self.url(opts={})
+    def self.build_url(opts={})
       opts[:format] ||= :json
       "#{CREDENTIALS['site']}/#{plural_media_type}.#{opts[:format]}"
     end
@@ -37,7 +37,7 @@ module Helix
 
     def self.find_all(opts)
       # TODO: DRY up w/load
-      url         = "#{self.url}.json"
+      url         = "#{self.build_url}.json"
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end

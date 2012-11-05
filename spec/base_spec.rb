@@ -103,8 +103,8 @@ describe Helix::Base do
     end
   end
 
-  describe ".url" do
-    let(:meth)  { :url }
+  describe ".build_url" do
+    let(:meth)  { :build_url }
     subject     { klass.method(meth) }
     its(:arity) { should be(-1) }
     before      { klass.stub(:plural_media_type) { "klasses" } }
