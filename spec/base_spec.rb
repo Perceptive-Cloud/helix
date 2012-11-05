@@ -15,13 +15,29 @@ describe Helix::Base do
 
   subject { klass }
 
-  describe ".find" do
-    let(:meth) { :find }
+  describe ".create" do
+    let(:meth) { :create }
     subject { klass.method(meth) }
+    its(:arity) { should eq(-1) }
+    #it "should make an api call get the instance data" do
+    #  params  = Hash.new
+    #  url     = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/"
+    #  RestClient.should_receive(:post).with(urm, params)
+    #end
+    #it "should create an klass instance and save it" do
+    #  obj = klass.send(meth)
+    #  expect(obj).to be_an_instance_of(klass)
+    #  expect(klass.find(obj.id)).to be_an_instance_of(klass)
+    #end
+  end
+
+  describe ".find" do
+    let(:meth)  { :find }
+    subject     { klass.method(meth) }
     its(:arity) { should eq(1) }
     context "when given a guid" do
-      subject { klass }
-      let(:guid) { :a_guid }
+      subject             { klass }
+      let(:guid)          { :a_guid }
       let(:mock_instance) { mock(Object, :load => nil) }
       it "should instantiate with attributes: { guid_name => the_guid }" do
         klass.should_receive(:guid_name) { :the_guid_name }
@@ -37,45 +53,15 @@ describe Helix::Base do
     end
   end
 
-#TODO: Possible cleanup.
-  describe ".get_response" do
-    let(:meth) { :get_response }
-    subject { klass.method(meth) }
-    its(:arity) { should eq(-2) }
-    context "when given a url and options" do
-      subject { klass }
-      let(:string) { String.new }
-      let(:opts) { Hash.new }
-      let(:params) { { params: { signature: string } } }
-      let(:returned_json) { '{"key": "val"}' }
-      let(:json_parsed)   { { "key" => "val" } }
-      it "should call RestClient.get and return a hash from parsed JSON" do
-        klass.stub(:signature) { string }
-        RestClient.should_receive(:get).with(string, params) { returned_json }
-        expect(klass.send(meth, string, opts)).to eq(json_parsed)
-      end
-    end
-  end
-
-  describe ".signature" do
-    let(:meth) { :signature }
-    let(:obj)  { mock(Object) }
-    it "should delegate to an instance" do
-      klass.should_receive(:new).with({}) { obj }
-      obj.should_receive(meth) { :expected }
-      expect(klass.send(meth)).to be(:expected)
-    end
-  end
-
- describe ".find_all" do
-    let(:meth) { :find_all }
-    subject { klass.method(meth) }
+  describe ".find_all" do
+    let(:meth)  { :find_all }
+    subject     { klass.method(meth) }
     its(:arity) { should eq(1) }
     context "when called with multiple { attribute: :value }" do
-      let(:opts) { Hash.new }
-      let(:attr_value) { { attribute: :value } }
-      let(:attrs_hash) { { attributes: attr_value } }
-      let(:obj_count) { 2 }
+      let(:opts)        { Hash.new }
+      let(:attr_value)  { { attribute: :value } }
+      let(:attrs_hash)  { { attributes: attr_value } }
+      let(:obj_count)   { 2 }
       before(:each) do
         klass.stub(:get_response) do
           { klasses: (1..obj_count).map { attr_value } }
@@ -97,9 +83,55 @@ describe Helix::Base do
     end
   end
 
+#TODO: Possible cleanup.
+  describe ".get_response" do
+    let(:meth)  { :get_response }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(-2) }
+    context "when given a url and options" do
+      subject { klass }
+      let(:string) { String.new }
+      let(:opts) { Hash.new }
+      let(:params) { { params: { signature: string } } }
+      let(:returned_json) { '{"key": "val"}' }
+      let(:json_parsed)   { { "key" => "val" } }
+      it "should call RestClient.get and return a hash from parsed JSON" do
+        klass.stub(:signature) { string }
+        RestClient.should_receive(:get).with(string, params) { returned_json }
+        expect(klass.send(meth, string, opts)).to eq(json_parsed)
+      end
+    end
+  end
+
+  describe ".klass_url" do
+    let(:meth)  { :klass_url }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
+  end
+
+  describe ".signature" do
+    let(:meth) { :signature }
+    let(:obj)  { mock(Object) }
+    it "should delegate to an instance" do
+      klass.should_receive(:new).with({}) { obj }
+      obj.should_receive(meth) { :expected }
+      expect(klass.send(meth)).to be(:expected)
+    end
+  end
+
   describe "Constants"
 
   # attr_accessor attributes
+
+  describe "#destroy" do
+    let(:meth)  { :destroy }
+    #it "should delete the record" do
+    #  obj = klass.create
+    #  expect(klass.find(obj.id)).to be_an_instance_of(klass)
+    #  obj.method(meth)
+    #  expect(obj = klass.find(obj.id)).to be_nil
+    #end
+  end
 
   describe "an instance" do
     let(:obj) { klass.new({}) }
@@ -142,8 +174,8 @@ describe Helix::Base do
     end
 
     describe "#method_missing" do
-      let(:meth) { :method_missing }
-      subject { obj.method(meth) }
+      let(:meth)  { :method_missing }
+      subject     { obj.method(meth) }
       its(:arity) { should eq(1) }
       context "when given method_sym" do
         let(:method_sym) { :method_sym }
