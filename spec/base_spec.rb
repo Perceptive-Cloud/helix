@@ -113,35 +113,36 @@ describe Helix::Base do
     let(:meth)  { :build_url }
     subject     { klass.method(meth) }
     its(:arity) { should be(-1) }
-    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format,guid|
+    klass = Helix::Base
+    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format,guid,action|
       context "and CREDENTIALS has a key for 'reseller'" do
         before(:each) do klass::CREDENTIALS['reseller'] = 're_id' end
         context "and CREDENTIALS has a key for 'company'" do
           before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
           context "and CREDENTIALS has a key for 'library'" do
             before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
-            if guid.nil?
-              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
-            else
-              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}/the_guid.#{format}") }
-            end
+            expected_url  = "#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
           end
           context "and CREDENTIALS does NOT have a key for 'library'" do
             before(:each) do klass::CREDENTIALS.delete('library') end
-            if guid.nil?
-              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}.#{format}") }
-            else
-              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}/the_guid.#{format}") }
-            end
+            expected_url  = "#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
           end
         end
         context "and CREDENTIALS does NOT have a key for 'company'" do
           before(:each) do klass::CREDENTIALS.delete('company') end
-          if guid.nil?
-            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}.#{format}") }
-          else
-            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}/the_guid.#{format}") }
-          end
+          expected_url  = "#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}"
+          expected_url += "/the_guid"  if guid
+          expected_url += "/#{action}" if action
+          expected_url += ".#{format}"
+          it { should eq(expected_url) }
         end
       end
       context "and CREDENTIALS does NOT have a key for 'reseller'" do
@@ -150,11 +151,11 @@ describe Helix::Base do
           before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
           context "and CREDENTIALS has a key for 'library'" do
             before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
-            if guid.nil?
-              it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
-            else
-              it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}/the_guid.#{format}") }
-            end
+            expected_url  = "#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
           end
         end
       end
