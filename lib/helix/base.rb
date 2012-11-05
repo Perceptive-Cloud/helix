@@ -13,7 +13,8 @@ module Helix
     attr_accessor :attributes
 
     def self.create(attributes={})
-      url       = "#{self.klass_url}/create_many.xml"
+      url       = self.build_url( action:     :create_many,
+                                  media_type: plural_media_type)
       response  = RestClient.post(url, attributes.merge(signature: signature))
       self.new(attributes: attributes)
     end
@@ -27,11 +28,13 @@ module Helix
         base_url += "/companies/#{CREDENTIALS['company']}"
         base_url += "/libraries/#{CREDENTIALS['library']}" if CREDENTIALS['library']
       end
-      "#{base_url}/#{opts[:media_type]}.#{opts[:format]}"
+      url   = "#{base_url}/#{opts[:media_type]}"
+      url  += "/#{opts[:action]}" if opts[:action]
+      "#{url}.#{opts[:format]}"
     end
 
     def destroy
-      url = Helix::Base.build_url
+      url = Helix::Base.build_url(media_type: plural_media_type)
       RestClient.delete(url)
       nil
     end
@@ -67,7 +70,9 @@ module Helix
     end
 
     def load(opts={})
-      url         = Helix::Base.build_url(format: :json, guid: guid, media_type: plural_media_type)
+      url         = Helix::Base.build_url(format:     :json, 
+                                          guid:       guid, 
+                                          media_type: plural_media_type)
       @attributes = Helix::Base.get_response(url, opts)
       self
     end

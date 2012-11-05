@@ -21,7 +21,8 @@ describe Helix::Base do
     its(:arity) { should eq(-1) }
     #it "should make an api call get the instance data" do
     #  params  = Hash.new
-    #  url     = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/"
+    #  url     = klass.build_url( action:     :create_many,
+    #                             media_type: plural_media_type)
     #  RestClient.should_receive(:post).with(urm, params)
     #end
     #it "should create an klass instance and save it" do
