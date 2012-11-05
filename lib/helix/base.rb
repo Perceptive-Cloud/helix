@@ -13,7 +13,9 @@ module Helix
     attr_accessor :attributes
 
     def self.create(attributes={})
-      RestClient.post()
+      url       = "#{self.klass_url}/create_many.xml"
+      response  = RestClient.post(url, attributes.merge(signature: signature))
+      item      = self.new(attributes: attributes)
     end
 
     def self.build_url(opts={})
@@ -29,6 +31,9 @@ module Helix
     end
 
     def destroy
+      url = "#{Helix::Base.klass_url}/#{guid}"
+      RestClient.delete(url)
+      nil
     end
 
     def self.find(guid)
