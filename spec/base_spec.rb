@@ -81,6 +81,11 @@ describe Helix::Base do
       end
       subject { klass.send(meth, opts).first }
       it { should be_an_instance_of(klass) }
+      context "and raw_response[plural_media_type] is nil" do
+        before(:each) do klass.stub(:get_response) { {} } end
+        subject { klass.send(meth, opts) }
+        it { should eq([]) }
+      end
     end
   end
 
@@ -108,23 +113,35 @@ describe Helix::Base do
     let(:meth)  { :build_url }
     subject     { klass.method(meth) }
     its(:arity) { should be(-1) }
-    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format|
+    shared_examples_for "reads scope from CREDENTIALS for build_url" do |media_type,format,guid|
       context "and CREDENTIALS has a key for 'reseller'" do
         before(:each) do klass::CREDENTIALS['reseller'] = 're_id' end
         context "and CREDENTIALS has a key for 'company'" do
           before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
           context "and CREDENTIALS has a key for 'library'" do
             before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
-            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
+            if guid.nil?
+              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
+            else
+              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}/the_guid.#{format}") }
+            end
           end
           context "and CREDENTIALS does NOT have a key for 'library'" do
             before(:each) do klass::CREDENTIALS.delete('library') end
-            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}.#{format}") }
+            if guid.nil?
+              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}.#{format}") }
+            else
+              it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/#{media_type}/the_guid.#{format}") }
+            end
           end
         end
         context "and CREDENTIALS does NOT have a key for 'company'" do
           before(:each) do klass::CREDENTIALS.delete('company') end
-          it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}.#{format}") }
+          if guid.nil?
+            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}.#{format}") }
+          else
+            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/#{media_type}/the_guid.#{format}") }
+          end
         end
       end
       context "and CREDENTIALS does NOT have a key for 'reseller'" do
@@ -133,7 +150,11 @@ describe Helix::Base do
           before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
           context "and CREDENTIALS has a key for 'library'" do
             before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
-            it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
+            if guid.nil?
+              it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}.#{format}") }
+            else
+              it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/#{media_type}/the_guid.#{format}") }
+            end
           end
         end
       end
@@ -143,13 +164,21 @@ describe Helix::Base do
       it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json
     end
     context "when given opts of {}" do
-      subject { klass.send(meth) }
+      subject { klass.send(meth, {}) }
       it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json
+    end
+    context "when given opts of {guid: :the_guid}" do
+      subject { klass.send(meth, {guid: :the_guid}) }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, :json, :the_guid
     end
     [ :videos, :tracks ].each do |media_type|
       context "when given opts[:media_type] of :#{media_type}" do
         subject { klass.send(meth, media_type: media_type) }
         it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json
+      end
+      context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
+        subject { klass.send(meth, media_type: media_type, guid: :the_guid) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, :json, :the_guid
       end
     end
     [ :json, :xml ].each do |format|
@@ -157,10 +186,18 @@ describe Helix::Base do
         subject { klass.send(meth, format: format) }
         it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format
       end
+      context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
+        subject { klass.send(meth, format: format, guid: :the_guid) }
+        it_behaves_like "reads scope from CREDENTIALS for build_url", :videos, format, :the_guid
+      end
       [ :videos, :tracks ].each do |media_type|
         context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
           subject { klass.send(meth, format: format, media_type: media_type) }
           it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format
+        end
+        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, guid: :the_guid, media_type: media_type) }
+          it_behaves_like "reads scope from CREDENTIALS for build_url", media_type, format, :the_guid
         end
       end
     end

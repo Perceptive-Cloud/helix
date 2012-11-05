@@ -29,6 +29,7 @@ module Helix
         base_url += "/libraries/#{CREDENTIALS['library']}" if CREDENTIALS['library']
       end
       url   = "#{base_url}/#{opts[:media_type]}"
+      url  += "/#{opts[:guid]}"   if opts[:guid]
       url  += "/#{opts[:action]}" if opts[:action]
       "#{url}.#{opts[:format]}"
     end
@@ -51,9 +52,11 @@ module Helix
     end
 
     def self.find_all(opts)
-      url         = self.build_url(format: :json)
-      data_sets   = self.get_response(url, opts)
-      data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
+      url          = self.build_url(format: :json)
+      raw_response = self.get_response(url, opts)
+      data_sets    = raw_response[plural_media_type]
+      return [] if data_sets.nil?
+      data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
     # TODO: messy near-duplication. Clean up.
