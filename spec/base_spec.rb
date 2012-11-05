@@ -3,11 +3,12 @@ require 'helix'
 
 describe Helix::Base do
 
-  def set_stubs(obj)
+  def set_stubs(obj, even_sig=false)
     obj.instance_variable_set(:@attributes, {})
-    [:plural_media_type, :guid, :signature].each_with_index do |call, index|
-      obj.stub(call) { index.to_s }
-    end
+    obj.stub(:media_type_sym)    { :video      }
+    obj.stub(:plural_media_type) { 'videos'    }
+    obj.stub(:guid)              { 'some_guid' }
+    obj.stub(:signature)         { 'some_sig'  } if even_sig
   end
 
   let(:klass) { Helix::Base }
@@ -57,6 +58,13 @@ describe Helix::Base do
   end
 
   describe ".signature" do
+    let(:meth) { :signature }
+    let(:obj)  { mock(Object) }
+    it "should delegate to an instance" do
+      klass.should_receive(:new).with({}) { obj }
+      obj.should_receive(meth) { :expected }
+      expect(klass.send(meth)).to be(:expected)
+    end
   end
 
  describe ".find_all" do
@@ -66,10 +74,10 @@ describe Helix::Base do
     context "when called with multiple { attribute: :value }" do
       let(:opts) { Hash.new }
       let(:attr_value) { { attribute: :value } }
-      let(:attrs_hash) { { attributes: attr_value } } 
+      let(:attrs_hash) { { attributes: attr_value } }
       let(:obj_count) { 2 }
-      before(:each) do 
-        klass.stub(:get_response) do 
+      before(:each) do
+        klass.stub(:get_response) do
           { klasses: (1..obj_count).map { attr_value } }
         end
         klass.stub(:plural_media_type) { :klasses }
@@ -81,7 +89,7 @@ describe Helix::Base do
       subject { klass.send(meth, opts).first }
       it { should be_an_instance_of(klass) }
 
-      #Specific matching not working. 
+      #Specific matching not working.
       #subject { klass.send(meth, opts) }
       #it { should eq((1..2).map { klass.new(attrs_hash) }) }
 
@@ -106,6 +114,32 @@ describe Helix::Base do
       end
     end
 
+    describe "#load" do
+      let(:meth)  { :load }
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(-1) }
+      let(:url)   { "#{site_url}.json" }
+      context "when given no argument" do
+        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
+        it "should call .get_response(#{url}, {}) and return instance of klass" do
+          set_stubs(obj)
+          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
+          klass.should_receive(:get_response).with(url, {})
+          expect(obj.send(meth)).to be_an_instance_of(klass)
+        end
+      end
+      context "when given an opts argument of {key1: :value1}" do
+        let(:opts)  { {key1: :value1} }
+        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
+        it "should call .get_response(#{url}, opts) and return instance of klass" do
+          set_stubs(obj)
+          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
+          klass.should_receive(:get_response).with(url, opts)
+          expect(obj.send(meth, opts)).to be_an_instance_of(klass)
+        end
+      end
+    end
+
     describe "#method_missing" do
       let(:meth) { :method_missing }
       subject { obj.method(meth) }
@@ -122,34 +156,42 @@ describe Helix::Base do
     end
 
     describe "#signature" do
-    end
-
-    #TODO: Fix after helix_spec.yml
-    let(:site_url) { "http://localhost:3000/0/1" }
-    describe "#update" do
-      let(:meth) { :update }
-      subject { obj.method(meth) }
-      its(:arity) { should eq(-1) }
-      let(:params) { { signature: "2", nil => {} } }
-      let(:site) { site_url + ".xml" }
-      it "should call RestClient.put and return instance of klass" do
+      let(:meth)  { :signature }
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(0) }
+      let(:mock_response) { mock(Object) }
+      url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+      it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
         set_stubs(obj)
-        #TODO: Need to make an helix_spec.yml file
-        RestClient.should_receive(:put).with(site, params)
-        expect(obj.send(meth)).to be_an_instance_of(klass)
+        url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+        URI.should_receive(:parse).with(url) { :parsed_url }
+        Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
+        mock_response.should_receive(:body) { :expected }
+        expect(obj.send(meth)).to be(:expected)
       end
     end
 
-    describe "#load" do
-      let(:meth) { :load }
-      subject { obj.method(meth) }
+    describe "#update" do
+      let(:meth)  { :update }
+      subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
-      let(:opts) { Hash.new }
-      let(:url) { site_url + ".json" }
-      it "should call .get_response and return instance of klass" do
-        set_stubs(obj)
-        klass.should_receive(:get_response).with(url, opts)
-        expect(obj.send(meth)).to be_an_instance_of(klass)
+      display_url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.xml]
+      context "when given no argument" do
+        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: {}}) and return instance of klass" do
+          set_stubs(obj, :even_sig)
+          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
+          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: {}})
+          expect(obj.send(meth)).to be_an_instance_of(klass)
+        end
+      end
+      context "when given an opts argument of {key1: :value1}" do
+        let(:opts)  { {key1: :value1} }
+        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: opts}) and return instance of klass" do
+          set_stubs(obj, :even_sig)
+          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
+          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: opts})
+          expect(obj.send(meth, opts)).to be_an_instance_of(klass)
+        end
       end
     end
 
