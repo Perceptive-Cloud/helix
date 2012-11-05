@@ -10,7 +10,7 @@ task :reinstall_helix do
   `sudo gem i helix-*.gem`
 end
 
-task :rvm_rebuild_gem do
+task :reinstall_helix_rvm do
   `gem uni helix`
   `gem build helix.gemspec`
   `gem i helix-*.gem`
