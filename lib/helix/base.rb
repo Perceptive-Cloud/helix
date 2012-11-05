@@ -18,7 +18,13 @@ module Helix
 
     def self.build_url(opts={})
       opts[:format] ||= :json
-      "#{CREDENTIALS['site']}/#{plural_media_type}.#{opts[:format]}"
+      base_url  = CREDENTIALS['site']
+      base_url += "/resellers/#{CREDENTIALS['reseller']}" if CREDENTIALS['reseller']
+      if CREDENTIALS['company']
+        base_url += "/companies/#{CREDENTIALS['company']}"
+        base_url += "/libraries/#{CREDENTIALS['library']}" if CREDENTIALS['library']
+      end
+      "#{base_url}/#{plural_media_type}.#{opts[:format]}"
     end
 
     def destroy
