@@ -16,8 +16,8 @@ describe Helix::Base do
   subject { klass }
 
   describe ".create" do
-    let(:meth) { :create }
-    subject { klass.method(meth) }
+    let(:meth)  { :create }
+    subject     { klass.method(meth) }
     its(:arity) { should eq(-1) }
     #it "should make an api call get the instance data" do
     #  params  = Hash.new
@@ -181,12 +181,12 @@ describe Helix::Base do
 
   describe "#destroy" do
     let(:meth)  { :destroy }
-    #it "should delete the record" do
-    #  obj = klass.create
-    #  expect(klass.find(obj.id)).to be_an_instance_of(klass)
-    #  obj.method(meth)
-    #  expect(obj = klass.find(obj.id)).to be_nil
-    #end
+    subject     { obj.method(meth) }
+    it "should delete the record" do
+      url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}"
+      RestClient.should_receive(:delete).with(url)
+      expect(obj.method(meth)).to be_nil
+    end
   end
 
   describe "an instance" do
