@@ -367,13 +367,15 @@ describe Helix::Base do
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
       before(:each) do
-        obj.stub(:signature) { 'some_sig' }
+        obj.stub(:guid) { :the_guid }
         obj.stub(:media_type_sym) { :video }
+        obj.stub(:plural_media_type) { :the_media_type }
+        obj.stub(:signature) { 'some_sig' }
         klass.stub(:build_url) { :expected_url }
       end
       shared_examples_for "builds URL for update" do
-        it "should build_url(format: :xml)" do
-          klass.should_receive(:build_url).with(format: :xml)
+        it "should build_url(format: :xml, guid: guid, media_type: plural_media_type)" do
+          klass.should_receive(:build_url).with(format: :xml, guid: :the_guid, media_type: :the_media_type)
           RestClient.stub(:put)
           obj.send(meth)
         end

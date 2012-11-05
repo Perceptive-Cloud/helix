@@ -95,7 +95,7 @@ module Helix
     end
 
     def update(opts={})
-      url    = Helix::Base.build_url(format: :xml)
+      url    = Helix::Base.build_url(format: :xml, guid: guid, media_type: plural_media_type)
       params = {signature: signature}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self
