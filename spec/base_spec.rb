@@ -108,21 +108,51 @@ describe Helix::Base do
     subject     { klass.method(meth) }
     its(:arity) { should be(-1) }
     before      { klass.stub(:plural_media_type) { "klasses" } }
+    shared_examples_for "reads scope from CREDENTIALS for build_url" do |format|
+      context "and CREDENTIALS has a key for 'reseller'" do
+        before(:each) do klass::CREDENTIALS['reseller'] = 're_id' end
+        context "and CREDENTIALS has a key for 'company'" do
+          before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
+          context "and CREDENTIALS has a key for 'library'" do
+            before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
+            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/libraries/lib_id/klasses.#{format}") }
+          end
+          context "and CREDENTIALS does NOT have a key for 'library'" do
+            before(:each) do klass::CREDENTIALS.delete('library') end
+            it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/companies/co_id/klasses.#{format}") }
+          end
+        end
+        context "and CREDENTIALS does NOT have a key for 'company'" do
+          before(:each) do klass::CREDENTIALS.delete('company') end
+          it { should eq("#{klass::CREDENTIALS['site']}/resellers/re_id/klasses.#{format}") }
+        end
+      end
+      context "and CREDENTIALS does NOT have a key for 'reseller'" do
+        before(:each) do klass::CREDENTIALS.delete('reseller') end
+        context "and CREDENTIALS has a key for 'company'" do
+          before(:each) do klass::CREDENTIALS['company'] = 'co_id' end
+          context "and CREDENTIALS has a key for 'library'" do
+            before(:each) do klass::CREDENTIALS['library'] = 'lib_id' end
+            it { should eq("#{klass::CREDENTIALS['site']}/companies/co_id/libraries/lib_id/klasses.#{format}") }
+          end
+        end
+      end
+    end
     context "when given NO opts" do
       subject { klass.send(meth) }
-      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :json
     end
     context "when given opts of {}" do
-      subject { klass.send(meth, {}) }
-      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+      subject { klass.send(meth) }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :json
     end
     context "when given opts[:format] of :json" do
       subject { klass.send(meth, format: :json) }
-      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :json
     end
     context "when given opts[:format] of :xml" do
       subject { klass.send(meth, format: :xml) }
-      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.xml") }
+      it_behaves_like "reads scope from CREDENTIALS for build_url", :xml
     end
   end
 
