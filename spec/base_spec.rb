@@ -187,9 +187,10 @@ describe Helix::Base do
     describe "#destroy" do
       let(:meth)  { :destroy }
       subject     { obj.method(meth) }
-      it "should delete the record" do
-        url = klass.build_url
+      it "should call for an HTTP delete and return nil" do
+        url = klass.build_url(media_type: :media_type)
         RestClient.should_receive(:delete).with(url)
+        obj.stub(:plural_media_type) { :media_type }
         expect(obj.send(meth)).to be_nil
       end
     end
