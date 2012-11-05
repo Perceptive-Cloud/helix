@@ -12,14 +12,15 @@ module Helix
 
     attr_accessor :attributes
 
-    def self.klass_url
-      "#{CREDENTIALS['site']}/#{plural_media_type}"
-    end
-
     def self.create(attributes={})
       url       = "#{self.klass_url}/create_many.xml"
       response  = RestClient.post(url, attributes.merge(signature: signature))
       item      = self.new(attributes: attributes)
+    end
+
+    def self.build_url(opts={})
+      opts[:format] ||= :json
+      "#{CREDENTIALS['site']}/#{plural_media_type}.#{opts[:format]}"
     end
 
     def destroy
@@ -40,8 +41,7 @@ module Helix
     end
 
     def self.find_all(opts)
-      # TODO: DRY up w/load
-      url         = "#{self.klass_url}.json"
+      url         = self.build_url(format: :json)
       data_sets   = self.get_response(url, opts)
       data_sets[plural_media_type].map { |attrs| self.new(attributes: attrs) }
     end
@@ -60,8 +60,7 @@ module Helix
     end
 
     def load(opts={})
-      # TODO: DRY up w/find_all
-      url         = "#{Helix::Base.klass_url}/#{guid}.json"
+      url         = Helix::Base.build_url(format: :json, guid: guid)
       @attributes = Helix::Base.get_response(url, opts)
       self
     end
@@ -73,13 +72,14 @@ module Helix
 
     def signature
       # TODO: Memoize (if it's valid)
+      # TODO: read vs. read/write
       url = "#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
       # FIXME: Replace Net::HTTP with our own connection abstraction
       @signature = Net::HTTP.get_response(URI.parse(url)).body
     end
 
     def update(opts={})
-      url    = "#{Helix::Base.klass_url}/#{guid}.xml"
+      url    = Helix::Base.build_url(format: :xml)
       params = {signature: signature}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self

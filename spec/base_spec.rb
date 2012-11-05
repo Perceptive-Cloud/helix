@@ -103,12 +103,27 @@ describe Helix::Base do
     end
   end
 
-  describe ".klass_url" do
-    let(:meth)  { :klass_url }
-    subject     { klass.send(meth) }
+  describe ".build_url" do
+    let(:meth)  { :build_url }
+    subject     { klass.method(meth) }
+    its(:arity) { should be(-1) }
     before      { klass.stub(:plural_media_type) { "klasses" } }
-    let(:url)   {"#{klass::CREDENTIALS['site']}/klasses"}
-    it          { should eq(url) }
+    context "when given NO opts" do
+      subject { klass.send(meth) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts of {}" do
+      subject { klass.send(meth, {}) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts[:format] of :json" do
+      subject { klass.send(meth, format: :json) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.json") }
+    end
+    context "when given opts[:format] of :xml" do
+      subject { klass.send(meth, format: :xml) }
+      it      { should eq("#{klass::CREDENTIALS['site']}/klasses.xml") }
+    end
   end
 
   describe ".signature" do
@@ -153,23 +168,36 @@ describe Helix::Base do
       let(:meth)  { :load }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
-      let(:url)   { "#{site_url}.json" }
+      before(:each) do
+        obj.stub(:guid)           { 'some_guid'   }
+        obj.stub(:signature)      { 'some_sig'    }
+        obj.stub(:media_type_sym) { :video        }
+        klass.stub(:build_url)    { :expected_url }
+        klass.stub(:get_response) { :expected_url }
+      end
+      shared_examples_for "builds URL for load" do
+        it "should call #guid" do
+          obj.should_receive(:guid) { 'some_guid' }
+          obj.send(meth)
+        end
+        it "should build_url(format: :json, guid: the_guid)" do
+          klass.should_receive(:build_url).with(format: :json, guid: 'some_guid')
+          RestClient.stub(:put)
+          obj.send(meth)
+        end
+      end
       context "when given no argument" do
-        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
-        it "should call .get_response(#{url}, {}) and return instance of klass" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
-          klass.should_receive(:get_response).with(url, {})
+        it_behaves_like "builds URL for load"
+        it "should call klass.get_response(output_of_build_url, {}) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, {})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
-        url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.json]
-        it "should call .get_response(#{url}, opts) and return instance of klass" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.json"
-          klass.should_receive(:get_response).with(url, opts)
+        it_behaves_like "builds URL for load"
+        it "should call klass.get_response(output_of_build_url, opts) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, opts)
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
       end
@@ -210,21 +238,30 @@ describe Helix::Base do
       let(:meth)  { :update }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
-      display_url = %q[#{CREDENTIALS['site']}/#{plural_media_type}/#{guid}.xml]
+      before(:each) do
+        obj.stub(:signature) { 'some_sig' }
+        obj.stub(:media_type_sym) { :video }
+        klass.stub(:build_url) { :expected_url }
+      end
+      shared_examples_for "builds URL for update" do
+        it "should build_url(format: :xml)" do
+          klass.should_receive(:build_url).with(format: :xml)
+          RestClient.stub(:put)
+          obj.send(meth)
+        end
+      end
       context "when given no argument" do
-        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: {}}) and return instance of klass" do
-          set_stubs(obj, :even_sig)
-          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
-          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: {}})
+        it_behaves_like "builds URL for update"
+        it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: {}}) and return instance of klass" do
+          RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: {}})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
-        it "should call RestClient.put(#{display_url}, {signature: the_sig, video: opts}) and return instance of klass" do
-          set_stubs(obj, :even_sig)
-          expected_url = "#{klass::CREDENTIALS['site']}/#{obj.send(:plural_media_type)}/#{obj.guid}.xml"
-          RestClient.should_receive(:put).with(expected_url, {signature: 'some_sig', video: opts})
+        it_behaves_like "builds URL for update"
+        it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: opts}) and return instance of klass" do
+          RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: opts})
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
       end
