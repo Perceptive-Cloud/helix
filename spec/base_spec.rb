@@ -82,17 +82,18 @@ describe Helix::Base do
         end
         klass.stub(:plural_media_type) { :klasses }
       end
-      it "should call new twice with attribute hashes" do
+      it "should call new for each object with attribute hashes" do
         klass.should_receive(:new).exactly(obj_count).times
         klass.send(meth, opts)
       end
       subject { klass.send(meth, opts).first }
       it { should be_an_instance_of(klass) }
-
-      #Specific matching not working.
-      #subject { klass.send(meth, opts) }
-      #it { should eq((1..2).map { klass.new(attrs_hash) }) }
-
+      it "should have equal attributes for those passed in" do
+        attrs = klass.send(meth, opts).map {|k| { attributes: k.attributes }}
+        expect(attrs).to eq((1..obj_count).map { attrs_hash })
+      end
+      subject { klass.send(meth, opts).first }
+      it { should be_an_instance_of(klass) }
     end
   end
 
