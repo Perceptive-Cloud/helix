@@ -69,7 +69,13 @@ module Helix
 
     # TODO: messy near-duplication. Clean up.
     def self.signature(sig_type)
-      self.new({}).signature(sig_type)
+      # OPTIMIZE: Memoize (if it's valid)
+      unless VALID_SIG_TYPES.include?(sig_type)
+        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+      end
+
+      url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
+      @signature = RestClient.get(url)
     end
 
     def guid
@@ -103,13 +109,7 @@ module Helix
     end
 
     def signature(sig_type)
-      # OPTIMIZE: Memoize (if it's valid)
-      unless VALID_SIG_TYPES.include?(sig_type)
-        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
-      end
-
-      url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
-      @signature = RestClient.get(url)
+      Helix::Base.signature(sig_type)
     end
 
     def update(opts={})

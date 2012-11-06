@@ -255,12 +255,46 @@ describe Helix::Base do
   end
 
   describe ".signature" do
-    let(:meth) { :signature }
-    let(:obj)  { mock(Object) }
-    it "should delegate to an instance" do
-      klass.should_receive(:new).with({}) { obj }
-      obj.should_receive(meth).with(:sig_type) { :expected }
-      expect(klass.send(meth, :sig_type)).to be(:expected)
+    let(:meth)  { :signature }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(1) }
+    let(:mock_response) { mock(Object) }
+    context "when given :some_invalid_sig_type" do
+      let(:sig_type) { :some_invalid_sig_type }
+      it "should raise an ArgumentError" do
+        msg = "I don't understand 'some_invalid_sig_type'. Please give me one of :ingest, :update, or :view."
+        expect(lambda { klass.send(meth, sig_type) }).to raise_error(ArgumentError, msg)
+      end
+    end
+    context "when given :ingest" do
+      let(:sig_type) { :ingest }
+      url = %q[#{CREDENTIALS['site']}/api/ingest_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+      it "should call RestClient.get(#{url})" do
+        set_stubs(klass)
+        url = "#{klass::CREDENTIALS['site']}/api/ingest_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+        RestClient.should_receive(:get).with(url) { :expected }
+        expect(klass.send(meth, sig_type)).to be(:expected)
+      end
+    end
+    context "when given :update" do
+      let(:sig_type) { :update }
+      url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+      it "should call RestClient.get(#{url})" do
+        set_stubs(klass)
+        url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+        RestClient.should_receive(:get).with(url) { :expected }
+        expect(klass.send(meth, sig_type)).to be(:expected)
+      end
+    end
+    context "when given :view" do
+      let(:sig_type) { :view }
+      url = %q[#{CREDENTIALS['site']}/api/view_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+      it "should call RestClient.get(#{url})" do
+        set_stubs(klass)
+        url = "#{klass::CREDENTIALS['site']}/api/view_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+        RestClient.should_receive(:get).with(url) { :expected }
+        expect(klass.send(meth, sig_type)).to be(:expected)
+      end
     end
   end
 
@@ -411,47 +445,11 @@ describe Helix::Base do
       end
     end
 
-    describe "#signature" do
-      let(:meth)  { :signature }
-      subject     { obj.method(meth) }
-      its(:arity) { should eq(1) }
-      let(:mock_response) { mock(Object) }
-      context "when given :some_invalid_sig_type" do
-        let(:sig_type) { :some_invalid_sig_type }
-        it "should raise an ArgumentError" do
-          msg = "I don't understand 'some_invalid_sig_type'. Please give me one of :ingest, :update, or :view."
-          expect(lambda { obj.send(meth, sig_type) }).to raise_error(ArgumentError, msg)
-        end
-      end
-      context "when given :ingest" do
-        let(:sig_type) { :ingest }
-        url = %q[#{CREDENTIALS['site']}/api/ingest_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call RestClient.get(#{url})" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/api/ingest_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          RestClient.should_receive(:get).with(url) { :expected }
-          expect(obj.send(meth, sig_type)).to be(:expected)
-        end
-      end
-      context "when given :update" do
-        let(:sig_type) { :update }
-        url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call RestClient.get(#{url})" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          RestClient.should_receive(:get).with(url) { :expected }
-          expect(obj.send(meth, sig_type)).to be(:expected)
-        end
-      end
-      context "when given :view" do
-        let(:sig_type) { :view }
-        url = %q[#{CREDENTIALS['site']}/api/view_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call RestClient.get(#{url})" do
-          set_stubs(obj)
-          url = "#{klass::CREDENTIALS['site']}/api/view_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          RestClient.should_receive(:get).with(url) { :expected }
-          expect(obj.send(meth, sig_type)).to be(:expected)
-        end
+    describe ".signature" do
+      let(:meth) { :signature }
+      it "should delegate to the class" do
+        klass.should_receive(meth).with(:sig_type) { :expected }
+        expect(obj.send(meth, :sig_type)).to be(:expected)
       end
     end
 
