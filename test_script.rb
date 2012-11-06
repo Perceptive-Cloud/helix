@@ -4,6 +4,7 @@ FILENAME = './helix.yml'
 
 media_by_id = {
   'album_id' => Helix::Album,
+  'image_id' => Helix::Image,
   'track_id' => Helix::Track,
   'video_id' => Helix::Video
 }
