@@ -9,24 +9,25 @@ module Helix
       FILENAME    = './helix.yml'
       CREDENTIALS = YAML.load(File.open(FILENAME))
       METHODS_DELEGATED_TO_CLASS = [ :media_type_sym, :plural_media_type, :signature ]
+      SCOPES          = %w(reseller company library)
       VALID_SIG_TYPES = [ :ingest, :update, :view ]
     end
 
     attr_accessor :attributes
 
+    def self.add_sub_urls(base_url, opts)
+      guid, action = [:guid, :action].map { |sub| opts[sub] }
+      url   = "#{base_url}/#{opts[:media_type]}"
+      url  += "/#{guid}"   if guid
+      url  += "/#{action}" if action
+      "#{url}.#{opts[:format]}"
+    end
+
     def self.build_url(opts={})
       opts[:format]     ||= :json
       opts[:media_type] ||= :videos
-      base_url  = CREDENTIALS['site']
-      base_url += "/resellers/#{CREDENTIALS['reseller']}" if CREDENTIALS['reseller']
-      if CREDENTIALS['company']
-        base_url += "/companies/#{CREDENTIALS['company']}"
-        base_url += "/libraries/#{CREDENTIALS['library']}" if CREDENTIALS['library']
-      end
-      url   = "#{base_url}/#{opts[:media_type]}"
-      url  += "/#{opts[:guid]}"   if opts[:guid]
-      url  += "/#{opts[:action]}" if opts[:action]
-      "#{url}.#{opts[:format]}"
+      base_url = self.get_base_url(opts)
+      url      = self.add_sub_urls(base_url, opts)
     end
 
     def self.create(attributes={})
@@ -48,6 +49,19 @@ module Helix
       data_sets    = raw_response[plural_media_type]
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new(attributes: attrs) }
+    end
+
+    def self.get_base_url(opts)
+      base_url  = Helix::Base::CREDENTIALS['site']
+      reseller, company, library = SCOPES.map do |scope|
+        Helix::Base::CREDENTIALS[scope]
+      end
+      base_url += "/resellers/#{reseller}" if reseller
+      if company
+        base_url += "/companies/#{company}"
+        base_url += "/libraries/#{library}" if library
+      end
+      base_url
     end
 
     def self.get_response(url, opts={})

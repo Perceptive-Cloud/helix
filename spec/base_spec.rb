@@ -20,6 +20,10 @@ describe Helix::Base do
       subject { klass::METHODS_DELEGATED_TO_CLASS }
       it { should eq([:media_type_sym, :plural_media_type, :signature]) }
     end
+    describe "SCOPES" do
+      subject { klass::SCOPES }
+      it { should eq(%w(reseller company library)) }
+    end
     describe "VALID_SIG_TYPES" do
       subject { klass::VALID_SIG_TYPES }
       it { should eq([:ingest, :update, :view]) }
