@@ -3,8 +3,6 @@ require 'helix/base'
 module Helix
   class Album < Base
 
-    def self.guid_name; 'album_id'; end
-
     def self.media_type_sym; :album; end
 
     def update(opts={})

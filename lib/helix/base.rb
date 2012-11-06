@@ -63,6 +63,10 @@ module Helix
       data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
+    def self.guid_name
+      "#{self.media_type_sym}_id"
+    end
+
     def self.plural_media_type
       "#{self.media_type_sym}s"
     end
