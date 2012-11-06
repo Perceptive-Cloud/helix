@@ -103,7 +103,7 @@ module Helix
     end
 
     def signature(sig_type)
-      # TODO: Memoize (if it's valid)
+      # OPTIMIZE: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
         raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
       end
