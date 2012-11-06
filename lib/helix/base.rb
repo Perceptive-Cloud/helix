@@ -36,9 +36,9 @@ module Helix
     end
 
     def destroy
-      url = Helix::Base.build_url(media_type: plural_media_type)
-      RestClient.delete(url)
-      nil
+      url = Helix::Base.build_url(media_type: plural_media_type,
+                                  guid:       self.guid)
+      RestClient.delete(url, params: {signature: signature})
     end
 
     def self.find(guid)
