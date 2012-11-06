@@ -15,6 +15,12 @@ describe Helix::Album do
     let(:obj) { klass.new({'album_id' => 'some_album_guid'}) }
     subject { obj }
     its(:media_type_sym) { should be(:album) }
+    describe "#update" do
+      let(:meth) { :update }
+      it "should raise an error" do
+        expect(lambda { obj.send(meth) }).to raise_error("Albums Update is not currently supported.")
+      end
+    end
   end
 
 end
