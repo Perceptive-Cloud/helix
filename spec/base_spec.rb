@@ -18,7 +18,7 @@ describe Helix::Base do
   describe "Constants" do
     describe "METHODS_DELEGATED_TO_CLASS" do
       subject { klass::METHODS_DELEGATED_TO_CLASS }
-      it { should eq([:media_type_sym, :plural_media_type, :signature]) }
+      it { should eq([:guid_name, :media_type_sym, :plural_media_type, :signature]) }
     end
     describe "SCOPES" do
       subject { klass::SCOPES }

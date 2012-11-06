@@ -8,7 +8,7 @@ module Helix
     unless defined?(self::CREDENTIALS)
       FILENAME    = './helix.yml'
       CREDENTIALS = YAML.load(File.open(FILENAME))
-      METHODS_DELEGATED_TO_CLASS = [ :media_type_sym, :plural_media_type, :signature ]
+      METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type, :signature ]
       SCOPES          = %w(reseller company library)
       VALID_SIG_TYPES = [ :ingest, :update, :view ]
     end
@@ -134,10 +134,6 @@ module Helix
     end
 
     private
-
-    def guid_name
-      self.class.guid_name
-    end
 
     def massage_raw_attrs(raw_attrs)
       # FIXME: Albums JSON output is embedded as the only member of an Array.
