@@ -64,10 +64,9 @@ module Helix
     end
 
     def self.plural_media_type
-      self.new({}).plural_media_type
+      "#{self.media_type_sym}s"
     end
 
-    # TODO: messy near-duplication. Clean up.
     def self.signature(sig_type)
       # OPTIMIZE: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
@@ -76,6 +75,19 @@ module Helix
 
       url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
       @signature = RestClient.get(url)
+    end
+
+    # Delegated to the class
+    def media_type_sym
+      self.class.media_type_sym
+    end
+
+    def plural_media_type
+      self.class.plural_media_type
+    end
+
+    def signature(sig_type)
+      self.class.signature(sig_type)
     end
 
     def guid
@@ -102,14 +114,6 @@ module Helix
       rescue
         raise NoMethodError, "#{method_sym} is not recognized within #{self.class.to_s}'s @attributes"
       end
-    end
-
-    def plural_media_type
-      "#{media_type_sym}s"
-    end
-
-    def signature(sig_type)
-      Helix::Base.signature(sig_type)
     end
 
     def update(opts={})

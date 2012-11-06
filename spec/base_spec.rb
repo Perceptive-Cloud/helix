@@ -355,10 +355,10 @@ describe Helix::Base do
       before(:each) do
         obj.stub(:guid)              { 'some_guid'     }
         obj.stub(:signature)         { 'some_sig'      }
-        obj.stub(:media_type_sym)    { :video          }
         obj.stub(:massage_raw_attrs) { :massaged_attrs }
         klass.stub(:build_url)       { :expected_url   }
         klass.stub(:get_response)    { :raw_attrs      }
+        klass.stub(:media_type_sym)  { :video          }
       end
       shared_examples_for "builds URL for load" do
         it "should call #guid" do
