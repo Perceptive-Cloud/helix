@@ -7,6 +7,7 @@ describe Helix::Album do
   subject { klass }
   its(:ancestors) { should include(Helix::Base) }
   its(:guid_name) { should eq('album_id') }
+  its(:media_type_sym)    { should be(:album)   }
   its(:plural_media_type) { should eq('albums') }
 
   describe "Constants"

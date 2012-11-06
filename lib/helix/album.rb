@@ -5,7 +5,7 @@ module Helix
 
     def self.guid_name; 'album_id'; end
 
-    def media_type_sym; :album; end
+    def self.media_type_sym; :album; end
 
     def update(opts={})
       raise "Albums Update is not currently supported."
