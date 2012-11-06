@@ -357,6 +357,14 @@ describe Helix::Base do
       end
     end
 
+    describe "#guid_name" do
+      let(:meth) { :guid_name }
+      it "should delegate to the class" do
+        klass.should_receive(meth) { :expected }
+        expect(obj.send(meth)).to be(:expected)
+      end
+    end
+
     describe "#load" do
       let(:meth)  { :load }
       subject     { obj.method(meth) }
@@ -454,7 +462,7 @@ describe Helix::Base do
       end
     end
 
-    describe ".signature" do
+    describe "#signature" do
       let(:meth) { :signature }
       it "should delegate to the class" do
         klass.should_receive(meth).with(:sig_type) { :expected }
