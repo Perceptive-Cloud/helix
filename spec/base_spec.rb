@@ -15,6 +15,19 @@ describe Helix::Base do
 
   subject { klass }
 
+  describe "Constants" do
+    describe "METHODS_DELEGATED_TO_CLASS" do
+      subject { klass::METHODS_DELEGATED_TO_CLASS }
+      it { should eq([:media_type_sym, :plural_media_type, :signature]) }
+    end
+    describe "VALID_SIG_TYPES" do
+      subject { klass::VALID_SIG_TYPES }
+      it { should eq([:ingest, :update, :view]) }
+    end
+  end
+
+  ### CLASS METHODS
+
   describe ".create" do
     let(:meth)       { :create }
     subject          { klass.method(meth) }
@@ -298,18 +311,10 @@ describe Helix::Base do
     end
   end
 
-  describe "Constants" do
-    describe "VALID_SIG_TYPES" do
-      subject { klass::VALID_SIG_TYPES }
-      it { should eq([:ingest, :update, :view]) }
-    end
-  end
-
-  # attr_accessor attributes
-
-
   describe "an instance" do
     let(:obj) { klass.new({}) }
+
+    ### INSTANCE METHODS
 
     describe "#destroy" do
       let(:meth)   { :destroy }

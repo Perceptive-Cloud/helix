@@ -8,6 +8,7 @@ module Helix
     unless defined?(self::CREDENTIALS)
       FILENAME    = './helix.yml'
       CREDENTIALS = YAML.load(File.open(FILENAME))
+      METHODS_DELEGATED_TO_CLASS = [ :media_type_sym, :plural_media_type, :signature ]
       VALID_SIG_TYPES = [ :ingest, :update, :view ]
     end
 
@@ -74,17 +75,8 @@ module Helix
       @signature = RestClient.get(url)
     end
 
-    # Delegated to the class
-    def media_type_sym
-      self.class.media_type_sym
-    end
-
-    def plural_media_type
-      self.class.plural_media_type
-    end
-
-    def signature(sig_type)
-      self.class.signature(sig_type)
+    METHODS_DELEGATED_TO_CLASS.each do |meth|
+      define_method(meth) { |*args| self.class.send(meth, *args) }
     end
 
     def destroy
