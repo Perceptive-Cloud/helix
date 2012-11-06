@@ -19,7 +19,7 @@ You should find the documentation for your version of helix on [Rubygems](https:
 
 How To
 ------
-##Videos
+###Videos
 ```ruby
 Helix::Playlist.create!(title:        'x', 
                         description:  'xx', 
