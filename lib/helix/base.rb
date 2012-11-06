@@ -76,15 +76,20 @@ module Helix
 
     def load(opts={})
       url         = Helix::Base.build_url(format:     :json,
-                                          guid:       guid,
+                                          guid:       self.guid,
                                           media_type: plural_media_type)
-      @attributes = Helix::Base.get_response(url, opts)
+      raw_attrs   = Helix::Base.get_response(url, opts)
+      @attributes = massage_raw_attrs(raw_attrs)
       self
     end
     alias_method :reload, :load
 
     def method_missing(method_sym)
-      @attributes[method_sym.to_s]
+      begin
+        @attributes[method_sym.to_s]
+      rescue
+        raise NoMethodError, "#{method_sym} is not recognized within #{self.class.to_s}'s @attributes"
+      end
     end
 
     def signature
@@ -106,6 +111,12 @@ module Helix
 
     def guid_name;         "#{media_type_sym}_id"; end
     def plural_media_type; "#{media_type_sym}s";   end
+
+    def massage_raw_attrs(raw_attrs)
+      # TODO: Albums JSON output is embedded as the only member of an Array.
+      proper_hash = raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?(guid_name)
+      proper_hash ? raw_attrs : raw_attrs.first
+    end
 
   end
 end

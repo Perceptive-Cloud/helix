@@ -297,11 +297,12 @@ describe Helix::Base do
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
       before(:each) do
-        obj.stub(:guid)           { 'some_guid'   }
-        obj.stub(:signature)      { 'some_sig'    }
-        obj.stub(:media_type_sym) { :video        }
-        klass.stub(:build_url)    { :expected_url }
-        klass.stub(:get_response) { :expected_url }
+        obj.stub(:guid)              { 'some_guid'     }
+        obj.stub(:signature)         { 'some_sig'      }
+        obj.stub(:media_type_sym)    { :video          }
+        obj.stub(:massage_raw_attrs) { :massaged_attrs }
+        klass.stub(:build_url)       { :expected_url   }
+        klass.stub(:get_response)    { :raw_attrs      }
       end
       shared_examples_for "builds URL for load" do
         it "should call #guid" do
@@ -320,6 +321,10 @@ describe Helix::Base do
           klass.should_receive(:get_response).with(:expected_url, {})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
+        it "should massage the raw_attrs" do
+          obj.should_receive(:massage_raw_attrs).with(:raw_attrs)
+          obj.send(meth)
+        end
       end
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
@@ -328,6 +333,35 @@ describe Helix::Base do
           klass.should_receive(:get_response).with(:expected_url, opts)
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
+        it "should massage the raw_attrs" do
+          obj.should_receive(:massage_raw_attrs).with(:raw_attrs)
+          obj.send(meth, opts)
+        end
+      end
+    end
+
+    describe "#massage_raw_attrs" do
+      let(:meth)      { :massage_raw_attrs }
+      let(:guid_name) { :the_guid_name }
+
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(1) }
+
+      before(:each) { obj.stub(:guid_name) { guid_name } }
+      context "when given {}" do
+        let(:raw_attrs) { {} }
+        subject { obj.send(meth, raw_attrs) }
+        it { should eq(nil) }
+      end
+      context "when given { guid_name => :the_val }" do
+        let(:raw_attrs) { { guid_name => :the_val } }
+        subject { obj.send(meth, raw_attrs) }
+        it { should eq(raw_attrs) }
+      end
+      context "when given [{ guid_name => :the_val }]" do
+        let(:raw_attrs) { [{ guid_name => :the_val }] }
+        subject { obj.send(meth, raw_attrs) }
+        it { should eq(raw_attrs.first) }
       end
     end
 
@@ -337,11 +371,20 @@ describe Helix::Base do
       its(:arity) { should eq(1) }
       context "when given method_sym" do
         let(:method_sym) { :method_sym }
-        it "should return @attributes[method_sym.to_s]" do
-          mock_attributes = mock(Object)
-          obj.instance_variable_set(:@attributes, mock_attributes)
-          mock_attributes.should_receive(:[]).with(method_sym.to_s) { :expected }
-          expect(obj.send(meth, method_sym)).to eq(:expected)
+        let(:mock_attributes) { mock(Object) }
+        before(:each) do obj.instance_variable_set(:@attributes, mock_attributes) end
+        context "and @attributes[method_sym.to_s] raises an exception" do
+          before(:each) do mock_attributes.should_receive(:[]).with(method_sym.to_s).and_raise("some exception") end
+          it "should raise a NoMethodError" do
+            msg = "#{method_sym} is not recognized within #{klass}'s @attributes"
+            expect(lambda { obj.send(meth, method_sym) }).to raise_error(msg)
+          end
+        end
+        context "and @attributes[method_sym.to_s] does NOT raise an exception" do
+          before(:each) do mock_attributes.should_receive(:[]).with(method_sym.to_s) { :expected } end
+          it "should return @attributes[method_sym.to_s]" do
+            expect(obj.send(meth, method_sym)).to eq(:expected)
+          end
         end
       end
     end
