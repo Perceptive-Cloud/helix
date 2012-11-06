@@ -469,13 +469,19 @@ describe Helix::Base do
         obj.stub(:guid) { :the_guid }
         obj.stub(:media_type_sym) { :video }
         obj.stub(:plural_media_type) { :the_media_type }
-        obj.stub(:signature) { 'some_sig' }
+        obj.stub(:signature).with(:update) { 'some_sig' }
         klass.stub(:build_url) { :expected_url }
       end
       shared_examples_for "builds URL for update" do
         it "should build_url(format: :xml, guid: guid, media_type: plural_media_type)" do
           klass.should_receive(:build_url).with(format: :xml, guid: :the_guid, media_type: :the_media_type)
           RestClient.stub(:put)
+          obj.send(meth)
+        end
+        it "should get an update signature" do
+          klass.stub(:build_url)
+          RestClient.stub(:put)
+          obj.should_receive(:signature).with(:update) { 'some_sig' }
           obj.send(meth)
         end
       end
