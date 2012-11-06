@@ -63,6 +63,10 @@ module Helix
       data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
+    def self.plural_media_type
+      self.new({}).plural_media_type
+    end
+
     # TODO: messy near-duplication. Clean up.
     def self.signature(sig_type)
       self.new({}).signature(sig_type)
@@ -94,6 +98,10 @@ module Helix
       end
     end
 
+    def plural_media_type
+      "#{media_type_sym}s"
+    end
+
     def signature(sig_type)
       # TODO: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
@@ -114,11 +122,10 @@ module Helix
 
     private
 
-    def guid_name;         "#{media_type_sym}_id"; end
-    def plural_media_type; "#{media_type_sym}s";   end
+    def guid_name; "#{media_type_sym}_id"; end
 
     def massage_raw_attrs(raw_attrs)
-      # TODO: Albums JSON output is embedded as the only member of an Array.
+      # FIXME: Albums JSON output is embedded as the only member of an Array.
       proper_hash = raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?(guid_name)
       proper_hash ? raw_attrs : raw_attrs.first
     end
