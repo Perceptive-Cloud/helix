@@ -5,7 +5,7 @@ module Helix
 
     def self.guid_name; 'video_id'; end
 
-    def media_type_sym; :video; end
+    def self.media_type_sym; :video; end
 
   end
 end

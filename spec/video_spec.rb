@@ -7,6 +7,7 @@ describe Helix::Video do
   subject { klass }
   its(:ancestors) { should include(Helix::Base) }
   its(:guid_name) { should eq('video_id') }
+  its(:media_type_sym)    { should be(:video)   }
   its(:plural_media_type) { should eq('videos') }
 
   describe "Constants"
