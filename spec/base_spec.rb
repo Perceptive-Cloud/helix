@@ -16,17 +16,26 @@ describe Helix::Base do
   subject { klass }
 
   describe ".create" do
-    let(:meth)                  { :create }
-    subject                     { klass.method(meth) }
-    its(:arity)                 { should eq(-1) }
-    let(:resp_value)            { { klass: { attribute: :value } } }
-    let(:resp_json)             { "JSON" }
-    let(:params)                { { signature: "some_sig" } }
-    let(:expected)            { { attributes: { attribute: :value } } }
+    let(:meth)       { :create }
+    subject          { klass.method(meth) }
+    its(:arity)      { should eq(-1) }
+    let(:resp_value) { { klass: { attribute: :value } } }
+    let(:resp_json)  { "JSON" }
+    let(:params)     { { signature: "some_sig" } }
+    let(:expected)   { { attributes: { attribute: :value } } }
     before(:each) do
-      klass.stub(:signature)          { "some_sig" }
-      klass.stub(:plural_media_type)  { :klasses }
-      klass.stub(:media_type_sym)     { :klass }
+      klass.stub(:signature).with(:ingest) { "some_sig" }
+      klass.stub(:plural_media_type) { :klasses }
+      klass.stub(:media_type_sym)    { :klass }
+    end
+    it "should get an ingest signature" do
+      url = klass.build_url(action:     :create_many,
+                            media_type: :klasses)
+      RestClient.stub(:post).with(url, params) { resp_json }
+      JSON.stub(:parse).with(resp_json) { resp_value }
+      klass.stub(:new).with(expected)
+      klass.should_receive(:signature).with(:ingest) { "some_sig" }
+      klass.send(meth)
     end
     it "should do an HTTP post call, parse response and call new" do
       url = klass.build_url(action:     :create_many,
@@ -103,12 +112,12 @@ describe Helix::Base do
     context "when given a url and options" do
       subject             { klass }
       let(:string)        { String.new }
-      let(:opts)          { Hash.new }
+      let(:opts)          { {sig_type: :the_sig_type} }
       let(:params)        { { params: { signature: string } } }
       let(:returned_json) { '{"key": "val"}' }
       let(:json_parsed)   { { "key" => "val" } }
       it "should call RestClient.get and return a hash from parsed JSON" do
-        klass.stub(:signature) { string }
+        klass.stub(:signature).with(:the_sig_type) { string }
         RestClient.should_receive(:get).with(string, params) { returned_json }
         expect(klass.send(meth, string, opts)).to eq(json_parsed)
       end
@@ -250,12 +259,17 @@ describe Helix::Base do
     let(:obj)  { mock(Object) }
     it "should delegate to an instance" do
       klass.should_receive(:new).with({}) { obj }
-      obj.should_receive(meth) { :expected }
-      expect(klass.send(meth)).to be(:expected)
+      obj.should_receive(meth).with(:sig_type) { :expected }
+      expect(klass.send(meth, :sig_type)).to be(:expected)
     end
   end
 
-  describe "Constants"
+  describe "Constants" do
+    describe "VALID_SIG_TYPES" do
+      subject { klass::VALID_SIG_TYPES }
+      it { should eq([:ingest, :update, :view]) }
+    end
+  end
 
   # attr_accessor attributes
 
@@ -264,13 +278,21 @@ describe Helix::Base do
     let(:obj) { klass.new({}) }
 
     describe "#destroy" do
-      let(:meth)    { :destroy }
-      subject       { obj.method(meth) }
-      let(:params)  { { params: {signature: :some_sig } } }
+      let(:meth)   { :destroy }
+      subject      { obj.method(meth) }
+      let(:params) { { params: {signature: :some_sig } } }
       before do
-        obj.stub(:guid)               { :some_guid }
-        obj.stub(:signature)          { :some_sig }
-        obj.stub(:plural_media_type)  { :media_type }
+        obj.stub(:guid)                    { :some_guid }
+        obj.stub(:signature).with(:update) { :some_sig }
+        obj.stub(:plural_media_type)       { :media_type }
+      end
+      it "should get an update signature" do
+        url = klass.build_url(media_type: :media_type,
+                              guid:       :some_guid,
+                              format:     :xml)
+        RestClient.stub(:delete).with(url, params)
+        obj.should_receive(:signature).with(:update) { :some_sig }
+        obj.send(meth)
       end
       it "should call for an HTTP delete and return nil" do
         url = klass.build_url(media_type: :media_type,
@@ -317,8 +339,8 @@ describe Helix::Base do
       end
       context "when given no argument" do
         it_behaves_like "builds URL for load"
-        it "should call klass.get_response(output_of_build_url, {}) and return instance of klass" do
-          klass.should_receive(:get_response).with(:expected_url, {})
+        it "should call klass.get_response(output_of_build_url, {sig_type: :view}) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, {sig_type: :view})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
         it "should massage the raw_attrs" do
@@ -329,8 +351,8 @@ describe Helix::Base do
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
         it_behaves_like "builds URL for load"
-        it "should call klass.get_response(output_of_build_url, opts) and return instance of klass" do
-          klass.should_receive(:get_response).with(:expected_url, opts)
+        it "should call klass.get_response(output_of_build_url, opts.merge(sig_type: :view)) and return instance of klass" do
+          klass.should_receive(:get_response).with(:expected_url, opts.merge(sig_type: :view))
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
         it "should massage the raw_attrs" do
@@ -392,16 +414,50 @@ describe Helix::Base do
     describe "#signature" do
       let(:meth)  { :signature }
       subject     { obj.method(meth) }
-      its(:arity) { should eq(0) }
+      its(:arity) { should eq(1) }
       let(:mock_response) { mock(Object) }
-      url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-      it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
-        set_stubs(obj)
-        url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-        URI.should_receive(:parse).with(url) { :parsed_url }
-        Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
-        mock_response.should_receive(:body) { :expected }
-        expect(obj.send(meth)).to be(:expected)
+      context "when given :some_invalid_sig_type" do
+        let(:sig_type) { :some_invalid_sig_type }
+        it "should raise an ArgumentError" do
+          msg = "I don't understand 'some_invalid_sig_type'. Please give me one of :ingest, :update, or :view."
+          expect(lambda { obj.send(meth, sig_type) }).to raise_error(ArgumentError, msg)
+        end
+      end
+      context "when given :ingest" do
+        let(:sig_type) { :ingest }
+        url = %q[#{CREDENTIALS['site']}/api/ingest_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+          set_stubs(obj)
+          url = "#{klass::CREDENTIALS['site']}/api/ingest_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+          URI.should_receive(:parse).with(url) { :parsed_url }
+          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
+          mock_response.should_receive(:body) { :expected }
+          expect(obj.send(meth, sig_type)).to be(:expected)
+        end
+      end
+      context "when given :update" do
+        let(:sig_type) { :update }
+        url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+          set_stubs(obj)
+          url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+          URI.should_receive(:parse).with(url) { :parsed_url }
+          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
+          mock_response.should_receive(:body) { :expected }
+          expect(obj.send(meth, sig_type)).to be(:expected)
+        end
+      end
+      context "when given :view" do
+        let(:sig_type) { :view }
+        url = %q[#{CREDENTIALS['site']}/api/view_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
+        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+          set_stubs(obj)
+          url = "#{klass::CREDENTIALS['site']}/api/view_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
+          URI.should_receive(:parse).with(url) { :parsed_url }
+          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
+          mock_response.should_receive(:body) { :expected }
+          expect(obj.send(meth, sig_type)).to be(:expected)
+        end
       end
     end
 

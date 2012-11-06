@@ -8,6 +8,7 @@ module Helix
     unless defined?(self::CREDENTIALS)
       FILENAME    = './helix.yml'
       CREDENTIALS = YAML.load(File.open(FILENAME))
+      VALID_SIG_TYPES = [ :ingest, :update, :view ]
     end
 
     attr_accessor :attributes
@@ -15,7 +16,7 @@ module Helix
     def self.create(attributes={})
       url       = self.build_url( action:     :create_many,
                                   media_type: plural_media_type)
-      response  = RestClient.post(url, attributes.merge(signature: signature))
+      response  = RestClient.post(url, attributes.merge(signature: signature(:ingest)))
       attrs     = JSON.parse(response)
       self.new({attributes: attrs[media_type_sym]})
     end
@@ -39,7 +40,7 @@ module Helix
       url = Helix::Base.build_url(media_type: plural_media_type,
                                   guid:       self.guid,
                                   format:     :xml)
-      RestClient.delete(url, params: {signature: signature})
+      RestClient.delete(url, params: {signature: signature(:update)})
     end
 
     def self.find(guid)
@@ -48,22 +49,23 @@ module Helix
     end
 
     def self.get_response(url, opts={})
-      params      = opts.merge(signature: signature)
+      sig_type    = opts.delete(:sig_type)
+      params      = opts.merge(signature: signature(sig_type))
       response    = RestClient.get(url, params: params)
       JSON.parse(response)
     end
 
     def self.find_all(opts)
       url          = self.build_url(format: :json)
-      raw_response = self.get_response(url, opts)
+      raw_response = self.get_response(url, opts.merge(sig_type: :view))
       data_sets    = raw_response[plural_media_type]
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
     # TODO: messy near-duplication. Clean up.
-    def self.signature
-      self.new({}).signature
+    def self.signature(sig_type)
+      self.new({}).signature(sig_type)
     end
 
     def guid
@@ -78,7 +80,7 @@ module Helix
       url         = Helix::Base.build_url(format:     :json,
                                           guid:       self.guid,
                                           media_type: plural_media_type)
-      raw_attrs   = Helix::Base.get_response(url, opts)
+      raw_attrs   = Helix::Base.get_response(url, opts.merge(sig_type: :view))
       @attributes = massage_raw_attrs(raw_attrs)
       self
     end
@@ -92,10 +94,13 @@ module Helix
       end
     end
 
-    def signature
+    def signature(sig_type)
       # TODO: Memoize (if it's valid)
-      # TODO: read vs. read/write
-      url = "#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
+      unless VALID_SIG_TYPES.include?(sig_type)
+        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+      end
+
+      url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
       # FIXME: Replace Net::HTTP with our own connection abstraction
       @signature = Net::HTTP.get_response(URI.parse(url)).body
     end
