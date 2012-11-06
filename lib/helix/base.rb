@@ -109,8 +109,7 @@ module Helix
       end
 
       url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
-      # FIXME: Replace Net::HTTP with our own connection abstraction
-      @signature = Net::HTTP.get_response(URI.parse(url)).body
+      @signature = RestClient.get(url)
     end
 
     def update(opts={})

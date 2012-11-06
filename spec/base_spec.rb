@@ -426,36 +426,30 @@ describe Helix::Base do
       context "when given :ingest" do
         let(:sig_type) { :ingest }
         url = %q[#{CREDENTIALS['site']}/api/ingest_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+        it "should call RestClient.get(#{url})" do
           set_stubs(obj)
           url = "#{klass::CREDENTIALS['site']}/api/ingest_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          URI.should_receive(:parse).with(url) { :parsed_url }
-          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
-          mock_response.should_receive(:body) { :expected }
+          RestClient.should_receive(:get).with(url) { :expected }
           expect(obj.send(meth, sig_type)).to be(:expected)
         end
       end
       context "when given :update" do
         let(:sig_type) { :update }
         url = %q[#{CREDENTIALS['site']}/api/update_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+        it "should call RestClient.get(#{url})" do
           set_stubs(obj)
           url = "#{klass::CREDENTIALS['site']}/api/update_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          URI.should_receive(:parse).with(url) { :parsed_url }
-          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
-          mock_response.should_receive(:body) { :expected }
+          RestClient.should_receive(:get).with(url) { :expected }
           expect(obj.send(meth, sig_type)).to be(:expected)
         end
       end
       context "when given :view" do
         let(:sig_type) { :view }
         url = %q[#{CREDENTIALS['site']}/api/view_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200]
-        it "should call Net::HTTP.get_response(URI.parse(#{url})).body" do
+        it "should call RestClient.get(#{url})" do
           set_stubs(obj)
           url = "#{klass::CREDENTIALS['site']}/api/view_key?licenseKey=#{klass::CREDENTIALS['license_key']}&duration=1200"
-          URI.should_receive(:parse).with(url) { :parsed_url }
-          Net::HTTP.should_receive(:get_response).with(:parsed_url) { mock_response }
-          mock_response.should_receive(:body) { :expected }
+          RestClient.should_receive(:get).with(url) { :expected }
           expect(obj.send(meth, sig_type)).to be(:expected)
         end
       end
