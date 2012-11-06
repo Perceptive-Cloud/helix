@@ -7,6 +7,7 @@ describe Helix::Track do
   subject { klass }
   its(:ancestors) { should include(Helix::Base) }
   its(:guid_name) { should eq('track_id') }
+  its(:media_type_sym)    { should be(:track)   }
   its(:plural_media_type) { should eq('tracks') }
 
   describe "Constants"
