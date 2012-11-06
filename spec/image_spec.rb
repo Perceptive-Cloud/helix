@@ -7,6 +7,7 @@ describe Helix::Image do
   subject { klass }
   its(:ancestors) { should include(Helix::Base) }
   its(:guid_name) { should eq('image_id') }
+  its(:media_type_sym)    { should be(:image)   }
   its(:plural_media_type) { should eq('images') }
 
   describe "Constants"
