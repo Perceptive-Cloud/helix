@@ -23,7 +23,7 @@ describe Helix::Base do
     let(:resp_json)             { "JSON" }
     let(:params)                { { signature: "some_sig" } }
     let(:expected)            { { attributes: { attribute: :value } } }
-    before(:each) do 
+    before(:each) do
       klass.stub(:signature)          { "some_sig" }
       klass.stub(:plural_media_type)  { :klasses }
       klass.stub(:media_type_sym)     { :klass }
@@ -274,7 +274,8 @@ describe Helix::Base do
       end
       it "should call for an HTTP delete and return nil" do
         url = klass.build_url(media_type: :media_type,
-                              guid:       :some_guid)
+                              guid:       :some_guid,
+                              format:     :xml)
         RestClient.should_receive(:delete).with(url, params)
         expect(obj.send(meth)).to be_nil
       end
