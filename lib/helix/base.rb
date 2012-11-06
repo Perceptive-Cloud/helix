@@ -13,14 +13,6 @@ module Helix
 
     attr_accessor :attributes
 
-    def self.create(attributes={})
-      url       = self.build_url( action:     :create_many,
-                                  media_type: plural_media_type)
-      response  = RestClient.post(url, attributes.merge(signature: signature(:ingest)))
-      attrs     = JSON.parse(response)
-      self.new({attributes: attrs[media_type_sym]})
-    end
-
     def self.build_url(opts={})
       opts[:format]     ||= :json
       opts[:media_type] ||= :videos
@@ -36,23 +28,17 @@ module Helix
       "#{url}.#{opts[:format]}"
     end
 
-    def destroy
-      url = Helix::Base.build_url(media_type: plural_media_type,
-                                  guid:       self.guid,
-                                  format:     :xml)
-      RestClient.delete(url, params: {signature: signature(:update)})
+    def self.create(attributes={})
+      url       = self.build_url( action:     :create_many,
+                                  media_type: plural_media_type)
+      response  = RestClient.post(url, attributes.merge(signature: signature(:ingest)))
+      attrs     = JSON.parse(response)
+      self.new({attributes: attrs[media_type_sym]})
     end
 
     def self.find(guid)
       item = self.new(attributes: { guid_name => guid })
       item.load
-    end
-
-    def self.get_response(url, opts={})
-      sig_type    = opts.delete(:sig_type)
-      params      = opts.merge(signature: signature(sig_type))
-      response    = RestClient.get(url, params: params)
-      JSON.parse(response)
     end
 
     def self.find_all(opts)
@@ -61,6 +47,13 @@ module Helix
       data_sets    = raw_response[plural_media_type]
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new(attributes: attrs) }
+    end
+
+    def self.get_response(url, opts={})
+      sig_type    = opts.delete(:sig_type)
+      params      = opts.merge(signature: signature(sig_type))
+      response    = RestClient.get(url, params: params)
+      JSON.parse(response)
     end
 
     def self.guid_name
@@ -92,6 +85,13 @@ module Helix
 
     def signature(sig_type)
       self.class.signature(sig_type)
+    end
+
+    def destroy
+      url = Helix::Base.build_url(media_type: plural_media_type,
+                                  guid:       self.guid,
+                                  format:     :xml)
+      RestClient.delete(url, params: {signature: signature(:update)})
     end
 
     def guid
@@ -129,7 +129,9 @@ module Helix
 
     private
 
-    def guid_name; "#{media_type_sym}_id"; end
+    def guid_name
+      self.class.guid_name
+    end
 
     def massage_raw_attrs(raw_attrs)
       # FIXME: Albums JSON output is embedded as the only member of an Array.
