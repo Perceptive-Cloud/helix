@@ -12,5 +12,6 @@ spec = Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.license     = "3-Clause BSD"
   s.add_dependency "json", ">= 1.5.4"
+  s.add_dependency "rest-client", ">= 1.6.7"
 end
 
