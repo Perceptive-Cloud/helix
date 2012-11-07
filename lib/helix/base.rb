@@ -82,12 +82,15 @@ module Helix
       @@credentials = new_creds
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Finds and returns a record in instance form for a class, through
+    # guid lookup.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # Example:
+    # video_guid = "8e0701c142ab1"
+    # video = Helix::Video.find(video_guid)
+    #
+    # @param [String] guid an id in guid form. 
+    # @return [Helix::Base] An instance of Helix::Base  
     def self.find(guid)
       item = self.new(attributes: { guid_name => guid })
       item.load
@@ -144,27 +147,28 @@ module Helix
     # Example:
     # Helix::Video.guid_name #=> "video_id" 
     #
-    # @return [String] The full RESTful URL string object
+    # @return [String] The guid name for a specific class.
     def self.guid_name
       "#{self.media_type_sym}_id"
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Creates a string associated with a class name pluralized
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # Example:
+    # Helix::Video.plural_media_type #=> "videos"
+    #
+    # @return [String] The class name pluralized
     def self.plural_media_type
       "#{self.media_type_sym}s"
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Fetches the signature for a specific license key.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # Example:
+    # Helix::Video.signature(:ingest)
+    #
+    # @param [Symbol] sig_type The type of signature required for calls.
+    # @return [String] The signature needed to pass around for calls.
     def self.signature(sig_type)
       # OPTIMIZE: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
@@ -175,12 +179,6 @@ module Helix
       @signature = RestClient.get(url)
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
-    #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
     METHODS_DELEGATED_TO_CLASS.each do |meth|
       define_method(meth) { |*args| self.class.send(meth, *args) }
     end
@@ -199,32 +197,24 @@ module Helix
       RestClient.delete(url, params: {signature: signature(:update)})
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Creates a string that associates to the class id.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # Example:
+    # Helix::Video.guid #=> "9e0989v234sf4" 
+    #
+    # @return [String] The guid for the class instance.
     def guid
       @attributes[guid_name]
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
-    #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
     def initialize(opts)
       @attributes = opts[:attributes]
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Loads in the record from a HTTP GET response.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # @param [Hash] opts a hash of attributes to update the instance with.
+    # @return [Helix::Base] Returns an instance of the class.
     def load(opts={})
       url         = Helix::Base.build_url(format:     :json,
                                           guid:       self.guid,
@@ -235,12 +225,10 @@ module Helix
     end
     alias_method :reload, :load
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Raises an error for missing method calls.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # @param [Symbol] method_sym The method attempting to be called.
+    # @return [String] An error for the method attempting to be called. 
     def method_missing(method_sym)
       begin
         @attributes[method_sym.to_s]
@@ -249,12 +237,14 @@ module Helix
       end
     end
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
+    # Updates instance and record with attributes passed in.
     #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
+    # Example:
+    # video = Helix::Video.find(video_guid)
+    # video.update({title: "My new title"})
+    #
+    # @param [Hash] opts a hash of attributes to update the instance with.
+    # @return [Helix::Base] Returns an instance of the class after update.
     def update(opts={})
       url    = Helix::Base.build_url(format: :xml, guid: guid, media_type: plural_media_type)
       params = {signature: signature(:update)}.merge(media_type_sym => opts)
@@ -264,12 +254,6 @@ module Helix
 
     private
 
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
-    #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
     def massage_raw_attrs(raw_attrs)
       # FIXME: Albums JSON output is embedded as the only member of an Array.
       proper_hash = raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?(guid_name)
