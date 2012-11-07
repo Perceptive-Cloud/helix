@@ -39,7 +39,7 @@ Videos, Images, Albums, Tracks, Playlists
 
 ###Videos
 Example CRUD operations with video model.
-Required fields for create: title, description, library, company, and source.
+#####Required fields for create: title, description, library, company, and source.
 ```ruby
 video = Helix::Video.create!( title:       'New Video', 
                               description: 'A video of new things', 
