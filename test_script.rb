@@ -14,6 +14,7 @@ media_by_id.each do |guid_key,klass|
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
 
   media_id = Helix::Base.credentials[guid_key]
+  next if media_id.nil?
   item = klass.find(media_id)
   puts "Read #{klass} from guid #{media_id}: #{item.inspect}"
 
