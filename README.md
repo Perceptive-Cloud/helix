@@ -39,43 +39,23 @@ Videos, Images, Albums, Tracks, Playlists
 
 ###Videos
 Example CRUD operations with video model.
+Required fields for create: title, description, library, company, and source.
 ```ruby
 video = Helix::Video.create!( title:       'New Video', 
                               description: 'A video of new things', 
-                              source:      'http://somesource.com/source.mp4')
+                              source:      'http://somesource.com/source.mp4'
+                              company:      'some_company',
+                              library:      'some_library')
 video.update({title: "New Title"})
 another_video = Helix::Video.find(some_guid)
 another_video.destroy
 ```
 
-```ruby
-Helix::Video.update
-Helix::Video.find(GUID)
-```
 
 ###Albums
 ###Images
 ###Tracks
 ###Playlists
-```ruby
-Helix::Playlist.create!(title:        'x', 
-                        description:  'xx', 
-                        media_type:   'video', 
-                        yaml_file:    'some_other_file.yml')
-
-Helix::Playlist.create!(title:        'x', 
-                        description:  'xx', 
-                        media_type:   'video', 
-                        license_key:  'some_key_different_from_what_is_in_the_yaml_file')
-
-playlist = Helix::Playlist.authenticate(yaml_file: 'some_file.yml')
-# (method name could be authenticate, scope, attach, connect, etc.)
-playlist.create!(title: 'x', description: 'xx', media_type: 'video')
-
-api = Helix::API.create # no args, reads YAML config from default location
-api = Helix::API.create(license_key: 'blah') # override specific key in the YAML
-apo = Helix::API.create(yaml_file: 'some_file.yml') # override location of YAML file
-```
 
 Install
 --------
