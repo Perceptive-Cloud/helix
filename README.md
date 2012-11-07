@@ -56,7 +56,6 @@ Supported Ruby versions
 How To
 ------
 
-Example CRUD.
 ###Setup YAML
 ```yaml
 site: 'http://service.twistage.com'
