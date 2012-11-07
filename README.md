@@ -25,17 +25,17 @@ and run `bundle install` from your shell.
 
 Install From Repo
 -----------------
-1. Grab the repo:  
-```
+1. Grab the repo: 
+```shell
 git clone git@github.com:Twistage/helix.git
 ```
-2. Build gem and install:  
-```
+2. Build gem and install: 
+```shell
 gem build helix.gemspec
 sudo gem i helix-*.gem
 ```
-3. To reinstall the helix gem run the rake command:  
-```
+3. To reinstall the helix gem run the rake command: 
+```shell
 rake reinstall_helix
 ```
 
