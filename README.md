@@ -50,8 +50,7 @@ license_key: '141a86b5c4091
 Videos, Images, Albums, Tracks, Playlists
 
 ###Videos
-Required fields for create: 
-#####title, description, library, company, and source.
+#####Required fields: title, description, library, company, and source.
 ```ruby
 video = Helix::Video.create!( title:       'New Video', 
                               description: 'A video of new things', 
@@ -63,8 +62,7 @@ another_video = Helix::Video.find(some_guid)
 another_video.destroy
 ```
 ###Albums
-Required fields for create: 
-#####title, library, company.
+#####Required fields: title, library, company.
 ```ruby
 album = Helix::Album.create!( title:       'New Album', 
                               description: 'A album of new things', 
@@ -76,43 +74,40 @@ another_album = Helix::Album.find(some_guid)
 another_album.destroy
 ```
 ###Images
-Required fields for create: 
-#####title, library, company.
+#####Required fields: title, description, library, company, and source.
 ```ruby
-album = Helix::Album.create!( title:       'New Album', 
-                              description: 'A album of new things', 
-                              source:      'http://somesource.com/source.mp4'
+image = Helix::Image.create!( title:       'New Image', 
+                              description: 'A image of new things', 
+                              source:      'http://somesource.com/source.jpg'
                               company:     'some_company',
                               library:     'some_library')
-album.update({title: "New Title"})
-another_album = Helix::Album.find(some_guid)
-another_album.destroy
+image.update({title: "New Title"})
+another_image = Helix::Image.find(some_guid)
+another_image.destroy
 ```
 ###Tracks
-Required fields for create: 
-#####title, library, company.
+#####Required fields: title, description, library, company, and source.
 ```ruby
-album = Helix::Album.create!( title:       'New Album', 
-                              description: 'A album of new things', 
-                              source:      'http://somesource.com/source.mp4'
+track = Helix::Track.create!( title:       'New Track', 
+                              description: 'A track of new things', 
+                              source:      'http://somesource.com/source.mp3'
                               company:     'some_company',
                               library:     'some_library')
-album.update({title: "New Title"})
-another_album = Helix::Album.find(some_guid)
-another_album.destroy
+track.update({title: "New Title"})
+another_track = Helix::Track.find(some_guid)
+another_track.destroy
 ```
 ###Playlists
-Required fields for create: 
-#####title, library, company.
+#####Required fields: title, library, company.
 ```ruby
-album = Helix::Album.create!( title:       'New Album', 
-                              description: 'A album of new things', 
-                              source:      'http://somesource.com/source.mp4'
-                              company:     'some_company',
-                              library:     'some_library')
-album.update({title: "New Title"})
-another_album = Helix::Album.find(some_guid)
-another_album.destroy
+playlist = Helix::Playlist.create!( title:       'New Playlist', 
+                                    description: 'A playlist of new things', 
+                                    source:      'http://somesource.com/source.mp4'
+                                    company:     'some_company',
+                                    library:     'some_library')
+playlist.update({title: "New Title"})
+another_playlist = Helix::Playlist.find(some_guid)
+another_playlist.destroy
 ```
 
 More Information
