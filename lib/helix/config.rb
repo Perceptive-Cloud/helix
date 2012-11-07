@@ -50,8 +50,8 @@ module Helix
       url  += "/#{action}" if action
       "#{url}.#{opts[:format]}"
     end
-    
-    # Creates a full RESTful URL to be used for HTTP requests. 
+
+    # Creates a full RESTful URL to be used for HTTP requests.
     #
     # @param [Hash] opts a hash of options for building URL
     # @return [String] The full RESTful URL string object
@@ -78,7 +78,7 @@ module Helix
       end
       base_url
     end
-    
+
     # Creates additional URL stubbing that can be used in conjuction
     # with the base_url to create RESTful URLs
     #
@@ -91,10 +91,10 @@ module Helix
       response    = RestClient.get(url, params: params)
       JSON.parse(response)
     end
-    
+
     # Fetches the signature for a specific license key.
     #
-    # @example 
+    # @example
     #   Helix::Video.signature(:ingest)
     #
     # @param [Symbol] sig_type The type of signature required for calls.
