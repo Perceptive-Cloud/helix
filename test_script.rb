@@ -1,6 +1,6 @@
 require 'helix'
 
-FILENAME = './helix.yml'
+Helix::Base.config()
 
 media_by_id = {
   'album_id' => Helix::Album,
@@ -13,7 +13,7 @@ media_by_id.each do |guid_key,klass|
   items = klass.find_all(query: 'rest-client', status: :complete)
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
 
-  media_id = Helix::Base::CREDENTIALS[guid_key]
+  media_id = Helix::Base.credentials[guid_key]
   item = klass.find(media_id)
   puts "Read #{klass} from guid #{media_id}: #{item.inspect}"
 
