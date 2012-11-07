@@ -5,12 +5,24 @@ require 'yaml'
 module Helix
   class Base
 
-    unless defined?(self::CREDENTIALS)
-      FILENAME    = './helix.yml'
-      CREDENTIALS = YAML.load(File.open(FILENAME))
+    unless defined?(self::VALID_SIG_TYPES)
+      DEFAULT_FILENAME = './helix.yml'
       METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type, :signature ]
       SCOPES          = %w(reseller company library)
       VALID_SIG_TYPES = [ :ingest, :update, :view ]
+    end
+
+    def self.config(yaml_file_location = DEFAULT_FILENAME)
+      @@filename    = yaml_file_location
+      @@credentials = YAML.load(File.open(@@filename))
+    end
+
+    def self.credentials
+      @@credentials
+    end
+
+    def self.credentials=(new_creds)
+      @@credentials = new_creds
     end
 
     attr_accessor :attributes
@@ -58,9 +70,9 @@ module Helix
     end
 
     def self.get_base_url(opts)
-      base_url  = Helix::Base::CREDENTIALS['site']
+      base_url  = self.credentials['site']
       reseller, company, library = SCOPES.map do |scope|
-        Helix::Base::CREDENTIALS[scope]
+        self.credentials[scope]
       end
       base_url += "/resellers/#{reseller}" if reseller
       if company
@@ -91,7 +103,7 @@ module Helix
         raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
       end
 
-      url = "#{CREDENTIALS['site']}/api/#{sig_type}_key?licenseKey=#{CREDENTIALS['license_key']}&duration=1200"
+      url = "#{self.credentials['site']}/api/#{sig_type}_key?licenseKey=#{self.credentials['license_key']}&duration=1200"
       @signature = RestClient.get(url)
     end
 
