@@ -42,8 +42,8 @@ module Helix
     # Class level configuration settings, allows specification of yaml
     # file that is not helix.yml.
     #
-    # Example:
-    # Helix::Base.config("/home/my_new_yaml.yml")
+    # @example 
+    #   Helix::Base.config("/home/my_new_yaml.yml")
     #
     # @param [String] yaml_file_location the location and name for the YAML config file.
     def self.config(yaml_file_location = DEFAULT_FILENAME)
@@ -56,8 +56,8 @@ module Helix
     # Example is using Video class since Video inherits from Base. This won't
     # normally be called as Helix::Base.create
     #
-    # Example:
-    # Helix::Video.create({title: "My new video"})
+    # @example 
+    #   Helix::Video.create({title: "My new video"})
     #
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Helix::Base] An instance of Helix::Base  
@@ -85,9 +85,9 @@ module Helix
     # Finds and returns a record in instance form for a class, through
     # guid lookup.
     #
-    # Example:
-    # video_guid = "8e0701c142ab1"
-    # video = Helix::Video.find(video_guid)
+    # @example 
+    #   video_guid  = "8e0701c142ab1"
+    #   video       = Helix::Video.find(video_guid)
     #
     # @param [String] guid an id in guid form. 
     # @return [Helix::Base] An instance of Helix::Base  
@@ -99,8 +99,8 @@ module Helix
     # Fetches all accessible records, places them into instances, and returns
     # them as an array.
     #
-    # Example:
-    # Helix::Video.find_all #=> [video1,video2]
+    # @example 
+    #   Helix::Video.find_all #=> [video1,video2]
     #
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
@@ -144,8 +144,8 @@ module Helix
 
     # Creates a string that associates to the class id.
     #
-    # Example:
-    # Helix::Video.guid_name #=> "video_id" 
+    # @example 
+    #   Helix::Video.guid_name #=> "video_id" 
     #
     # @return [String] The guid name for a specific class.
     def self.guid_name
@@ -154,8 +154,8 @@ module Helix
 
     # Creates a string associated with a class name pluralized
     #
-    # Example:
-    # Helix::Video.plural_media_type #=> "videos"
+    # @example
+    #   Helix::Video.plural_media_type #=> "videos"
     #
     # @return [String] The class name pluralized
     def self.plural_media_type
@@ -164,8 +164,8 @@ module Helix
 
     # Fetches the signature for a specific license key.
     #
-    # Example:
-    # Helix::Video.signature(:ingest)
+    # @example 
+    #   Helix::Video.signature(:ingest)
     #
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
@@ -185,9 +185,9 @@ module Helix
 
     # Deletes the record of the Helix::Base instance.
     #
-    # Example:
-    # video = Helix::Video.create({title: "Some Title"})
-    # video.destroy
+    # @example 
+    #   video = Helix::Video.create({title: "Some Title"})
+    #   video.destroy
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
@@ -199,8 +199,8 @@ module Helix
 
     # Creates a string that associates to the class id.
     #
-    # Example:
-    # Helix::Video.guid #=> "9e0989v234sf4" 
+    # @example 
+    #   Helix::Video.guid #=> "9e0989v234sf4" 
     #
     # @return [String] The guid for the class instance.
     def guid
@@ -239,9 +239,9 @@ module Helix
 
     # Updates instance and record with attributes passed in.
     #
-    # Example:
-    # video = Helix::Video.find(video_guid)
-    # video.update({title: "My new title"})
+    # @example 
+    #   video = Helix::Video.find(video_guid)
+    #   video.update({title: "My new title"})
     #
     # @param [Hash] opts a hash of attributes to update the instance with.
     # @return [Helix::Base] Returns an instance of the class after update.
