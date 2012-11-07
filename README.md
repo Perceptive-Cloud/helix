@@ -22,14 +22,23 @@ How To
 Example CRUD.
 ###Setup YAML
 ```yaml
-site: 'http://kbaird-twistage-desktop:3000'
-user: 'corcoran-admin@twistage.com'
-password: 'Testing1'
-company: 'corcoran'
-license_key: '441a869594091
+site: 'http://service.twistage.com'
+user: 'my_account@twistage.com'
+password: 'password123'
+company: 'my_company'
+license_key: '141a86b5c4091
 ```
+####Current CRUD methods supported by all models
+.create
+.find
+\#update
+\#destroy
+
+####Current models
+Videos, Images, Albums, Tracks, Playlists
+
 ###Videos
-Create
+Example CRUD operations with video model.
 ```ruby
 video = Helix::Video.create!( title:       'New Video', 
                               description: 'A video of new things', 
@@ -45,19 +54,6 @@ Helix::Video.find(GUID)
 ```
 
 ###Albums
-
-Helix::Videos.create!(title:          'x', 
-                      description:    'xx', 
-                      media_type:     'video', 
-                      license_key:    'some_key_different_from_what_iin_the_yaml_file')
-
-playlist = Helix::Playlist.authenticate(yaml_file: 'some_file.yml')
-# (method name could be authenticate, scope, attach, connect, etc.)
-playlist.create!(title: 'x', description: 'xx', media_type: 'video')
-
-api = Helix::API.create # no args, reads YAML config from default location
-api = Helix::API.create(license_key: 'blah') # override specific key in the YAML
-apo = Helix::API.create(yaml_file: 'some_file.yml') # override location of YAML file
 ###Images
 ###Tracks
 ###Playlists
