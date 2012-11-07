@@ -12,19 +12,6 @@ module Helix
       VALID_SIG_TYPES = [ :ingest, :update, :view ]
     end
 
-    def self.config(yaml_file_location = DEFAULT_FILENAME)
-      @@filename    = yaml_file_location
-      @@credentials = YAML.load(File.open(@@filename))
-    end
-
-    def self.credentials
-      @@credentials
-    end
-
-    def self.credentials=(new_creds)
-      @@credentials = new_creds
-    end
-
     attr_accessor :attributes
 
     # Creates additional URL stubbing that can be used in conjuction
@@ -48,12 +35,25 @@ module Helix
       url      = self.add_sub_urls(base_url, opts)
     end
 
+    def self.config(yaml_file_location = DEFAULT_FILENAME)
+      @@filename    = yaml_file_location
+      @@credentials = YAML.load(File.open(@@filename))
+    end
+
     def self.create(attributes={})
       url       = self.build_url( action:     :create_many,
                                   media_type: plural_media_type)
       response  = RestClient.post(url, attributes.merge(signature: signature(:ingest)))
       attrs     = JSON.parse(response)
       self.new({attributes: attrs[media_type_sym]})
+    end
+
+    def self.credentials
+      @@credentials
+    end
+
+    def self.credentials=(new_creds)
+      @@credentials = new_creds
     end
 
     def self.find(guid)
