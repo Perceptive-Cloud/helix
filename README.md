@@ -23,15 +23,39 @@ gem 'helix'
 ```
 and run `bundle install` from your shell.
 
+Install From Repo
+-----------------
+Using sudo:
+```shell
+git clone git@github.com:Twistage/helix.git 
+gem build helix.gemspec  
+sudo gem i helix-*.gem
+```
+
+RVM or root support:
+```shell
+git clone git@github.com:Twistage/helix.git
+gem build helix.gemspec
+gem i helix-*.gem
+```
+
+Rebuilding the gem, use the first for sudo, the second for RVM or root:
+```shell
+rake reinstall_helix
+rake reinstall_helix_rvm
+```
+
+
+
 Supported Ruby versions
 -----------------------
 
-1.9.3
+1.9.3  
+1.9.2  
 
 How To
 ------
 
-Example CRUD.
 ###Setup YAML
 ```yaml
 site: 'http://service.twistage.com'
@@ -41,10 +65,10 @@ company: 'my_company'
 license_key: '141a86b5c4091
 ```
 ####Current CRUD methods supported by all models
-.create
-.find
-\#update
-\#destroy
+.create  
+.find  
+\#update  
+\#destroy  
 
 ####Current models
 Videos, Images, Albums, Tracks, Playlists

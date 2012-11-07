@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.3
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><p><a href="http://nestacms.com/docs/creating-content/markdown-cheat-sheet">http://nestacms.com/docs/creating-content/markdown-cheat-sheet</a>
+<a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet">http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet</a></p>
+
+<h1>Helix</h1>
+
+<p>The Helix gem allows developers to easily connect to and manipulate the Twistage API.</p>
+
+<h2>Documentation</h2>
+
+<p>You should find the documentation for your version of helix on <a href="https://rubygems.org/gems/helix">Rubygems</a>.</p>
+
+<h2>Install</h2>
+
+<pre class="code shell"><code>gem install helix
+</code></pre>
+
+<p>or add the following line to Gemfile:</p>
+
+<pre class="code ruby"><code><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix</span><span class='tstring_end'>'</span></span>
+</code></pre>
+
+<p>and run <code>bundle install</code> from your shell.</p>
+
+<h2>Install From Repo</h2>
+
+<p>Using sudo:
+<code>shell
+git clone git@github.com:Twistage/helix.git 
+gem build helix.gemspec  
+sudo gem i helix-*.gem
+</code></p>
+
+<p>RVM or root support:
+<code>shell
+git clone git@github.com:Twistage/helix.git
+gem build helix.gemspec
+gem i helix-*.gem
+</code></p>
+
+<p>Rebuilding the gem, use the first for sudo, the second for RVM or root:
+<code>shell
+rake reinstall_helix
+rake reinstall_helix_rvm
+</code></p>
+
+<h2>Supported Ruby versions</h2>
+
+<p>1.9.3<br>
+1.9.2  </p>
+
+<h2>How To</h2>
+
+<h3>Setup YAML</h3>
+
+<pre class="code yaml"><code>site: 'http://service.twistage.com'
+user: 'my_account@twistage.com'
+password: 'password123'
+company: 'my_company'
+license_key: '141a86b5c4091
+</code></pre>
+
+<h4>Current CRUD methods supported by all models</h4>
+
+<p>.create<br>
+.find<br>
+#update<br>
+#destroy  </p>
+
+<h4>Current models</h4>
+
+<p>Videos, Images, Albums, Tracks, Playlists</p>
+
+<h3>Videos</h3>
+
+<h5>Required fields: title, description, library, company, and source.</h5>
+
+<pre class="code ruby"><code>video = Helix::Video.create!( title:       'New Video', 
+                              description: 'A video of new things', 
+                              source:      'http://somesource.com/source.mp4'
+                              company:     'some_company',
+                              library:     'some_library')
+video.update({title: &quot;New Title&quot;})
+another_video = Helix::Video.find(some_guid)
+another_video.destroy
+</code></pre>
+
+<h3>Albums</h3>
+
+<h5>Required fields: title, library, company.</h5>
+
+<pre class="code ruby"><code>album = Helix::Album.create!( title:       'New Album', 
+                              description: 'A album of new things', 
+                              source:      'http://somesource.com/source.mp4'
+                              company:     'some_company',
+                              library:     'some_library')
+album.update({title: &quot;New Title&quot;})
+another_album = Helix::Album.find(some_guid)
+another_album.destroy
+</code></pre>
+
+<h3>Images</h3>
+
+<h5>Required fields: title, description, library, company, and source.</h5>
+
+<pre class="code ruby"><code>image = Helix::Image.create!( title:       'New Image', 
+                              description: 'A image of new things', 
+                              source:      'http://somesource.com/source.jpg'
+                              company:     'some_company',
+                              library:     'some_library')
+image.update({title: &quot;New Title&quot;})
+another_image = Helix::Image.find(some_guid)
+another_image.destroy
+</code></pre>
+
+<h3>Tracks</h3>
+
+<h5>Required fields: title, description, library, company, and source.</h5>
+
+<pre class="code ruby"><code>track = Helix::Track.create!( title:       'New Track', 
+                              description: 'A track of new things', 
+                              source:      'http://somesource.com/source.mp3'
+                              company:     'some_company',
+                              library:     'some_library')
+track.update({title: &quot;New Title&quot;})
+another_track = Helix::Track.find(some_guid)
+another_track.destroy
+</code></pre>
+
+<h3>Playlists</h3>
+
+<h5>Required fields: title, library, company.</h5>
+
+<pre class="code ruby"><code>playlist = Helix::Playlist.create!( title:       'New Playlist', 
+                                    description: 'A playlist of new things', 
+                                    source:      'http://somesource.com/source.mp4'
+                                    company:     'some_company',
+                                    library:     'some_library')
+playlist.update({title: &quot;New Title&quot;})
+another_playlist = Helix::Playlist.find(some_guid)
+another_playlist.destroy
+</code></pre>
+
+<h2>More Information</h2>
+
+<ul>
+<li><a href="https://rubygems.org/gems/helix">Rubygems</a></li>
+<li><a href="https://github.com/twistage/helix/issues">Issues</a></li>
+</ul>
+
+<h2>Contributing</h2>
+
+<p>How to contribute</p>
+
+<h2>Credits</h2>
+
+<p>Helix was written by Kevin Baird and Michael Wood.</p>
+
+<p>Helix is maintained and funded by <a href="http://twistage.com">Twistage, inc</a></p>
+
+<p>The names and logos for twistage are trademarks of twistage, inc.</p>
+
+<h2>License</h2>
+
+<p>Helix is Copyright © 2008-2012 Twistage, inc.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Wed Nov  7 15:06:14 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.3 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
