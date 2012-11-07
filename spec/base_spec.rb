@@ -36,6 +36,138 @@ describe Helix::Base do
 
   ### CLASS METHODS
 
+  describe ".build_url" do
+    let(:meth)  { :build_url }
+    subject     { klass.method(meth) }
+    its(:arity) { should be(-1) }
+    klass = Helix::Base
+    klass.credentials = {'site' => 'http://example.com'}
+    shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
+      more_opts ||= {}
+      guid   = more_opts[:guid]
+      action = more_opts[:action]
+      before(:each) do klass.credentials = {'site' => 'http://example.com'} end
+      context "and credentials has a key for 'reseller'" do
+        before(:each) do klass.credentials.merge!('reseller' => 're_id') end
+        context "and credentials has a key for 'company'" do
+          before(:each) do klass.credentials.merge!('company' => 'co_id') end
+          context "and credentials has a key for 'library'" do
+            before(:each) do klass.credentials.merge!('library' => 'lib_id') end
+            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
+          end
+          context "and credentials does NOT have a key for 'library'" do
+            before(:each) do klass.credentials.delete('library') end
+            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
+          end
+        end
+        context "and credentials does NOT have a key for 'company'" do
+          before(:each) do klass.credentials.delete('company') end
+          expected_url  = "#{klass.credentials['site']}/resellers/re_id/#{media_type}"
+          expected_url += "/the_guid"  if guid
+          expected_url += "/#{action}" if action
+          expected_url += ".#{format}"
+          it { should eq(expected_url) }
+        end
+      end
+      context "and credentials does NOT have a key for 'reseller'" do
+        before(:each) do klass.credentials.delete('reseller') end
+        context "and credentials has a key for 'company'" do
+          before(:each) do klass.credentials['company'] = 'co_id' end
+          context "and credentials has a key for 'library'" do
+            before(:each) do klass.credentials['library'] = 'lib_id' end
+            expected_url  = "#{klass.credentials['site']}/companies/co_id/libraries/lib_id/#{media_type}"
+            expected_url += "/the_guid"  if guid
+            expected_url += "/#{action}" if action
+            expected_url += ".#{format}"
+            it { should eq(expected_url) }
+          end
+        end
+      end
+    end
+    context "when given NO opts" do
+      subject { klass.send(meth) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json
+    end
+    context "when given opts of {}" do
+      subject { klass.send(meth, {}) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json
+    end
+    context "when given opts of {guid: :the_guid}" do
+      subject { klass.send(meth, {guid: :the_guid}) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid}
+    end
+    context "when given opts of {action: :the_action}" do
+      subject { klass.send(meth, {action: :the_action}) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {action: :the_action}
+    end
+    context "when given opts of {guid: :the_guid, action: :the_action}" do
+      subject { klass.send(meth, {guid: :the_guid, action: :the_action}) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid, action: :the_action}
+    end
+    [ :videos, :tracks ].each do |media_type|
+      context "when given opts[:media_type] of :#{media_type}" do
+        subject { klass.send(meth, media_type: media_type) }
+        it_behaves_like "reads scope from credentials for build_url", media_type, :json
+      end
+      context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
+        subject { klass.send(meth, media_type: media_type, guid: :the_guid) }
+        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid}
+      end
+      context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
+        subject { klass.send(meth, media_type: media_type, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {action: :the_action}
+      end
+      context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
+        subject { klass.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
+      end
+    end
+    [ :json, :xml ].each do |format|
+      context "when given opts[:format] of :#{format}" do
+        subject { klass.send(meth, format: format) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, format
+      end
+      context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
+        subject { klass.send(meth, format: format, guid: :the_guid) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid}
+      end
+      context "when given opts[:format] of :#{format} and opts[:action] of :the_action" do
+        subject { klass.send(meth, format: format, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, format, {action: :the_action}
+      end
+      context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
+        subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid, action: :the_action}
+      end
+      [ :videos, :tracks ].each do |media_type|
+        context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, format
+        end
+        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, guid: :the_guid, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid}
+        end
+        context "when given opts[:format] of :#{format}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, format, {action: :the_action}
+        end
+        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid, action: :the_action}
+        end
+      end
+    end
+  end
+
   describe ".config" do
     let(:meth)       { :config }
     subject          { klass.method(meth) }
@@ -201,138 +333,6 @@ describe Helix::Base do
         klass.stub(:signature).with(:the_sig_type) { string }
         RestClient.should_receive(:get).with(string, params) { returned_json }
         expect(klass.send(meth, string, opts)).to eq(json_parsed)
-      end
-    end
-  end
-
-  describe ".build_url" do
-    let(:meth)  { :build_url }
-    subject     { klass.method(meth) }
-    its(:arity) { should be(-1) }
-    klass = Helix::Base
-    klass.credentials = {'site' => 'http://example.com'}
-    shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
-      more_opts ||= {}
-      guid   = more_opts[:guid]
-      action = more_opts[:action]
-      before(:each) do klass.credentials = {'site' => 'http://example.com'} end
-      context "and credentials has a key for 'reseller'" do
-        before(:each) do klass.credentials.merge!('reseller' => 're_id') end
-        context "and credentials has a key for 'company'" do
-          before(:each) do klass.credentials.merge!('company' => 'co_id') end
-          context "and credentials has a key for 'library'" do
-            before(:each) do klass.credentials.merge!('library' => 'lib_id') end
-            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-          context "and credentials does NOT have a key for 'library'" do
-            before(:each) do klass.credentials.delete('library') end
-            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-        end
-        context "and credentials does NOT have a key for 'company'" do
-          before(:each) do klass.credentials.delete('company') end
-          expected_url  = "#{klass.credentials['site']}/resellers/re_id/#{media_type}"
-          expected_url += "/the_guid"  if guid
-          expected_url += "/#{action}" if action
-          expected_url += ".#{format}"
-          it { should eq(expected_url) }
-        end
-      end
-      context "and credentials does NOT have a key for 'reseller'" do
-        before(:each) do klass.credentials.delete('reseller') end
-        context "and credentials has a key for 'company'" do
-          before(:each) do klass.credentials['company'] = 'co_id' end
-          context "and credentials has a key for 'library'" do
-            before(:each) do klass.credentials['library'] = 'lib_id' end
-            expected_url  = "#{klass.credentials['site']}/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-        end
-      end
-    end
-    context "when given NO opts" do
-      subject { klass.send(meth) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
-    end
-    context "when given opts of {}" do
-      subject { klass.send(meth, {}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
-    end
-    context "when given opts of {guid: :the_guid}" do
-      subject { klass.send(meth, {guid: :the_guid}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid}
-    end
-    context "when given opts of {action: :the_action}" do
-      subject { klass.send(meth, {action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {action: :the_action}
-    end
-    context "when given opts of {guid: :the_guid, action: :the_action}" do
-      subject { klass.send(meth, {guid: :the_guid, action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid, action: :the_action}
-    end
-    [ :videos, :tracks ].each do |media_type|
-      context "when given opts[:media_type] of :#{media_type}" do
-        subject { klass.send(meth, media_type: media_type) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json
-      end
-      context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
-        subject { klass.send(meth, media_type: media_type, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid}
-      end
-      context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
-        subject { klass.send(meth, media_type: media_type, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {action: :the_action}
-      end
-      context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
-        subject { klass.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
-      end
-    end
-    [ :json, :xml ].each do |format|
-      context "when given opts[:format] of :#{format}" do
-        subject { klass.send(meth, format: format) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format
-      end
-      context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
-        subject { klass.send(meth, format: format, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid}
-      end
-      context "when given opts[:format] of :#{format} and opts[:action] of :the_action" do
-        subject { klass.send(meth, format: format, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {action: :the_action}
-      end
-      context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
-        subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid, action: :the_action}
-      end
-      [ :videos, :tracks ].each do |media_type|
-        context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format
-        end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, guid: :the_guid, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid}
-        end
-        context "when given opts[:format] of :#{format}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {action: :the_action}
-        end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid, action: :the_action}
-        end
       end
     end
   end
