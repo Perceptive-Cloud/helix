@@ -8,15 +8,17 @@ media_by_id = {
   'track_id' => helix.track,
   'video_id' => helix.video
 }
-media_by_id.each do |guid_key,klass|
+media_by_id.each do |guid_key,ref|
 
-  items = klass.find_all(query: 'rest-client', status: :complete)
+  klass = ref.class
+
+  items = ref.find_all(query: 'rest-client', status: :complete)
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
 
   media_id = helix.credentials[guid_key]
   next if media_id.nil?
-  item = klass.find(media_id)
-  puts "Read #{klass} from guid #{media_id}: #{item.inspect}"
+  item = ref.find(media_id)
+  puts "Read #{klass.to_s} from guid #{media_id}: #{item.inspect}"
 
   if guid_key == 'video_id'
     h = {
