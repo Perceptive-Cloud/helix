@@ -5,88 +5,31 @@ require 'yaml'
 module Helix
   class Base
 
-    unless defined?(self::VALID_SIG_TYPES)
-      DEFAULT_FILENAME = './helix.yml'
-      METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type, :signature ]
-      SCOPES          = %w(reseller company library)
-      VALID_SIG_TYPES = [ :ingest, :update, :view ]
+    unless defined?(self::METHODS_DELEGATED_TO_CLASS)
+      METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type ]
     end
 
-    attr_accessor :attributes
-
-    # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs
-    #
-    # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
-    # @return [String] The full RESTful URL string object
-    def self.add_sub_urls(base_url, opts)
-      guid, action = [:guid, :action].map { |sub| opts[sub] }
-      url   = "#{base_url}/#{opts[:media_type]}"
-      url  += "/#{guid}"   if guid
-      url  += "/#{action}" if action
-      "#{url}.#{opts[:format]}"
-    end
-
-    def self.build_url(opts={})
-      opts[:format]     ||= :json
-      opts[:media_type] ||= :videos
-      base_url = self.get_base_url(opts)
-      url      = self.add_sub_urls(base_url, opts)
-    end
-
-    def self.config(yaml_file_location = DEFAULT_FILENAME)
-      @@filename    = yaml_file_location
-      @@credentials = YAML.load(File.open(@@filename))
-    end
+    attr_accessor :attributes, :config
 
     def self.create(attributes={})
-      url       = self.build_url( action:     :create_many,
-                                  media_type: plural_media_type)
-      response  = RestClient.post(url, attributes.merge(signature: signature(:ingest)))
+      url       = config.build_url(action: :create_many, media_type: plural_media_type)
+      response  = RestClient.post(url, attributes.merge(signature: config.signature(:ingest)))
       attrs     = JSON.parse(response)
       self.new({attributes: attrs[media_type_sym]})
     end
 
-    def self.credentials
-      @@credentials
+    def find(guid)
+      self.attributes          ||= {}
+      self.attributes[guid_name] = guid
+      self.load
     end
 
-    def self.credentials=(new_creds)
-      @@credentials = new_creds
-    end
-
-    def self.find(guid)
-      item = self.new(attributes: { guid_name => guid })
-      item.load
-    end
-
-    def self.find_all(opts)
-      url          = self.build_url(format: :json)
-      raw_response = self.get_response(url, opts.merge(sig_type: :view))
+    def find_all(opts)
+      url          = config.build_url(format: :json)
+      raw_response = config.get_response(url, opts.merge(sig_type: :view))
       data_sets    = raw_response[plural_media_type]
       return [] if data_sets.nil?
-      data_sets.map { |attrs| self.new(attributes: attrs) }
-    end
-
-    def self.get_base_url(opts)
-      base_url  = self.credentials['site']
-      reseller, company, library = SCOPES.map do |scope|
-        self.credentials[scope]
-      end
-      base_url += "/resellers/#{reseller}" if reseller
-      if company
-        base_url += "/companies/#{company}"
-        base_url += "/libraries/#{library}" if library
-      end
-      base_url
-    end
-
-    def self.get_response(url, opts={})
-      sig_type    = opts.delete(:sig_type)
-      params      = opts.merge(signature: signature(sig_type))
-      response    = RestClient.get(url, params: params)
-      JSON.parse(response)
+      data_sets.map { |attrs| self.class.new(attributes: attrs) }
     end
 
     def self.guid_name
@@ -97,40 +40,27 @@ module Helix
       "#{self.media_type_sym}s"
     end
 
-    def self.signature(sig_type)
-      # OPTIMIZE: Memoize (if it's valid)
-      unless VALID_SIG_TYPES.include?(sig_type)
-        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
-      end
-
-      url = "#{self.credentials['site']}/api/#{sig_type}_key?licenseKey=#{self.credentials['license_key']}&duration=1200"
-      @signature = RestClient.get(url)
-    end
-
     METHODS_DELEGATED_TO_CLASS.each do |meth|
       define_method(meth) { |*args| self.class.send(meth, *args) }
     end
 
+    def initialize(opts)
+      @attributes = opts[:attributes]
+      @config     = opts[:config]
+    end
+
     def destroy
-      url = Helix::Base.build_url(media_type: plural_media_type,
-                                  guid:       self.guid,
-                                  format:     :xml)
-      RestClient.delete(url, params: {signature: signature(:update)})
+      url = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      RestClient.delete(url, params: {signature: config.signature(:update)})
     end
 
     def guid
       @attributes[guid_name]
     end
 
-    def initialize(opts)
-      @attributes = opts[:attributes]
-    end
-
     def load(opts={})
-      url         = Helix::Base.build_url(format:     :json,
-                                          guid:       self.guid,
-                                          media_type: plural_media_type)
-      raw_attrs   = Helix::Base.get_response(url, opts.merge(sig_type: :view))
+      url         = config.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
+      raw_attrs   = config.get_response(url, opts.merge(sig_type: :view))
       @attributes = massage_raw_attrs(raw_attrs)
       self
     end
@@ -145,8 +75,8 @@ module Helix
     end
 
     def update(opts={})
-      url    = Helix::Base.build_url(format: :xml, guid: guid, media_type: plural_media_type)
-      params = {signature: signature(:update)}.merge(media_type_sym => opts)
+      url    = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      params = {signature: config.signature(:update)}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self
     end

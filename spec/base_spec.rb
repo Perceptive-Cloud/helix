@@ -16,217 +16,13 @@ describe Helix::Base do
   subject { klass }
 
   describe "Constants" do
-    describe "DEFAULT_FILENAME" do
-      subject { klass::DEFAULT_FILENAME }
-      it { should eq('./helix.yml') }
-    end
     describe "METHODS_DELEGATED_TO_CLASS" do
       subject { klass::METHODS_DELEGATED_TO_CLASS }
-      it { should eq([:guid_name, :media_type_sym, :plural_media_type, :signature]) }
-    end
-    describe "SCOPES" do
-      subject { klass::SCOPES }
-      it { should eq(%w(reseller company library)) }
-    end
-    describe "VALID_SIG_TYPES" do
-      subject { klass::VALID_SIG_TYPES }
-      it { should eq([:ingest, :update, :view]) }
+      it { should eq([:guid_name, :media_type_sym, :plural_media_type]) }
     end
   end
 
   ### CLASS METHODS
-
-  describe ".build_url" do
-    let(:meth)  { :build_url }
-    subject     { klass.method(meth) }
-    its(:arity) { should be(-1) }
-    klass = Helix::Base
-    klass.credentials = {'site' => 'http://example.com'}
-    shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
-      more_opts ||= {}
-      guid   = more_opts[:guid]
-      action = more_opts[:action]
-      before(:each) do klass.credentials = {'site' => 'http://example.com'} end
-      context "and credentials has a key for 'reseller'" do
-        before(:each) do klass.credentials.merge!('reseller' => 're_id') end
-        context "and credentials has a key for 'company'" do
-          before(:each) do klass.credentials.merge!('company' => 'co_id') end
-          context "and credentials has a key for 'library'" do
-            before(:each) do klass.credentials.merge!('library' => 'lib_id') end
-            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-          context "and credentials does NOT have a key for 'library'" do
-            before(:each) do klass.credentials.delete('library') end
-            expected_url  = "#{klass.credentials['site']}/resellers/re_id/companies/co_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-        end
-        context "and credentials does NOT have a key for 'company'" do
-          before(:each) do klass.credentials.delete('company') end
-          expected_url  = "#{klass.credentials['site']}/resellers/re_id/#{media_type}"
-          expected_url += "/the_guid"  if guid
-          expected_url += "/#{action}" if action
-          expected_url += ".#{format}"
-          it { should eq(expected_url) }
-        end
-      end
-      context "and credentials does NOT have a key for 'reseller'" do
-        before(:each) do klass.credentials.delete('reseller') end
-        context "and credentials has a key for 'company'" do
-          before(:each) do klass.credentials['company'] = 'co_id' end
-          context "and credentials has a key for 'library'" do
-            before(:each) do klass.credentials['library'] = 'lib_id' end
-            expected_url  = "#{klass.credentials['site']}/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
-            it { should eq(expected_url) }
-          end
-        end
-      end
-    end
-    context "when given NO opts" do
-      subject { klass.send(meth) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
-    end
-    context "when given opts of {}" do
-      subject { klass.send(meth, {}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
-    end
-    context "when given opts of {guid: :the_guid}" do
-      subject { klass.send(meth, {guid: :the_guid}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid}
-    end
-    context "when given opts of {action: :the_action}" do
-      subject { klass.send(meth, {action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {action: :the_action}
-    end
-    context "when given opts of {guid: :the_guid, action: :the_action}" do
-      subject { klass.send(meth, {guid: :the_guid, action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid, action: :the_action}
-    end
-    [ :videos, :tracks ].each do |media_type|
-      context "when given opts[:media_type] of :#{media_type}" do
-        subject { klass.send(meth, media_type: media_type) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json
-      end
-      context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
-        subject { klass.send(meth, media_type: media_type, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid}
-      end
-      context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
-        subject { klass.send(meth, media_type: media_type, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {action: :the_action}
-      end
-      context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
-        subject { klass.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
-      end
-    end
-    [ :json, :xml ].each do |format|
-      context "when given opts[:format] of :#{format}" do
-        subject { klass.send(meth, format: format) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format
-      end
-      context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
-        subject { klass.send(meth, format: format, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid}
-      end
-      context "when given opts[:format] of :#{format} and opts[:action] of :the_action" do
-        subject { klass.send(meth, format: format, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {action: :the_action}
-      end
-      context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
-        subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid, action: :the_action}
-      end
-      [ :videos, :tracks ].each do |media_type|
-        context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format
-        end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, guid: :the_guid, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid}
-        end
-        context "when given opts[:format] of :#{format}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {action: :the_action}
-        end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { klass.send(meth, format: format, guid: :the_guid, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid, action: :the_action}
-        end
-      end
-    end
-  end
-
-  describe ".config" do
-    let(:meth)       { :config }
-    subject          { klass.method(meth) }
-    its(:arity)      { should eq(-1) }
-    after(:each) do klass.credentials = {} end
-    context "when given no arg" do
-      it "should have a @@filename of './helix.yml'" do
-        klass.send(meth)
-        expect(klass.class_variable_get(:@@filename)).to eq('./helix.yml')
-      end
-      it "should File.open(./helix.yml') -> the_file" do
-        File.should_receive(:open).with('./helix.yml')
-        YAML.stub(:load)
-        klass.send(meth)
-      end
-      it "should YAML.load(the_file) -> @@credentials" do
-        File.stub(:open) { :the_file }
-        YAML.should_receive(:load).with(:the_file) { :the_credentials }
-        klass.send(meth)
-        expect(klass.class_variable_get(:@@credentials)).to eq(:the_credentials)
-      end
-    end
-    context "when given './helix.yml'" do
-      let(:filename) { './helix.yml' }
-      it "should have a @@filename of './helix.yml'" do
-        klass.send(meth, filename)
-        expect(klass.class_variable_get(:@@filename)).to eq('./helix.yml')
-      end
-      it "should File.open(./helix.yml') -> the_file" do
-        File.should_receive(:open).with('./helix.yml')
-        YAML.stub(:load)
-        klass.send(meth, filename)
-      end
-      it "should YAML.load(the_file) -> @@credentials" do
-        File.stub(:open) { :the_file }
-        YAML.should_receive(:load).with(:the_file) { :the_credentials }
-        klass.send(meth, filename)
-        expect(klass.class_variable_get(:@@credentials)).to eq(:the_credentials)
-      end
-    end
-    context "when given './config/enceladus.yml'" do
-      let(:filename) { './config/enceladus.yml' }
-      it "should have a @@filename of './config/enceladus.yml'" do
-        klass.send(meth, filename)
-        expect(klass.class_variable_get(:@@filename)).to eq('./config/enceladus.yml')
-      end
-      it "should File.open(./config/enceladus.yml') -> the_file" do
-        File.should_receive(:open).with('./config/enceladus.yml')
-        YAML.stub(:load)
-        klass.send(meth, filename)
-      end
-      it "should YAML.load(the_file) -> @@credentials" do
-        File.stub(:open) { :the_file }
-        YAML.should_receive(:load).with(:the_file) { :the_credentials }
-        klass.send(meth, filename)
-        expect(klass.class_variable_get(:@@credentials)).to eq(:the_credentials)
-      end
-    end
-  end
 
   describe ".create" do
     let(:meth)       { :create }
@@ -260,127 +56,6 @@ describe Helix::Base do
     end
   end
 
-  describe ".find" do
-    let(:meth)  { :find }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(1) }
-    context "when given a guid" do
-      subject             { klass }
-      let(:guid)          { :a_guid }
-      let(:mock_instance) { mock(Object, :load => nil) }
-      it "should instantiate with attributes: { guid_name => the_guid }" do
-        klass.should_receive(:guid_name) { :the_guid_name }
-        klass.should_receive(:new).with({attributes: { the_guid_name: guid }}) { mock_instance }
-        klass.send(meth, guid)
-      end
-      it "should load" do
-        klass.stub(:guid_name) { :the_guid_name }
-        klass.stub(:new) { mock_instance }
-        mock_instance.should_receive(:load) { :expected }
-        expect(klass.send(meth, guid)).to eq(:expected)
-      end
-    end
-  end
-
-  describe ".find_all" do
-    let(:meth)  { :find_all }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(1) }
-    context "when called with multiple { attribute: :value }" do
-      let(:opts)        { Hash.new }
-      let(:attr_value)  { { attribute: :value } }
-      let(:attrs_hash)  { { attributes: attr_value } }
-      let(:obj_count)   { 2 }
-      before(:each) do
-        klass.stub(:get_response) do
-          { klasses: (1..obj_count).map { attr_value } }
-        end
-        klass.stub(:plural_media_type) { :klasses }
-      end
-      it "should call new for each object with attribute hashes" do
-        klass.should_receive(:new).exactly(obj_count).times
-        klass.send(meth, opts)
-      end
-      subject { klass.send(meth, opts).first }
-      it { should be_an_instance_of(klass) }
-      it "should have equal attributes for those passed in" do
-        attrs = klass.send(meth, opts).map {|k| { attributes: k.attributes }}
-        expect(attrs).to eq((1..obj_count).map { attrs_hash })
-      end
-      subject { klass.send(meth, opts).first }
-      it { should be_an_instance_of(klass) }
-      context "and raw_response[plural_media_type] is nil" do
-        before(:each) do klass.stub(:get_response) { {} } end
-        subject { klass.send(meth, opts) }
-        it { should eq([]) }
-      end
-    end
-  end
-
-#TODO: Possible cleanup.
-  describe ".get_response" do
-    let(:meth)  { :get_response }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(-2) }
-    context "when given a url and options" do
-      subject             { klass }
-      let(:string)        { String.new }
-      let(:opts)          { {sig_type: :the_sig_type} }
-      let(:params)        { { params: { signature: string } } }
-      let(:returned_json) { '{"key": "val"}' }
-      let(:json_parsed)   { { "key" => "val" } }
-      it "should call RestClient.get and return a hash from parsed JSON" do
-        klass.stub(:signature).with(:the_sig_type) { string }
-        RestClient.should_receive(:get).with(string, params) { returned_json }
-        expect(klass.send(meth, string, opts)).to eq(json_parsed)
-      end
-    end
-  end
-
-  describe ".signature" do
-    let(:meth)  { :signature }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(1) }
-    let(:mock_response) { mock(Object) }
-    context "when given :some_invalid_sig_type" do
-      let(:sig_type) { :some_invalid_sig_type }
-      it "should raise an ArgumentError" do
-        msg = "I don't understand 'some_invalid_sig_type'. Please give me one of :ingest, :update, or :view."
-        expect(lambda { klass.send(meth, sig_type) }).to raise_error(ArgumentError, msg)
-      end
-    end
-    context "when given :ingest" do
-      let(:sig_type) { :ingest }
-      url = %q[#{self.credentials['site']}/api/ingest_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
-      it "should call RestClient.get(#{url})" do
-        set_stubs(klass)
-        url = "#{klass.credentials['site']}/api/ingest_key?licenseKey=#{klass.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(klass.send(meth, sig_type)).to be(:expected)
-      end
-    end
-    context "when given :update" do
-      let(:sig_type) { :update }
-      url = %q[#{self.credentials['site']}/api/update_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
-      it "should call RestClient.get(#{url})" do
-        set_stubs(klass)
-        url = "#{klass.credentials['site']}/api/update_key?licenseKey=#{klass.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(klass.send(meth, sig_type)).to be(:expected)
-      end
-    end
-    context "when given :view" do
-      let(:sig_type) { :view }
-      url = %q[#{self.credentials['site']}/api/view_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
-      it "should call RestClient.get(#{url})" do
-        set_stubs(klass)
-        url = "#{klass.credentials['site']}/api/view_key?licenseKey=#{klass.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(klass.send(meth, sig_type)).to be(:expected)
-      end
-    end
-  end
-
   describe "an instance" do
     let(:obj) { klass.new({}) }
 
@@ -388,28 +63,95 @@ describe Helix::Base do
 
     describe "#destroy" do
       let(:meth)   { :destroy }
+      let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
       subject      { obj.method(meth) }
       let(:params) { { params: {signature: :some_sig } } }
       before do
-        obj.stub(:guid)                    { :some_guid }
-        obj.stub(:signature).with(:update) { :some_sig }
-        obj.stub(:plural_media_type)       { :media_type }
-        klass.credentials = {}
+        obj.stub(:config)            { mock_config }
+        obj.stub(:guid)              { :some_guid  }
+        obj.stub(:plural_media_type) { :media_type }
       end
       it "should get an update signature" do
-        url = klass.build_url(media_type: :media_type,
-                              guid:       :some_guid,
-                              format:     :xml)
+        url = mock_config.build_url(media_type: :media_type,
+                                    guid:       :some_guid,
+                                    format:     :xml)
         RestClient.stub(:delete).with(url, params)
-        obj.should_receive(:signature).with(:update) { :some_sig }
+        mock_config.should_receive(:signature).with(:update) { :some_sig }
         obj.send(meth)
       end
       it "should call for an HTTP delete and return nil" do
-        url = klass.build_url(media_type: :media_type,
-                              guid:       :some_guid,
-                              format:     :xml)
+        url = mock_config.build_url(media_type: :media_type,
+                                    guid:       :some_guid,
+                                    format:     :xml)
         RestClient.should_receive(:delete).with(url, params)
         expect(obj.send(meth)).to be_nil
+      end
+    end
+
+    describe "#find" do
+      let(:meth)  { :find }
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(1) }
+      context "when given a guid" do
+        let(:guid) { :a_guid }
+        let(:mock_attrs) { mock(Object, :[]= => :output_of_setting_val) }
+        before(:each) do
+          obj.stub(:attributes) { mock_attrs }
+          obj.stub(:guid_name)  { :the_guid_name }
+          obj.stub(:load)
+        end
+        it "should set attributes[guid_name] = the_guid" do
+          obj.should_receive(:attributes).at_least(1).times { mock_attrs }
+          mock_attrs.should_receive(:[]=).with(obj.guid_name, guid)
+          obj.send(meth, guid)
+        end
+        it "should load" do
+          obj.should_receive(:load)
+          obj.send(meth, guid)
+        end
+      end
+    end
+
+    describe "#find_all" do
+      let(:meth)  { :find_all }
+      let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(1) }
+      context "when given an opts Hash" do
+        let(:opts) { mock(Object, merge: :merged) }
+        let(:plural_media_type) { :videos }
+        before(:each) do
+          obj.stub(:config) { mock_config }
+          obj.stub(:plural_media_type) { plural_media_type }
+        end
+        it "should build a JSON URL -> the_url" do
+          mock_config.should_receive(:build_url).with(format: :json)
+          obj.send(meth, opts)
+        end
+        it "should get_response(the_url, opts.merge(sig_type: :view) -> raw_response" do
+          opts.should_receive(:merge).with(sig_type: :view) { :opts_with_view_sig }
+          mock_config.should_receive(:get_response).with(:built_url, :opts_with_view_sig)
+          obj.send(meth, opts)
+        end
+        it "should read raw_response[plural_media_type] -> data_sets" do
+          mock_raw_response = mock(Object)
+          mock_config.stub(:get_response) { mock_raw_response }
+          mock_raw_response.should_receive(:[]).with(plural_media_type)
+          obj.send(meth, opts)
+        end
+        context "when data_sets is nil" do
+          it "should return []" do expect(obj.send(meth, opts)).to eq([]) end
+        end
+        context "when data_sets is NOT nil" do
+          let(:data_set) { (0..2).to_a }
+          before(:each) do mock_config.stub(:get_response) { {plural_media_type => data_set } } end
+          it "should map instantiation with attributes: each data set element" do
+            klass.should_receive(:new).with(attributes: data_set[0]) { :a }
+            klass.should_receive(:new).with(attributes: data_set[1]) { :b }
+            klass.should_receive(:new).with(attributes: data_set[2]) { :c }
+            expect(obj.send(meth, opts)).to eq([:a, :b, :c])
+          end
+        end
       end
     end
 
@@ -434,15 +176,17 @@ describe Helix::Base do
 
     describe "#load" do
       let(:meth)  { :load }
+      let(:mock_config) { mock(Helix::Config) }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
       before(:each) do
-        obj.stub(:guid)              { 'some_guid'     }
-        obj.stub(:signature)         { 'some_sig'      }
-        obj.stub(:massage_raw_attrs) { :massaged_attrs }
-        klass.stub(:build_url)       { :expected_url   }
-        klass.stub(:get_response)    { :raw_attrs      }
-        klass.stub(:media_type_sym)  { :video          }
+        obj.stub(:config)               { mock_config     }
+        obj.stub(:guid)                 { 'some_guid'     }
+        obj.stub(:signature)            { 'some_sig'      }
+        obj.stub(:massage_raw_attrs)    { :massaged_attrs }
+        mock_config.stub(:build_url)    { :expected_url   }
+        mock_config.stub(:get_response) { :raw_attrs      }
+        klass.stub(:media_type_sym)     { :video          }
       end
       shared_examples_for "builds URL for load" do
         it "should call #guid" do
@@ -450,7 +194,7 @@ describe Helix::Base do
           obj.send(meth)
         end
         it "should build_url(format: :json, guid: the_guid, media_type: 'videos')" do
-          klass.should_receive(:build_url).with(format: :json, guid: 'some_guid', media_type: 'videos')
+          mock_config.should_receive(:build_url).with(format: :json, guid: 'some_guid', media_type: 'videos')
           RestClient.stub(:put)
           obj.send(meth)
         end
@@ -458,7 +202,7 @@ describe Helix::Base do
       context "when given no argument" do
         it_behaves_like "builds URL for load"
         it "should call klass.get_response(output_of_build_url, {sig_type: :view}) and return instance of klass" do
-          klass.should_receive(:get_response).with(:expected_url, {sig_type: :view})
+          mock_config.should_receive(:get_response).with(:expected_url, {sig_type: :view})
           expect(obj.send(meth)).to be_an_instance_of(klass)
         end
         it "should massage the raw_attrs" do
@@ -470,7 +214,7 @@ describe Helix::Base do
         let(:opts)  { {key1: :value1} }
         it_behaves_like "builds URL for load"
         it "should call klass.get_response(output_of_build_url, opts.merge(sig_type: :view)) and return instance of klass" do
-          klass.should_receive(:get_response).with(:expected_url, opts.merge(sig_type: :view))
+          mock_config.should_receive(:get_response).with(:expected_url, opts.merge(sig_type: :view))
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)
         end
         it "should massage the raw_attrs" do
@@ -529,35 +273,29 @@ describe Helix::Base do
       end
     end
 
-    describe "#signature" do
-      let(:meth) { :signature }
-      it "should delegate to the class" do
-        klass.should_receive(meth).with(:sig_type) { :expected }
-        expect(obj.send(meth, :sig_type)).to be(:expected)
-      end
-    end
-
     describe "#update" do
       let(:meth)  { :update }
+      let(:mock_config) { mock(Helix::Config) }
       subject     { obj.method(meth) }
       its(:arity) { should eq(-1) }
       before(:each) do
-        obj.stub(:guid) { :the_guid }
+        obj.stub(:config) { mock_config }
+        obj.stub(:guid)   { :the_guid }
         obj.stub(:media_type_sym) { :video }
         obj.stub(:plural_media_type) { :the_media_type }
-        obj.stub(:signature).with(:update) { 'some_sig' }
-        klass.stub(:build_url) { :expected_url }
+        mock_config.stub(:signature).with(:update) { 'some_sig' }
+        mock_config.stub(:build_url) { :expected_url }
       end
       shared_examples_for "builds URL for update" do
         it "should build_url(format: :xml, guid: guid, media_type: plural_media_type)" do
-          klass.should_receive(:build_url).with(format: :xml, guid: :the_guid, media_type: :the_media_type)
+          mock_config.should_receive(:build_url).with(format: :xml, guid: :the_guid, media_type: :the_media_type)
           RestClient.stub(:put)
           obj.send(meth)
         end
         it "should get an update signature" do
-          klass.stub(:build_url)
+          mock_config.stub(:build_url)
           RestClient.stub(:put)
-          obj.should_receive(:signature).with(:update) { 'some_sig' }
+          mock_config.should_receive(:signature).with(:update) { 'some_sig' }
           obj.send(meth)
         end
       end
