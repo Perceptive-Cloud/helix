@@ -50,7 +50,11 @@ module Helix
       url  += "/#{action}" if action
       "#{url}.#{opts[:format]}"
     end
-
+    
+    # Creates a full RESTful URL to be used for HTTP requests. 
+    #
+    # @param [Hash] opts a hash of options for building URL
+    # @return [String] The full RESTful URL string object
     def build_url(opts={})
       opts[:format]     ||= :json
       opts[:media_type] ||= :videos
@@ -58,6 +62,10 @@ module Helix
       url      = add_sub_urls(base_url, opts)
     end
 
+    # Creates the base url with information collected from credentials.
+    #
+    # @param [Hash] opts a hash of options for building URL
+    # @return [String] The base RESTful URL string object
     def get_base_url(opts)
       base_url  = credentials['site']
       reseller, company, library = SCOPES.map do |scope|
@@ -70,14 +78,27 @@ module Helix
       end
       base_url
     end
-
+    
+    # Creates additional URL stubbing that can be used in conjuction
+    # with the base_url to create RESTful URLs
+    #
+    # @param [String] base_url the base part of the URL to be used
+    # @param [Hash] opts a hash of options for building URL additions
+    # @return [String] The full RESTful URL string object
     def get_response(url, opts={})
       sig_type    = opts.delete(:sig_type)
       params      = opts.merge(signature: signature(sig_type))
       response    = RestClient.get(url, params: params)
       JSON.parse(response)
     end
-
+    
+    # Fetches the signature for a specific license key.
+    #
+    # @example 
+    #   Helix::Video.signature(:ingest)
+    #
+    # @param [Symbol] sig_type The type of signature required for calls.
+    # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
       # OPTIMIZE: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
