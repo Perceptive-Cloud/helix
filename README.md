@@ -50,8 +50,8 @@ rake reinstall_helix_rvm
 Supported Ruby versions
 -----------------------
 
-1.9.3
-1.9.2
+1.9.3  
+1.9.2  
 
 How To
 ------
@@ -66,10 +66,10 @@ company: 'my_company'
 license_key: '141a86b5c4091
 ```
 ####Current CRUD methods supported by all models
-.create
-.find
-\#update
-\#destroy
+.create  
+.find  
+\#update  
+\#destroy  
 
 ####Current models
 Videos, Images, Albums, Tracks, Playlists
