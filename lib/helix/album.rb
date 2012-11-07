@@ -1,6 +1,7 @@
 require 'helix/base'
 
 module Helix
+
   class Album < Base
 
     def self.media_type_sym; :album; end
@@ -10,4 +11,5 @@ module Helix
     end
 
   end
+
 end

@@ -16,10 +16,10 @@ module Helix
     attr_accessor :attributes
 
     # Creates additional URL stubbing that can be used in conjuction
-    # with the base_url to create RESTful URLs 
+    # with the base_url to create RESTful URLs
     #
     # @param [String] base_url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions 
+    # @param [Hash] opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
     def self.add_sub_urls(base_url, opts)
       guid, action = [:guid, :action].map { |sub| opts[sub] }
