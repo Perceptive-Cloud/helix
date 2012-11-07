@@ -124,10 +124,7 @@ How to contribute
 Credits
 -------
 
-Helix was written by Kevin Baird and Michael Wood with contributions from several authors, including:
-
-* Other
-* People
+Helix was written by Kevin Baird and Michael Wood.
 
 Helix is maintained and funded by [Twistage, inc](http://twistage.com)
 
