@@ -25,18 +25,11 @@ and run `bundle install` from your shell.
 
 Install From Repo
 -----------------
-1. Grab the repo: 
+Using sudo:
 ```shell
 git clone git@github.com:Twistage/helix.git 
-```
-2. Build gem and install:  
-```shell
 gem build helix.gemspec  
 sudo gem i helix-*.gem
-```
-3. To reinstall the helix gem run the rake command:  
-```shell
-rake reinstall_helix
 ```
 
 RVM or root support:
@@ -44,8 +37,14 @@ RVM or root support:
 git clone git@github.com:Twistage/helix.git
 gem build helix.gemspec
 gem i helix-*.gem
+```
+
+Rebuilding the gem, use the first for sudo, the second for RVM or root:
+```shell
+rake reinstall_helix
 rake reinstall_helix_rvm
 ```
+
 
 
 Supported Ruby versions
