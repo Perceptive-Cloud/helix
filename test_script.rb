@@ -10,12 +10,12 @@ media_by_id = {
 }
 media_by_id.each do |guid_key,klass|
 
-  items = klass.find_all(config, query: 'rest-client', status: :complete)
+  items = klass.find_all(query: 'rest-client', status: :complete)
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
 
   media_id = config.credentials[guid_key]
   next if media_id.nil?
-  item = klass.find(config, media_id)
+  item = klass.find(media_id)
   puts "Read #{klass.to_s} from guid #{media_id}: #{item.inspect}"
 
   if guid_key == 'video_id'

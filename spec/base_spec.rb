@@ -28,7 +28,7 @@ describe Helix::Base do
     let(:meth)        { :create }
     let(:mock_config) { mock(Helix::Config) }
     subject           { klass.method(meth) }
-    its(:arity)       { should eq(-2) }
+    its(:arity)       { should eq(-1) }
     let(:resp_value)  { { klass: { attribute: :value } } }
     let(:resp_json)   { "JSON" }
     let(:params)      { { signature: "some_sig" } }
@@ -38,19 +38,20 @@ describe Helix::Base do
       klass.stub(:media_type_sym)    { :klass }
       mock_config.stub(:build_url).with(action: :create_many, media_type: :klasses) { :url }
       mock_config.stub(:signature).with(:ingest) { "some_sig" }
+      Helix::Config.stub(:instance) { mock_config }
     end
     it "should get an ingest signature" do
       RestClient.stub(:post).with(:url, params) { resp_json }
       JSON.stub(:parse).with(resp_json) { resp_value }
       klass.stub(:new).with(expected)
       mock_config.should_receive(:signature).with(:ingest) { "some_sig" }
-      klass.send(meth, mock_config)
+      klass.send(meth)
     end
     it "should do an HTTP post call, parse response and call new" do
       RestClient.should_receive(:post).with(:url, params) { resp_json }
       JSON.should_receive(:parse).with(resp_json) { resp_value }
       klass.should_receive(:new).with(expected)
-      klass.send(meth, mock_config)
+      klass.send(meth)
     end
   end
 
@@ -59,7 +60,8 @@ describe Helix::Base do
     let(:mock_config) { mock(Helix::Config) }
     let(:mock_obj)    { mock(klass, :load => :output_of_load) }
     subject     { klass.method(meth) }
-    its(:arity) { should eq(2) }
+    its(:arity) { should eq(1) }
+    before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a Helix::Config instance and a guid" do
       let(:guid)       { :a_guid }
       let(:guid_name)  { :the_guid_name }
@@ -71,11 +73,11 @@ describe Helix::Base do
       end
       it "should instantiate with {attributes: guid_name => the_guid, config: config}" do
         klass.should_receive(:new).with({attributes: {guid_name => guid}, config: mock_config})
-        klass.send(meth, mock_config, guid)
+        klass.send(meth, guid)
       end
       it "should load" do
         mock_obj.should_receive(:load)
-        klass.send(meth, mock_config, guid)
+        klass.send(meth, guid)
       end
     end
   end
@@ -84,28 +86,29 @@ describe Helix::Base do
     let(:meth)  { :find_all }
     let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
     subject     { klass.method(meth) }
-    its(:arity) { should eq(2) }
+    its(:arity) { should eq(1) }
+    before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and an opts Hash" do
       let(:opts) { mock(Object, merge: :merged) }
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
       it "should build a JSON URL -> the_url" do
         mock_config.should_receive(:build_url).with(format: :json)
-        klass.send(meth, mock_config, opts)
+        klass.send(meth, opts)
       end
       it "should get_response(the_url, opts.merge(sig_type: :view) -> raw_response" do
         opts.should_receive(:merge).with(sig_type: :view) { :opts_with_view_sig }
         mock_config.should_receive(:get_response).with(:built_url, :opts_with_view_sig)
-        klass.send(meth, mock_config, opts)
+        klass.send(meth, opts)
       end
       it "should read raw_response[plural_media_type] -> data_sets" do
         mock_raw_response = mock(Object)
         mock_config.stub(:get_response) { mock_raw_response }
         mock_raw_response.should_receive(:[]).with(plural_media_type)
-        klass.send(meth, mock_config, opts)
+        klass.send(meth, opts)
       end
       context "when data_sets is nil" do
-        it "should return []" do expect(klass.send(meth, mock_config, opts)).to eq([]) end
+        it "should return []" do expect(klass.send(meth, opts)).to eq([]) end
       end
       context "when data_sets is NOT nil" do
         let(:data_set) { (0..2).to_a }
@@ -114,7 +117,7 @@ describe Helix::Base do
           klass.should_receive(:new).with(attributes: data_set[0]) { :a }
           klass.should_receive(:new).with(attributes: data_set[1]) { :b }
           klass.should_receive(:new).with(attributes: data_set[2]) { :c }
-          expect(klass.send(meth, mock_config, opts)).to eq([:a, :b, :c])
+          expect(klass.send(meth, opts)).to eq([:a, :b, :c])
         end
       end
     end
