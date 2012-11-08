@@ -92,9 +92,6 @@ module Helix
 
     # Fetches the signature for a specific license key.
     #
-    # @example
-    #   Helix::Video.signature(:ingest)
-    #
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
