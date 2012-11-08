@@ -2,10 +2,13 @@ require 'helix/video'
 require 'helix/track'
 require 'helix/album'
 require 'helix/image'
+require 'singleton'
 
 module Helix
 
   class Config
+
+    include Singleton
 
     unless defined?(self::DEFAULT_FILENAME)
       DEFAULT_FILENAME = './helix.yml'

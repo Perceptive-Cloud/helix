@@ -11,10 +11,12 @@ describe Helix::Config do
     obj.stub(:signature)         { 'some_sig'  } if even_sig
   end
 
-  let(:klass) { Helix::Config }
-  let(:obj)   { klass.new }
+  let(:klass) { Helix::Config  }
+  let(:obj)   { klass.instance }
 
   subject { klass }
+
+  its(:ancestors) { should include(Singleton) }
 
   describe "Constants" do
     describe "DEFAULT_FILENAME" do
