@@ -45,7 +45,8 @@ rake reinstall_helix
 rake reinstall_helix_rvm
 ```
 
-```ruby
+Using gem in a Gemfile  
+```shell
 gem 'helix', git => git@github.com:Twistage/helix.git
 ```
 
