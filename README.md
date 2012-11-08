@@ -47,7 +47,7 @@ rake reinstall_helix_rvm
 
 Using gem in a Gemfile  
 ```shell
-gem 'helix', git => git@github.com:Twistage/helix.git
+gem 'helix', :git => git@github.com:Twistage/helix.git
 ```
 
 
@@ -98,7 +98,7 @@ album = Helix::Album.create!( title:       'New Album',
                               source:      'http://somesource.com/source.mp4'
                               company:     'some_company',
                               library:     'some_library')
-album.update({title: "New Title"})
+\#Update for album is not currently supported
 another_album = Helix::Album.find(some_guid)
 another_album.destroy
 ```
