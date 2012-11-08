@@ -31,34 +31,6 @@ describe Helix::Config do
     end
   end
 
-  {
-    :album => Helix::Album,
-    :image => Helix::Image,
-    :track => Helix::Track,
-    :video => Helix::Video,
-  }.each do |meth,klass|
-    describe "##{meth}" do
-
-      subject { obj.method(meth) }
-      its(:arity) { should eq(0) }
-
-      context "when @#{meth} is set" do
-        before(:each) do obj.instance_variable_set("@#{meth}".to_sym, :already_set) end
-        it "should return the already-set value" do
-          expect(obj.send(meth)).to be(:already_set)
-        end
-      end
-      context "when @#{meth} is NOT set" do
-        before(:each) do obj.instance_variable_set("@#{meth}".to_sym, nil) end
-        it "should return #{klass}.new(config: self)" do
-          klass.should_receive(:new).with(config: obj) { :expected }
-          expect(obj.send(meth)).to be(:expected)
-        end
-      end
-
-    end
-  end
-
   describe "#build_url" do
     site = 'http://example.com'
     let(:meth)  { :build_url }
