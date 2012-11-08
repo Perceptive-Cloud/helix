@@ -27,6 +27,7 @@ module Helix
     #   video = Helix::Video.find("8e0701c142ab1") #Uses my_yaml.yml
     #
     # @param [String] yaml_file_location the yaml file used for config
+    # @return [Helix::Config] config returns singleton of Helix::Config
     def self.load(yaml_file_location = DEFAULT_FILENAME)
       config = self.instance
       config.instance_variable_set(:@filename,    yaml_file_location)
