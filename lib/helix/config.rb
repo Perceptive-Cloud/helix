@@ -20,23 +20,6 @@ module Helix
       @credentials = YAML.load(File.open(@filename))
     end
 
-    ### MEDIA TYPES
-    def album
-      @album ||= Helix::Album.new(config: self)
-    end
-
-    def image
-      @image ||= Helix::Image.new(config: self)
-    end
-
-    def track
-      @track ||= Helix::Track.new(config: self)
-    end
-
-    def video
-      @video ||= Helix::Video.new(config: self)
-    end
-
     # Creates additional URL stubbing that can be used in conjuction
     # with the base_url to create RESTful URLs
     #
