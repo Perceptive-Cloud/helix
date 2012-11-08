@@ -69,6 +69,10 @@ password: 'password123'
 company: 'my_company'
 license_key: '141a86b5c4091
 ```
+Load the YAML file as your config.
+```ruby
+Helix::Config.load("path/to/yaml.yml")
+```
 ####Current CRUD methods supported by all models
 .create  
 .find  
