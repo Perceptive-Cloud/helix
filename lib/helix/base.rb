@@ -114,7 +114,7 @@ module Helix
     # Loads in the record from a HTTP GET response.
     #
     # @param [Hash] opts a hash of attributes to update the instance with.
-    # @return [Helix::Base] Returns an instance of the class.
+    # @return [Base] Returns an instance of the class.
     def load(opts={})
       url         = config.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
       raw_attrs   = config.get_response(url, opts.merge(sig_type: :view))
