@@ -103,7 +103,8 @@ module Helix
     # Creates a string that associates to the class id.
     #
     # @example
-    #   Helix::Video.guid #=> "9e0989v234sf4"
+    #   video = Helix::Video.create({title: "My new title"})
+    #   video.guid #=> "9e0989v234sf4"
     #
     # @return [String] The guid for the class instance.
     def guid
