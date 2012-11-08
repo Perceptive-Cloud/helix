@@ -1,23 +1,21 @@
 require 'helix'
 
-helix = Helix::Config.new()
+config = Helix::Config.new()
 
 media_by_id = {
-  'album_id' => helix.album,
-  'image_id' => helix.image,
-  'track_id' => helix.track,
-  'video_id' => helix.video
+  'album_id' => Helix::Album,
+  'image_id' => Helix::Image,
+  'track_id' => Helix::Track,
+  'video_id' => Helix::Video
 }
-media_by_id.each do |guid_key,ref|
+media_by_id.each do |guid_key,klass|
 
-  klass = ref.class
-
-  items = ref.find_all(query: 'rest-client', status: :complete)
+  items = klass.find_all(config, query: 'rest-client', status: :complete)
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
 
-  media_id = helix.credentials[guid_key]
+  media_id = config.credentials[guid_key]
   next if media_id.nil?
-  item = ref.find(media_id)
+  item = klass.find(config, media_id)
   puts "Read #{klass.to_s} from guid #{media_id}: #{item.inspect}"
 
   if guid_key == 'video_id'

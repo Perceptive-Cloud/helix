@@ -17,15 +17,16 @@ module Helix
     # normally be called as Helix::Base.create
     #
     # @example
-    #   Helix::Video.create({title: "My new video"})
+    #   Helix::Video.create(config, {title: "My new video"})
     #
+    # @param [Helix::Config] config an instance of Helix::Config
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
-    def self.create(attributes={})
+    def self.create(config, attributes={})
       url       = config.build_url(action: :create_many, media_type: plural_media_type)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:ingest)))
       attrs     = JSON.parse(response)
-      self.new({attributes: attrs[media_type_sym]})
+      self.new(attributes: attrs[media_type_sym], config: config)
     end
 
     # Finds and returns a record in instance form for a class, through
@@ -33,30 +34,31 @@ module Helix
     #
     # @example
     #   video_guid  = "8e0701c142ab1"
-    #   video       = Helix::Video.find(video_guid)
+    #   video       = Helix::Video.find(config, video_guid)
     #
+    # @param [Helix::Config] config an instance of Helix::Config
     # @param [String] guid an id in guid form.
     # @return [Base] An instance of Helix::Base
-    def find(guid)
-      self.attributes          ||= {}
-      self.attributes[guid_name] = guid
-      self.load
+    def self.find(config, guid)
+      item = self.new(attributes: { guid_name => guid }, config: config)
+      item.load
     end
 
     # Fetches all accessible records, places them into instances, and returns
     # them as an array.
     #
     # @example
-    #   Helix::Video.find_all #=> [video1,video2]
+    #   Helix::Video.find_all(config, query: 'string_to_match') #=> [video1,video2]
     #
+    # @param [Helix::Config] config an instance of Helix::Config
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
-    def find_all(opts)
+    def self.find_all(config, opts)
       url          = config.build_url(format: :json)
       raw_response = config.get_response(url, opts.merge(sig_type: :view))
       data_sets    = raw_response[plural_media_type]
       return [] if data_sets.nil?
-      data_sets.map { |attrs| self.class.new(attributes: attrs) }
+      data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
     # Creates a string that associates to the class id.
