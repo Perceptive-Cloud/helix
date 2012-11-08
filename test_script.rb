@@ -1,6 +1,6 @@
 require 'helix'
 
-config = Helix::Config.instance
+config = Helix::Config.load('./helix.yml')
 
 media_by_id = {
   'album_id' => Helix::Album,

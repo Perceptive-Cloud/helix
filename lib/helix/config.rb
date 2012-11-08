@@ -18,9 +18,11 @@ module Helix
 
     attr_accessor :credentials
 
-    def initialize(yaml_file_location = DEFAULT_FILENAME)
-      @filename    = yaml_file_location
-      @credentials = YAML.load(File.open(@filename))
+    def self.load(yaml_file_location = DEFAULT_FILENAME)
+      config = self.instance
+      config.instance_variable_set(:@filename,    yaml_file_location)
+      config.instance_variable_set(:@credentials, YAML.load(File.open(yaml_file_location)))
+      config
     end
 
     # Creates additional URL stubbing that can be used in conjuction
