@@ -38,14 +38,14 @@ describe Helix::Config do
     let(:mock_obj)  { mock(klass)  }
     let(:mock_file) { mock(File)   }
     let(:mock_cred) { :credentials }
+    before(:each) do
+      klass.stub(:instance) { mock_obj  }
+      File.stub(:open)      { mock_file }
+      YAML.stub(:load)      { mock_cred }
+      mock_obj.stub(:instance_variable_set).with(:@credentials, anything)
+    end
     context "when given no arg" do
-      before(:each) do
-        klass.stub(:instance) { mock_obj  }
-        File.stub(:open)      { mock_file }
-        YAML.stub(:load)      { mock_cred }
-        mock_obj.stub(:instance_variable_set).with(:@filename,    klass::DEFAULT_FILENAME)
-        mock_obj.stub(:instance_variable_set).with(:@credentials, anything)
-      end
+      before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME) end
       it "should get the instance" do
         klass.should_receive(:instance) { mock_obj }
         klass.send(meth)
@@ -74,13 +74,7 @@ describe Helix::Config do
     end
     context "when given the arg 'some_file.yml'" do
       let(:yaml_arg) { 'some_file.yml' }
-      before(:each) do
-        klass.stub(:instance) { mock_obj  }
-        File.stub(:open)      { mock_file }
-        YAML.stub(:load)      { mock_cred }
-        mock_obj.stub(:instance_variable_set).with(:@filename,    yaml_arg)
-        mock_obj.stub(:instance_variable_set).with(:@credentials, anything)
-      end
+      before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, yaml_arg) end
       it "should get the instance" do
         klass.should_receive(:instance) { mock_obj }
         klass.send(meth, yaml_arg)
