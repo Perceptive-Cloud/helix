@@ -45,6 +45,10 @@ rake reinstall_helix
 rake reinstall_helix_rvm
 ```
 
+```ruby
+gem 'helix', git => git@github.com:Twistage/helix.git
+```
+
 
 
 Supported Ruby versions

@@ -1,5 +1,5 @@
 lib/helix.rb d1083fc7148340d1f681d4d503853154c6a4ed28
-lib/helix/base.rb 7e600fb53c41c75c56e11fa4140441bcc9b560d8
+lib/helix/base.rb 997e98a997af63e0a273a7adb61b6f625d05b99b
 lib/helix/album.rb 361ed396492b0df5b422db75ec1aaec68bff917a
 lib/helix/image.rb f19809da417c9244bbbde040c886490e8afbd122
 lib/helix/track.rb 13ae5aeaf8f5f41e11a463444ccde9082d999dd9
