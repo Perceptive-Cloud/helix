@@ -82,7 +82,7 @@ module Helix
     # Creates additional URL stubbing that can be used in conjuction
     # with the base_url to create RESTful URLs
     #
-    # @param [String] base_url the base part of the URL to be used
+    # @param [String] url the base part of the URL to be used
     # @param [Hash] opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
     def get_response(url, opts={})

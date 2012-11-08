@@ -20,7 +20,7 @@ module Helix
     #   Helix::Video.create({title: "My new video"})
     #
     # @param [Hash] attributes a hash containing the attributes used in the create
-    # @return [Helix::Base] An instance of Helix::Base
+    # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
       url       = config.build_url(action: :create_many, media_type: plural_media_type)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:ingest)))
@@ -36,7 +36,7 @@ module Helix
     #   video       = Helix::Video.find(video_guid)
     #
     # @param [String] guid an id in guid form.
-    # @return [Helix::Base] An instance of Helix::Base
+    # @return [Base] An instance of Helix::Base
     def find(guid)
       self.attributes          ||= {}
       self.attributes[guid_name] = guid
@@ -142,7 +142,7 @@ module Helix
     #   video.update({title: "My new title"})
     #
     # @param [Hash] opts a hash of attributes to update the instance with.
-    # @return [Helix::Base] Returns an instance of the class after update.
+    # @return [Base] Returns an instance of the class after update.
     def update(opts={})
       url    = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
       params = {signature: config.signature(:update)}.merge(media_type_sym => opts)

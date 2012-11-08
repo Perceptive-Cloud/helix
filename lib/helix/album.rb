@@ -16,7 +16,7 @@ module Helix
 
     # Currently update is unsupported for album. 
     # 
-    # @params [Hash] opts an array can be passed in so it remains functionally similiar to other update calls.
+    # @param [Hash] opts an array can be passed in so it remains functionally similiar to other update calls.
     # @return [Exception] "Albums Update is not currently supported."
     def update(opts={})
       raise "Albums Update is not currently supported."
