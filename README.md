@@ -98,7 +98,7 @@ album = Helix::Album.create!( title:       'New Album',
                               source:      'http://somesource.com/source.mp4'
                               company:     'some_company',
                               library:     'some_library')
-\#Update for album is not currently supported
+#Update for album is not currently supported
 another_album = Helix::Album.find(some_guid)
 another_album.destroy
 ```
