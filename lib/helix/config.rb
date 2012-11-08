@@ -18,6 +18,15 @@ module Helix
 
     attr_accessor :credentials
 
+    # Creates a singleton of it's self, setting the config
+    # to a specified YAML file. If no file is specified the default
+    # helix.yml file is used. 
+    #
+    # @example
+    #   Helix::Config.load("/some/path/my_yaml.yml")
+    #   video = Helix::Video.find("8e0701c142ab1") #Uses my_yaml.yml
+    #
+    # @param [String] yaml_file_location the yaml file used for config
     def self.load(yaml_file_location = DEFAULT_FILENAME)
       config = self.instance
       config.instance_variable_set(:@filename,    yaml_file_location)
