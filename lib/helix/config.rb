@@ -98,8 +98,8 @@ module Helix
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
       prepare_signature_memoization
-      memo_sig = @signature_for[license_key][sig_type]
-      return memo_sig if memo_sig and sig_not_expired?(sig_type)
+      memo_sig = existing_sig_for(sig_type)
+      return memo_sig if memo_sig
       unless VALID_SIG_TYPES.include?(sig_type)
         raise ArgumentError, error_message_for(sig_type)
       end
@@ -114,6 +114,11 @@ module Helix
       "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
     end
 
+    def existing_sig_for(sig_type)
+      return if sig_expired_for?(sig_type)
+      @signature_for[license_key][sig_type]
+    end
+
     def license_key
       @credentials['license_key']
     end
@@ -125,12 +130,14 @@ module Helix
       @signature_expiration_for[license_key] ||= {}
     end
 
-    def sig_not_expired?(sig_type)
-      @signature_expiration_for[license_key][sig_type] > Time.now
+    def sig_expired_for?(sig_type)
+      expires_at = @signature_expiration_for[license_key][sig_type]
+      return true if expires_at.nil?
+      expires_at <= Time.now
     end
 
     def url_for(sig_type)
-      "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
+      "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{license_key}&duration=#{SIG_DURATION}"
     end
 
   end
