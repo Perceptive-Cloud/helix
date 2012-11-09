@@ -17,7 +17,7 @@ module Helix
     # normally be called as Helix::Base.create
     #
     # @example
-    #   Helix::Video.create(config, {title: "My new video"})
+    #   Helix::Video.create({title: "My new video"})
     #
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
@@ -34,7 +34,7 @@ module Helix
     #
     # @example
     #   video_guid  = "8e0701c142ab1"
-    #   video       = Helix::Video.find(config, video_guid)
+    #   video       = Helix::Video.find(video_guid)
     #
     # @param [String] guid an id in guid form.
     # @return [Base] An instance of Helix::Base
@@ -48,7 +48,7 @@ module Helix
     # them as an array.
     #
     # @example
-    #   Helix::Video.find_all(config, query: 'string_to_match') #=> [video1,video2]
+    #   Helix::Video.find_all(query: 'string_to_match') #=> [video1,video2]
     #
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
