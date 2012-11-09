@@ -339,11 +339,12 @@ describe Helix::Config do
       end
     end
     shared_examples_for "gets fresh sig" do |sig_type,url|
-      let(:sig_for)     { mock(Hash, :[] => {}) }
-      let(:sig_exp_for) { mock(Hash, :[] => {}) }
+      let(:sig_for)     { {license_key => {}} }
+      let(:sig_exp_for) { {license_key => {}} }
       before(:each) do
         obj.instance_variable_set(:@signature_for,            sig_for)
         obj.instance_variable_set(:@signature_expiration_for, sig_exp_for)
+        RestClient.stub(:get) { :fresh_sig }
       end
       it "should call RestClient.get(#{url})" do
         set_stubs(obj)
@@ -351,22 +352,17 @@ describe Helix::Config do
         RestClient.should_receive(:get).with(url) { :fresh_sig }
         expect(obj.send(meth, sig_type)).to be(:fresh_sig)
       end
-=begin
       it "sets a new sig expiration time" do
         mock_time = mock(Time)
         Time.should_receive(:now) { mock_time }
         mock_time.should_receive(:+).with(klass::TIME_OFFSET) { :new_time }
-        sig_exp_for_lk = mock(Hash)
-        sig_exp_for.should_receive(:[]=).with(license_key) { sig_exp_for_lk }
-        sig_exp_for_lk.should_receive(:[]=).with(:new_time)
         obj.send(meth, sig_type)
+        expect(obj.instance_variable_get(:@signature_expiration_for)[license_key][sig_type]).to eq(:new_time)
       end
       it "memoizes the freshly-acquired sig" do
-        RestClient.stub(:get).with(url) { :fresh_sig }
-        sig_for.should_receive(:[]=).with(:fresh_sig)
         obj.send(meth, sig_type)
+        expect(obj.instance_variable_get(:@signature_for)[license_key][sig_type]).to eq(:fresh_sig)
       end
-=end
     end
     [ :ingest, :update, :view ].each do |sig_type|
       context "when given :#{sig_type}" do
