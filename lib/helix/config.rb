@@ -13,6 +13,8 @@ module Helix
     unless defined?(self::DEFAULT_FILENAME)
       DEFAULT_FILENAME = './helix.yml'
       SCOPES           = %w(reseller company library)
+      SIG_DURATION     = 1200 # in minutes
+      TIME_OFFSET      = 1000 * 60 # 1000 minutes, lower to give some margin of error
       VALID_SIG_TYPES  = [ :ingest, :update, :view ]
     end
 
@@ -95,13 +97,17 @@ module Helix
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
+      @signature_for            ||= {}
+      @signature_expiration_for ||= {}
+      return @signature_for[sig_type] if @signature_for[sig_type] and @signature_expiration_for[sig_type] > Time.now
       # OPTIMIZE: Memoize (if it's valid)
       unless VALID_SIG_TYPES.include?(sig_type)
         raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
       end
 
-      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=1200"
-      @signature = RestClient.get(url)
+      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
+      @signature_expiration_for[sig_type] = Time.now + TIME_OFFSET
+      @signature_for[sig_type] = RestClient.get(url)
     end
 
   end
