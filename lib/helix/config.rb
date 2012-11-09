@@ -97,17 +97,40 @@ module Helix
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
-      @signature_for            ||= {}
-      @signature_expiration_for ||= {}
-      return @signature_for[sig_type] if @signature_for[sig_type] and @signature_expiration_for[sig_type] > Time.now
-      # OPTIMIZE: Memoize (if it's valid)
+      prepare_signature_memoization
+      memo_sig = @signature_for[license_key][sig_type]
+      return memo_sig if memo_sig and sig_not_expired?(sig_type)
       unless VALID_SIG_TYPES.include?(sig_type)
-        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+        raise ArgumentError, error_message_for(sig_type)
       end
 
-      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
-      @signature_expiration_for[sig_type] = Time.now + TIME_OFFSET
-      @signature_for[sig_type] = RestClient.get(url)
+      @signature_expiration_for[license_key][sig_type] = Time.now + TIME_OFFSET
+      @signature_for[license_key][sig_type] = RestClient.get(url_for(sig_type))
+    end
+
+    private
+
+    def error_message_for(sig_type)
+      "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+    end
+
+    def license_key
+      @credentials['license_key']
+    end
+
+    def prepare_signature_memoization
+      @signature_for                         ||= {}
+      @signature_expiration_for              ||= {}
+      @signature_for[license_key]            ||= {}
+      @signature_expiration_for[license_key] ||= {}
+    end
+
+    def sig_not_expired?(sig_type)
+      @signature_expiration_for[license_key][sig_type] > Time.now
+    end
+
+    def url_for(sig_type)
+      "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
     end
 
   end

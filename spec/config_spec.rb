@@ -258,6 +258,9 @@ describe Helix::Config do
   describe "#signature" do
     let(:meth)  { :signature }
     subject     { obj.method(meth) }
+    it "should memoize" do
+      raise("cover the memoization from a2b837407a45f20a99bc59a2b2571cbb1d680900")
+    end
     its(:arity) { should eq(1) }
     let(:mock_response) { mock(Object) }
     context "when given :some_invalid_sig_type" do
@@ -299,4 +302,31 @@ describe Helix::Config do
     end
   end
 
+  describe "#sig_not_expired?" do
+    let(:meth) { :sig_not_expired? }
+    let(:license_key) { :a_license_key }
+    before(:each) do obj.stub(:license_key) { :a_license_key } end
+
+    subject     { obj.method(meth) }
+    its(:arity) { should be(1) }
+
+    context "when given a sig_type" do
+      let(:sig_type) { :a_sig_type }
+      let(:mock_expired) { mock(Time) }
+      let(:mock_now)     { mock(Time) }
+      before(:each) do
+        obj.instance_variable_set(:@signature_expiration_for, {license_key => {sig_type => mock_expired}})
+        Time.stub(:now) { mock_now }
+      end
+      subject { obj.send(meth, sig_type) }
+      context "when @signature_expiration_for[license_key][sig_type] > Time.now is true" do
+        before(:each) do mock_expired.should_receive(:>).with(mock_now) { true } end
+        it { should be true }
+      end
+      context "when @signature_expiration_for[license_key][sig_type] > Time.now is false" do
+        before(:each) do mock_expired.should_receive(:>).with(mock_now) { false } end
+        it { should be false }
+      end
+    end
+  end
 end
