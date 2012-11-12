@@ -1,0 +1,41 @@
+# Used like
+# reek -q -c config/metric-fu/reek.yml app/**/*.rb lib/**/*.rb > reek.out
+
+BooleanParameter:
+  enabled: false
+ClassVariable:
+  enabled: false
+ControlCouple:
+  enabled: false
+DataClump:
+  max_copies: 5 # back down to 2
+  min_clump_size: 3 # back down to 2
+Duplication:
+  enabled: false
+FeatureEnvy:
+  enabled: false # Keep off, as it complains about functional code
+IrresponsibleModule:
+  enabled: false # Keep off, as it complains about Rails standard practice of no module comments
+LargeClass:
+  enabled: false
+LongMethod:
+  max_statements: 50 # eventually lower this
+LongParameterList:
+  enabled: false
+NestedIterators:
+  enabled: false
+SimulatedPolymorphism:
+  enabled: false
+UncommunicativeMethodName:
+  accept: ['copy_log_to_s3', 'doc_h2', 'doc_h3', 'error_404', 'error_500', 'init_ec2', 'install_ec2',
+    'prepare_ec2', 'render_404', 'save_instance_info_to_S3', 'save_origin_info_to_S3', 'save_to_s3'
+  ]
+UncommunicativeModuleName:
+  accept: ['FP3', 'id3']
+UncommunicativeParameterName:
+  enabled: false # probably re-enable
+UncommunicativeVariableName:
+  enabled: false # complains about short names, fairly common inside blocks
+UtilityFunction:
+  enabled: false # perhaps keep off, as it complains about functional code
+  # perhaps re-enable if it only does so in classes, but not in modules

@@ -53,12 +53,16 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
     def self.find_all(opts)
+      data_sets = get_data_sets(opts)
+      return [] if data_sets.nil?
+      data_sets.map { |attrs| self.new(attributes: attrs) }
+    end
+
+    def self.get_data_sets(opts)
       config       = Helix::Config.instance
       url          = config.build_url(format: :json)
       raw_response = config.get_response(url, opts.merge(sig_type: :view))
       data_sets    = raw_response[plural_media_type]
-      return [] if data_sets.nil?
-      data_sets.map { |attrs| self.new(attributes: attrs) }
     end
 
     # Creates a string that associates to the class id.
@@ -98,8 +102,9 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      url = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
-      RestClient.delete(url, params: {signature: config.signature(:update)})
+      memo_cfg = config
+      url      = memo_cfg.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      RestClient.delete(url, params: {signature: memo_cfg.signature(:update)})
     end
 
     # Creates a string that associates to the class id.
@@ -118,8 +123,9 @@ module Helix
     # @param [Hash] opts a hash of attributes to update the instance with.
     # @return [Base] Returns an instance of the class.
     def load(opts={})
-      url         = config.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
-      raw_attrs   = config.get_response(url, opts.merge(sig_type: :view))
+      memo_cfg    = config
+      url         = memo_cfg.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
+      raw_attrs   = memo_cfg.get_response(url, opts.merge(sig_type: :view))
       @attributes = massage_raw_attrs(raw_attrs)
       self
     end
@@ -146,8 +152,9 @@ module Helix
     # @param [Hash] opts a hash of attributes to update the instance with.
     # @return [Base] Returns an instance of the class after update.
     def update(opts={})
-      url    = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
-      params = {signature: config.signature(:update)}.merge(media_type_sym => opts)
+      memo_cfg = config
+      url      = memo_cfg.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      params   = {signature: memo_cfg.signature(:update)}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self
     end

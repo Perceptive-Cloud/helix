@@ -67,10 +67,9 @@ module Helix
     # @param [Hash] opts a hash of options for building URL
     # @return [String] The base RESTful URL string object
     def get_base_url(opts)
-      base_url  = credentials['site']
-      reseller, company, library = SCOPES.map do |scope|
-        credentials[scope]
-      end
+      creds     = credentials
+      base_url  = creds['site']
+      reseller, company, library = SCOPES.map { |scope| creds[scope] }
       base_url += "/resellers/#{reseller}" if reseller
       if company
         base_url += "/companies/#{company}"
@@ -104,8 +103,9 @@ module Helix
         raise ArgumentError, error_message_for(sig_type)
       end
 
-      @signature_expiration_for[license_key][sig_type] = Time.now + TIME_OFFSET
-      @signature_for[license_key][sig_type] = RestClient.get(url_for(sig_type))
+      lk = license_key
+      @signature_expiration_for[lk][sig_type] = Time.now + TIME_OFFSET
+      @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type))
     end
 
     private
@@ -124,10 +124,11 @@ module Helix
     end
 
     def prepare_signature_memoization
-      @signature_for                         ||= {}
-      @signature_expiration_for              ||= {}
-      @signature_for[license_key]            ||= {}
-      @signature_expiration_for[license_key] ||= {}
+      lk = license_key
+      @signature_for                ||= {}
+      @signature_expiration_for     ||= {}
+      @signature_for[lk]            ||= {}
+      @signature_expiration_for[lk] ||= {}
     end
 
     def sig_expired_for?(sig_type)
