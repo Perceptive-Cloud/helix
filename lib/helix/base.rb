@@ -1,6 +1,7 @@
 require 'rest_client'
 require 'json'
 require 'yaml'
+require 'crack'
 
 module Helix
   class Base
@@ -23,10 +24,21 @@ module Helix
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
       config    = Helix::Config.instance
-      url       = config.build_url(action: :create_many, media_type: plural_media_type)
-      response  = RestClient.post(url, attributes.merge(signature: config.signature(:ingest)))
-      attrs     = JSON.parse(response)
-      self.new(attributes: attrs[media_type_sym], config: config)
+      #xml       = '<?xml version="1.0" encoding="UTF-8"?>
+      #              <add>
+      #                <list>
+      #                  <entry>
+      #                    <src>http://www.minhreigen.com/videos/play.mp4</src>
+      #                    <title>Summer camp dance</title>
+      #                    <description>This one is the best</description>
+      #                  </entry>
+      #                </list>
+      #              </add>'.gsub!(/\s{2,}|\n/, "")
+      url       = config.build_url(media_type:  plural_media_type,
+                                   format:      :xml)
+      response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
+      attrs     = Crack::XML.parse(response)
+      self.new(attributes: attrs[media_type_sym.to_s], config: config)
     end
 
     # Finds and returns a record in instance form for a class, through

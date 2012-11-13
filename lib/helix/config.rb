@@ -105,7 +105,7 @@ module Helix
         raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
       end
 
-      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
+      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}&contributor=helix&library_id=default"
       @signature_expiration_for[sig_type] = Time.now + TIME_OFFSET
       @signature_for[sig_type] = RestClient.get(url)
     end
