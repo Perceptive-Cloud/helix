@@ -67,10 +67,9 @@ module Helix
     # @param [Hash] opts a hash of options for building URL
     # @return [String] The base RESTful URL string object
     def get_base_url(opts)
-      base_url  = credentials['site']
-      reseller, company, library = SCOPES.map do |scope|
-        credentials[scope]
-      end
+      creds     = credentials
+      base_url  = creds['site']
+      reseller, company, library = SCOPES.map { |scope| creds[scope] }
       base_url += "/resellers/#{reseller}" if reseller
       if company
         base_url += "/companies/#{company}"
@@ -97,17 +96,49 @@ module Helix
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type)
-      @signature_for            ||= {}
-      @signature_expiration_for ||= {}
-      return @signature_for[sig_type] if @signature_for[sig_type] and @signature_expiration_for[sig_type] > Time.now
-      # OPTIMIZE: Memoize (if it's valid)
+      prepare_signature_memoization
+      memo_sig = existing_sig_for(sig_type)
+      return memo_sig if memo_sig
       unless VALID_SIG_TYPES.include?(sig_type)
-        raise ArgumentError, "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+        raise ArgumentError, error_message_for(sig_type)
       end
 
-      url = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}&contributor=helix&library_id=default"
-      @signature_expiration_for[sig_type] = Time.now + TIME_OFFSET
-      @signature_for[sig_type] = RestClient.get(url)
+      lk = license_key
+      @signature_expiration_for[lk][sig_type] = Time.now + TIME_OFFSET
+      @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type))
+    end
+
+    private
+
+    def error_message_for(sig_type)
+      "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+    end
+
+    def existing_sig_for(sig_type)
+      return if sig_expired_for?(sig_type)
+      @signature_for[license_key][sig_type]
+    end
+
+    def license_key
+      @credentials['license_key']
+    end
+
+    def prepare_signature_memoization
+      lk = license_key
+      @signature_for                ||= {}
+      @signature_expiration_for     ||= {}
+      @signature_for[lk]            ||= {}
+      @signature_expiration_for[lk] ||= {}
+    end
+
+    def sig_expired_for?(sig_type)
+      expires_at = @signature_expiration_for[license_key][sig_type]
+      return true if expires_at.nil?
+      expires_at <= Time.now
+    end
+
+    def url_for(sig_type)
+      "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}&contributor=helix&library_id=default">>>>>>> 6b3a9075c15aaf52d95860936cd0577a32f5454a
     end
 
   end

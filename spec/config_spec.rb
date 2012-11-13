@@ -237,6 +237,37 @@ describe Helix::Config do
     end
   end
 
+  describe "#existing_sig_for" do
+    let(:meth)  { :existing_sig_for }
+
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(1) }
+
+    context "when given a sig_type" do
+      let(:sig_type) { :a_sig_type }
+      subject { obj.send(meth, sig_type) }
+      context "and sig_expired_for?(sig_type) is true" do
+        before(:each) do obj.stub(:sig_expired_for?).with(sig_type) { true } end
+        it { should be(nil) }
+      end
+      context "and sig_expired_for?(sig_type) is false" do
+        let(:license_key) { :a_license_key }
+        before(:each) do
+          obj.stub(:sig_expired_for?).with(sig_type) { false }
+          obj.stub(:license_key) { license_key }
+        end
+        it "should return @signature_for[license_key][sig_type]" do
+          mock_sig_for    = {}
+          mock_sig_for_lk = {}
+          obj.instance_variable_set(:@signature_for, mock_sig_for)
+          mock_sig_for.should_receive(:[]).with(license_key) { mock_sig_for_lk }
+          mock_sig_for_lk.should_receive(:[]).with(sig_type) { :memoized_sig }
+          expect(obj.send(meth, sig_type)).to be(:memoized_sig)
+        end
+      end
+    end
+  end
+
   describe "#get_response" do
     let(:meth)  { :get_response }
     subject     { obj.method(meth) }
@@ -255,48 +286,134 @@ describe Helix::Config do
     end
   end
 
+  describe "#license_key" do
+    let(:meth)  { :license_key }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(0) }
+    it "should return @credentials['license_key']" do
+      obj.instance_variable_set(:@credentials, {'license_key' => :lk})
+      expect(obj.send(meth)).to be(:lk)
+    end
+  end
+
+  describe "#prepare_signature_memoization" do
+    let(:meth)  { :prepare_signature_memoization }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(0) }
+    before(:each) do obj.stub(:license_key) { :lk } end
+    it "should set @signature_for[license_key] to {}" do
+      obj.send(meth)
+      expect(obj.instance_variable_get(:@signature_for)).to eq(lk: {})
+    end
+    it "should set @signature_expiration_for[license_key] to {}" do
+      obj.send(meth)
+      expect(obj.instance_variable_get(:@signature_expiration_for)).to eq(lk: {})
+    end
+  end
+
   describe "#signature" do
     let(:meth)  { :signature }
+
     subject     { obj.method(meth) }
     its(:arity) { should eq(1) }
+
+    it "should prepare_signature_memoization" do
+      obj.should_receive(:prepare_signature_memoization)
+      obj.stub(:existing_sig_for) { :some_sig }
+      obj.send(meth, :any_sig_type)
+    end
+
+    let(:license_key) { :a_license_key }
+    before(:each) do
+      obj.stub(:license_key) { license_key }
+      obj.stub(:prepare_signature_memoization)
+    end
+
     let(:mock_response) { mock(Object) }
     context "when given :some_invalid_sig_type" do
       let(:sig_type) { :some_invalid_sig_type }
       it "should raise an ArgumentError" do
+        obj.stub(:existing_sig_for) { nil }
         msg = "I don't understand 'some_invalid_sig_type'. Please give me one of :ingest, :update, or :view."
         expect(lambda { obj.send(meth, sig_type) }).to raise_error(ArgumentError, msg)
       end
     end
-    context "when given :ingest" do
-      let(:sig_type) { :ingest }
-      url = %q[#{self.credentials['site']}/api/ingest_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
+    shared_examples_for "gets fresh sig" do |sig_type,url|
+      let(:sig_for)     { {license_key => {}} }
+      let(:sig_exp_for) { {license_key => {}} }
+      before(:each) do
+        obj.instance_variable_set(:@signature_for,            sig_for)
+        obj.instance_variable_set(:@signature_expiration_for, sig_exp_for)
+        RestClient.stub(:get) { :fresh_sig }
+      end
       it "should call RestClient.get(#{url})" do
         set_stubs(obj)
-        url = "#{obj.credentials['site']}/api/ingest_key?licenseKey=#{obj.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(obj.send(meth, sig_type)).to be(:expected)
+        url = "#{obj.credentials['site']}/api/#{sig_type}_key?licenseKey=#{license_key}&duration=1200"
+        RestClient.should_receive(:get).with(url) { :fresh_sig }
+        expect(obj.send(meth, sig_type)).to be(:fresh_sig)
+      end
+      it "sets a new sig expiration time" do
+        mock_time = mock(Time)
+        Time.should_receive(:now) { mock_time }
+        mock_time.should_receive(:+).with(klass::TIME_OFFSET) { :new_time }
+        obj.send(meth, sig_type)
+        expect(obj.instance_variable_get(:@signature_expiration_for)[license_key][sig_type]).to eq(:new_time)
+      end
+      it "memoizes the freshly-acquired sig" do
+        obj.send(meth, sig_type)
+        expect(obj.instance_variable_get(:@signature_for)[license_key][sig_type]).to eq(:fresh_sig)
       end
     end
-    context "when given :update" do
-      let(:sig_type) { :update }
-      url = %q[#{self.credentials['site']}/api/update_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
-      it "should call RestClient.get(#{url})" do
-        set_stubs(obj)
-        url = "#{obj.credentials['site']}/api/update_key?licenseKey=#{obj.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(obj.send(meth, sig_type)).to be(:expected)
-      end
-    end
-    context "when given :view" do
-      let(:sig_type) { :view }
-      url = %q[#{self.credentials['site']}/api/view_key?licenseKey=#{self.credentials['license_key']}&duration=1200]
-      it "should call RestClient.get(#{url})" do
-        set_stubs(obj)
-        url = "#{obj.credentials['site']}/api/view_key?licenseKey=#{obj.credentials['license_key']}&duration=1200"
-        RestClient.should_receive(:get).with(url) { :expected }
-        expect(obj.send(meth, sig_type)).to be(:expected)
+    [ :ingest, :update, :view ].each do |sig_type|
+      context "when given :#{sig_type}" do
+        url = %q[#{self.credentials['site']}/api/] + sig_type.to_s +
+          %q[_key?licenseKey=#{self.license_key}&duration=1200]
+        context "and there is an existing_sig_for(sig_type)" do
+          before(:each) do obj.stub(:existing_sig_for).with(sig_type) { :memoized_sig } end
+          it "should return the existing sig" do
+            RestClient.should_not_receive(:get)
+            expect(obj.send(meth, sig_type)).to be(:memoized_sig)
+          end
+        end
+        context "and there is NOT an existing_sig_for(sig_type)" do
+          before(:each) do obj.stub(:existing_sig_for).with(sig_type) { nil } end
+          it_behaves_like "gets fresh sig", sig_type, url
+        end
       end
     end
   end
 
+  describe "#sig_expired_for?" do
+    let(:meth) { :sig_expired_for? }
+    let(:license_key) { :a_license_key }
+    before(:each) do obj.stub(:license_key) { :a_license_key } end
+
+    subject     { obj.method(meth) }
+    its(:arity) { should be(1) }
+
+    context "when given a sig_type" do
+      let(:sig_type) { :a_sig_type }
+      let(:mock_expired) { mock(Time) }
+      let(:mock_now)     { mock(Time) }
+      subject { obj.send(meth, sig_type) }
+      context "when @signature_expiration_for[license_key][sig_type] is nil" do
+        before(:each) do obj.instance_variable_set(:@signature_expiration_for, {license_key => {sig_type => nil}}) end
+        it { should be true }
+      end
+      context "when @signature_expiration_for[license_key][sig_type] is NOT nil" do
+        before(:each) do
+          obj.instance_variable_set(:@signature_expiration_for, {license_key => {sig_type => mock_expired}})
+          Time.stub(:now) { mock_now }
+        end
+        context "when @signature_expiration_for[license_key][sig_type] <= Time.now is false" do
+          before(:each) do mock_expired.should_receive(:<=).with(mock_now) { false } end
+          it { should be false }
+        end
+        context "when @signature_expiration_for[license_key][sig_type] <= Time.now is true" do
+          before(:each) do mock_expired.should_receive(:<=).with(mock_now) { true } end
+          it { should be true }
+        end
+      end
+    end
+  end
 end
