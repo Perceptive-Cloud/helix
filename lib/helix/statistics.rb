@@ -47,6 +47,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.image_delivery_stats(opts={})
+      self.delivery_stats(:image, opts)
     end
 
     # @example
