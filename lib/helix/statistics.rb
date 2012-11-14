@@ -25,13 +25,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.audio_delivery_stats(opts={})
-      memo_cfg = Helix::Config.instance
-      guid     = opts.delete(:track_id)
-      url_opts = guid ?
-        {guid: guid, media_type: :tracks, action: :statistics} :
-        {media_type: :statistics, action: :track_delivery}
-      url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      self.delivery_stats(:track, opts)
     end
 
     # @example
@@ -91,13 +85,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.video_delivery_stats(opts={})
-      memo_cfg = Helix::Config.instance
-      guid     = opts.delete(:video_id)
-      url_opts = guid ?
-        {guid: guid, media_type: :videos, action: :statistics} :
-        {media_type: :statistics, action: :video_delivery}
-      url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      self.delivery_stats(:video, opts)
     end
 
     # @example
@@ -112,6 +100,18 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.video_storage_stats(opts={})
+    end
+
+    private
+
+    def self.delivery_stats(media_type, opts)
+      memo_cfg = Helix::Config.instance
+      guid     = opts.delete("#{media_type}_id".to_sym)
+      url_opts = guid ?
+        {guid: guid, media_type: "#{media_type}s".to_sym, action: :statistics} :
+        {media_type: :statistics, action: "#{media_type}_delivery".to_sym}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
     end
 
   end
