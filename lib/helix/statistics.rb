@@ -40,10 +40,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.audio_storage(opts={})
-      memo_cfg = Helix::Config.instance
-      url_opts = {media_type: :statistics, action: "track_ingest/disk_usage".to_sym}
-      url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      self.storage(:track, opts)
     end
 
     # @example
@@ -59,10 +56,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.image_storage(opts={})
-      memo_cfg = Helix::Config.instance
-      url_opts = {media_type: :statistics, action: "image_ingest/disk_usage".to_sym}
-      url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      self.storage(:image, opts)
     end
 
     # @example
@@ -110,10 +104,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.video_storage(opts={})
-      memo_cfg = Helix::Config.instance
-      url_opts = {media_type: :statistics, action: "video_publish/disk_usage".to_sym}
-      url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      self.storage(:video, opts)
     end
 
     private
@@ -126,6 +117,21 @@ module Helix
         {media_type: :statistics, action: "#{media_type}_delivery".to_sym}
       url = memo_cfg.build_url(url_opts)
       memo_cfg.get_response(url, opts.merge(sig_type: :view))
+    end
+
+    def self.storage(media_type, opts)
+      memo_cfg = Helix::Config.instance
+      url_opts = {media_type: :statistics, action: storage_action_for(media_type)}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+    end
+
+    def self.storage_action_for(media_type)
+      {
+        track: "track_ingest/disk_usage",
+        image: "image_ingest/disk_usage",
+        video: "video_publish/disk_usage",
+      }[media_type].to_sym
     end
 
   end
