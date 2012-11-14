@@ -22,8 +22,8 @@ describe Helix::Statistics do
 
       next if STATS_IMAGE_TYPES.include?(media_type) and stats_type == 'ingest'
 
-      describe ".#{media_type}_#{stats_type}_stats" do
-        let(:meth)  { "#{media_type}_#{stats_type}_stats" }
+      describe ".#{media_type}_#{stats_type}" do
+        let(:meth)  { "#{media_type}_#{stats_type}" }
         let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: :response) }
         before(:each) do Helix::Config.stub(:instance) { mock_config } end
 
@@ -94,29 +94,29 @@ describe Helix::Statistics do
       end
     end
 
-    describe ".track_#{stats_type}_stats" do
-      let(:meth)  { "track_#{stats_type}_stats" }
+    describe ".track_#{stats_type}" do
+      let(:meth)  { "track_#{stats_type}" }
 
       subject     { mod.method(meth) }
       its(:arity) { should eq(-1)    }
 
       context "when given no arg" do
-        it "should call audio_#{stats_type}_stats({})" do
-          mod.should_receive("audio_#{stats_type}_stats").with({}) { :expected }
+        it "should call audio_#{stats_type}({})" do
+          mod.should_receive("audio_#{stats_type}").with({}) { :expected }
           expect(mod.send(meth)).to be(:expected)
         end
       end
 
       context "when given {}" do
-        it "should call audio_#{stats_type}_stats({})" do
-          mod.should_receive("audio_#{stats_type}_stats").with({}) { :expected }
+        it "should call audio_#{stats_type}({})" do
+          mod.should_receive("audio_#{stats_type}").with({}) { :expected }
           expect(mod.send(meth, {})).to be(:expected)
         end
       end
 
       context "when given :some_opts" do
-        it "should call audio_#{stats_type}_stats(:some_opts)" do
-          mod.should_receive("audio_#{stats_type}_stats").with(:some_opts) { :expected }
+        it "should call audio_#{stats_type}(:some_opts)" do
+          mod.should_receive("audio_#{stats_type}").with(:some_opts) { :expected }
           expect(mod.send(meth, :some_opts)).to be(:expected)
         end
       end
@@ -124,29 +124,29 @@ describe Helix::Statistics do
     end
 
     next if stats_type == 'ingest'
-    describe ".album_#{stats_type}_stats" do
-      let(:meth)  { "album_#{stats_type}_stats" }
+    describe ".album_#{stats_type}" do
+      let(:meth)  { "album_#{stats_type}" }
 
       subject     { mod.method(meth) }
       its(:arity) { should eq(-1)    }
 
       context "when given no arg" do
-        it "should call image_#{stats_type}_stats({})" do
-          mod.should_receive("image_#{stats_type}_stats").with({}) { :expected }
+        it "should call image_#{stats_type}({})" do
+          mod.should_receive("image_#{stats_type}").with({}) { :expected }
           expect(mod.send(meth)).to be(:expected)
         end
       end
 
       context "when given {}" do
-        it "should call image_#{stats_type}_stats({})" do
-          mod.should_receive("image_#{stats_type}_stats").with({}) { :expected }
+        it "should call image_#{stats_type}({})" do
+          mod.should_receive("image_#{stats_type}").with({}) { :expected }
           expect(mod.send(meth, {})).to be(:expected)
         end
       end
 
       context "when given :some_opts" do
-        it "should call image_#{stats_type}_stats(:some_opts)" do
-          mod.should_receive("image_#{stats_type}_stats").with(:some_opts) { :expected }
+        it "should call image_#{stats_type}(:some_opts)" do
+          mod.should_receive("image_#{stats_type}").with(:some_opts) { :expected }
           expect(mod.send(meth, :some_opts)).to be(:expected)
         end
       end
