@@ -5,6 +5,22 @@ module Helix
   module Statistics
 
     # @example
+    #   Helix::Statistics.album_delivery_stats #=> Hash of stats data
+    #
+    # @return [Hash] Statistics information.
+    def self.album_delivery_stats(opts={})
+      self.image_delivery_stats(opts)
+    end
+
+    # @example
+    #   Helix::Statistics.album_storage_stats #=> Hash of stats data
+    #
+    # @return [Hash] Statistics information.
+    def self.album_storage_stats(opts={})
+      self.image_storage_stats(opts)
+    end
+
+    # @example
     #   Helix::Statistics.audio_delivery_stats #=> Hash of stats data
     #
     # @return [Hash] Statistics information.

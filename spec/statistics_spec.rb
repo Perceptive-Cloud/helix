@@ -52,6 +52,36 @@ describe Helix::Statistics do
 
     end
 
+    next if stats_type == 'ingest'
+    describe ".album_#{stats_type}_stats" do
+      let(:meth)  { "album_#{stats_type}_stats" }
+
+      subject     { mod.method(meth) }
+      its(:arity) { should eq(-1)    }
+
+      context "when given no arg" do
+        it "should call image_#{stats_type}_stats({})" do
+          mod.should_receive("image_#{stats_type}_stats").with({}) { :expected }
+          expect(mod.send(meth)).to be(:expected)
+        end
+      end
+
+      context "when given {}" do
+        it "should call image_#{stats_type}_stats({})" do
+          mod.should_receive("image_#{stats_type}_stats").with({}) { :expected }
+          expect(mod.send(meth, {})).to be(:expected)
+        end
+      end
+
+      context "when given :some_opts" do
+        it "should call image_#{stats_type}_stats(:some_opts)" do
+          mod.should_receive("image_#{stats_type}_stats").with(:some_opts) { :expected }
+          expect(mod.send(meth, :some_opts)).to be(:expected)
+        end
+      end
+
+    end
+
   end
 
 end
