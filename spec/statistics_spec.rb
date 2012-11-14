@@ -22,6 +22,46 @@ describe Helix::Statistics do
         subject     { mod.method(meth) }
         its(:arity) { should eq(-1)    }
 
+        if media_type == 'audio' and stats_type == 'delivery'
+          context "when given opts containing a :track_id" do
+            let(:opts) { {group: :daily, track_id: :the_track_id} }
+            it "should refer to the Helix::Config instance" do
+              Helix::Config.should_receive(:instance) { mock_config }
+              mod.send(meth, opts)
+            end
+            it "should delete :track_id from opts" do
+              opts.should_receive(:delete).with(:track_id) { :the_track_id }
+              mod.send(meth, opts)
+            end
+            it "should call config.build_url(guid: the_track_id, media_type: :tracks, action: :statistics)" do
+              mock_config.should_receive(:build_url).with({guid: :the_track_id, media_type: :tracks, action: :statistics}) { :built_url }
+              mod.send(meth, opts)
+            end
+            it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
+              mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
+              expect(mod.send(meth, opts)).to eq(:response)
+            end
+          end
+          context "when given opts NOT containing a :track_id" do
+            let(:opts) { {group: :daily} }
+            it "should refer to the Helix::Config instance" do
+              Helix::Config.should_receive(:instance) { mock_config }
+              mod.send(meth, opts)
+            end
+            it "should (fail to) delete :track_id from opts" do
+              opts.should_receive(:delete).with(:track_id) { nil }
+              mod.send(meth, opts)
+            end
+            it "should call config.build_url(media_type: :statistics, action: :track_delivery)" do
+              mock_config.should_receive(:build_url).with({media_type: :statistics, action: :track_delivery}) { :built_url }
+              mod.send(meth, opts)
+            end
+            it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
+              mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
+              expect(mod.send(meth, opts)).to eq(:response)
+            end
+          end
+        end
         if media_type == 'video' and stats_type == 'delivery'
           context "when given opts containing a :video_id" do
             let(:opts) { {group: :daily, video_id: :the_video_id} }

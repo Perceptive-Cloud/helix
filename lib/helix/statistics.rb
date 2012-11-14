@@ -25,6 +25,13 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.audio_delivery_stats(opts={})
+      memo_cfg = Helix::Config.instance
+      guid     = opts.delete(:track_id)
+      url_opts = guid ?
+        {guid: guid, media_type: :tracks, action: :statistics} :
+        {media_type: :statistics, action: :track_delivery}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
     end
 
     # @example
