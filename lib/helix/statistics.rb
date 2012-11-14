@@ -40,6 +40,10 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.audio_storage_stats(opts={})
+      memo_cfg = Helix::Config.instance
+      url_opts = {media_type: :statistics, action: "track_ingest/disk_usage".to_sym}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
     end
 
     # @example
@@ -55,6 +59,10 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.image_storage_stats(opts={})
+      memo_cfg = Helix::Config.instance
+      url_opts = {media_type: :statistics, action: "image_ingest/disk_usage".to_sym}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
     end
 
     # @example
@@ -94,6 +102,7 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.video_ingest_stats(opts={})
+      # encode, source, or breakdown
     end
 
     # @example
@@ -101,6 +110,10 @@ module Helix
     #
     # @return [Hash] Statistics information.
     def self.video_storage_stats(opts={})
+      memo_cfg = Helix::Config.instance
+      url_opts = {media_type: :statistics, action: "video_publish/disk_usage".to_sym}
+      url = memo_cfg.build_url(url_opts)
+      memo_cfg.get_response(url, opts.merge(sig_type: :view))
     end
 
     private

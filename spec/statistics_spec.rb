@@ -8,6 +8,9 @@ MEDIA_NAME_OF     = {
   'album' => 'image',
   'audio' => 'track'
 }
+INGEST_NAME_OF = {
+  'video' => 'publish'
+}
 
 describe Helix::Statistics do
   let(:mod) { Helix::Statistics }
@@ -60,6 +63,25 @@ describe Helix::Statistics do
             end
             it "should call config.build_url(media_type: :statistics, action: :#{media_name}_delivery)" do
               mock_config.should_receive(:build_url).with({media_type: :statistics, action: "#{media_name}_delivery".to_sym}) { :built_url }
+              mod.send(meth, opts)
+            end
+            it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
+              mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
+              expect(mod.send(meth, opts)).to eq(:response)
+            end
+          end
+        end
+        if stats_type == 'storage'
+          media_name   = MEDIA_NAME_OF[media_type]  || media_type
+          publish_name = INGEST_NAME_OF[media_type] || 'ingest'
+          context "when given opts" do
+            let(:opts) { {group: :daily} }
+            it "should refer to the Helix::Config instance" do
+              Helix::Config.should_receive(:instance) { mock_config }
+              mod.send(meth, opts)
+            end
+            it "should call config.build_url(media_type: :statistics, action: :#{media_name}_#{publish_name}/disk_usage)" do
+              mock_config.should_receive(:build_url).with({media_type: :statistics, action: "#{media_name}_#{publish_name}/disk_usage".to_sym}) { :built_url }
               mod.send(meth, opts)
             end
             it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
