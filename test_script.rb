@@ -38,10 +38,9 @@ media_by_id.each do |guid_key,klass|
   end
 
   media_type  = guid_key.split(/_/).first
-  next if media_type == 'album'
   helix_stats = Helix::Statistics
   %w(delivery ingest storage).each do |stats_type|
-    next if media_type == 'image' and stats_type == 'ingest'
+    next if %w(album image).include?(media_type) and stats_type == 'ingest'
     stats = helix_stats.send("#{media_type}_#{stats_type}_stats")
     item_stats = helix_stats.send("#{media_type}_#{stats_type}_stats", guid_key => media_id)
   end
