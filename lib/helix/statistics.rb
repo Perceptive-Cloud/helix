@@ -5,104 +5,104 @@ module Helix
   module Statistics
 
     # @example
-    #   Helix::Statistics.album_delivery #=> Hash of stats data
+    #   Helix::Statistics.album_delivery #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.album_delivery(opts={})
       self.image_delivery(opts)
     end
 
     # @example
-    #   Helix::Statistics.album_storage #=> Hash of stats data
+    #   Helix::Statistics.album_storage #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.album_storage(opts={})
       self.image_storage(opts)
     end
 
     # @example
-    #   Helix::Statistics.audio_delivery #=> Hash of stats data
+    #   Helix::Statistics.audio_delivery #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.audio_delivery(opts={})
       self.delivery(:track, opts)
     end
 
     # @example
-    #   Helix::Statistics.audio_ingest #=> Hash of stats data
+    #   Helix::Statistics.audio_ingest #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.audio_ingest(opts={})
     end
 
     # @example
-    #   Helix::Statistics.audio_storage #=> Hash of stats data
+    #   Helix::Statistics.audio_storage #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.audio_storage(opts={})
       self.storage(:track, opts)
     end
 
     # @example
-    #   Helix::Statistics.image_delivery #=> Hash of stats data
+    #   Helix::Statistics.image_delivery #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.image_delivery(opts={})
       self.delivery(:image, opts)
     end
 
     # @example
-    #   Helix::Statistics.image_storage #=> Hash of stats data
+    #   Helix::Statistics.image_storage #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.image_storage(opts={})
       self.storage(:image, opts)
     end
 
     # @example
-    #   Helix::Statistics.track_delivery #=> Hash of stats data
+    #   Helix::Statistics.track_delivery #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.track_delivery(opts={})
       self.audio_delivery(opts)
     end
 
     # @example
-    #   Helix::Statistics.track_ingest #=> Hash of stats data
+    #   Helix::Statistics.track_ingest #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.track_ingest(opts={})
       self.audio_ingest(opts)
     end
 
     # @example
-    #   Helix::Statistics.track_storage #=> Hash of stats data
+    #   Helix::Statistics.track_storage #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.track_storage(opts={})
       self.audio_storage(opts)
     end
 
     # @example
-    #   Helix::Statistics.video_delivery #=> Hash of stats data
+    #   Helix::Statistics.video_delivery #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.video_delivery(opts={})
       self.delivery(:video, opts)
     end
 
     # @example
-    #   Helix::Statistics.video_ingest #=> Hash of stats data
+    #   Helix::Statistics.video_ingest #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.video_ingest(opts={})
       # encode, source, or breakdown
     end
 
     # @example
-    #   Helix::Statistics.video_storage #=> Hash of stats data
+    #   Helix::Statistics.video_storage #=> Array of Hashes of stats data
     #
-    # @return [Hash] Statistics information.
+    # @return [Array of Hashes] Statistics information.
     def self.video_storage(opts={})
       self.storage(:video, opts)
     end
