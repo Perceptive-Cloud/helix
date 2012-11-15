@@ -323,7 +323,7 @@ describe Helix::Config do
       obj.send(meth, :any_sig_type)
     end
 
-    let(:license_key) { :a_license_key }
+    let(:license_key) { :lk }
     before(:each) do
       obj.stub(:license_key) { license_key }
       obj.stub(:prepare_signature_memoization)

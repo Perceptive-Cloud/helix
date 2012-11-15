@@ -36,4 +36,15 @@ media_by_id.each do |guid_key,klass|
     puts "#{klass.to_s} #{media_id} title is '#{item.title}'"
     puts "#{klass.to_s} #{media_id} description is '#{item.description}'"
   end
+
+  media_type  = guid_key.split(/_/).first
+  helix_stats = Helix::Statistics
+  %w(delivery ingest storage).each do |stats_type|
+    next if %w(album image).include?(media_type) and stats_type == 'ingest'
+    stats = helix_stats.send("#{media_type}_#{stats_type}")
+    puts "#{klass.to_s} #{stats_type} stats = #{stats.inspect}"
+    item_stats = helix_stats.send("#{media_type}_#{stats_type}", guid_key => media_id)
+    puts "#{klass.to_s} #{media_id} #{stats_type} stats = #{stats.inspect}"
+  end
+
 end

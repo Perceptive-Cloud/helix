@@ -137,8 +137,12 @@ module Helix
       expires_at <= Time.now
     end
 
-    def url_for(sig_type)
-      "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}&contributor=helix&library_id=default">>>>>>> 6b3a9075c15aaf52d95860936cd0577a32f5454a
+    def url_for(sig_type, opts={})
+      contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
+      url  = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
+      url += "&contributor=#{contributor}" if contributor
+      url += "&library_id=#{contributor}"  if library_id
+      url
     end
 
   end
