@@ -29,27 +29,32 @@ describe Helix::Base do
     let(:mock_config) { mock(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-1) }
-    let(:resp_value)  { { klass: { attribute: :value } } }
+    let(:klass_sym)   { :klass }
+    let(:resp_value)  { { klass_sym.to_s => { attribute: :value } } }
     let(:resp_json)   { "JSON" }
     let(:params)      { { signature: "some_sig" } }
     let(:expected)    { { attributes: { attribute: :value }, config: mock_config } }
     before(:each) do
       klass.stub(:plural_media_type) { :klasses }
-      klass.stub(:media_type_sym)    { :klass }
+      klass.stub(:media_type_sym)    { klass_sym }
       mock_config.stub(:build_url).with(action: :create_many, media_type: :klasses) { :url }
-      mock_config.stub(:signature).with(:ingest) { "some_sig" }
+      mock_config.stub(:signature).with(:update) { "some_sig" }
       Helix::Config.stub(:instance) { mock_config }
     end
     it "should get an ingest signature" do
+      mock_config.should_receive(:build_url).with(media_type: :klasses,
+                                                  format:     :xml)
       RestClient.stub(:post).with(:url, params) { resp_json }
-      JSON.stub(:parse).with(resp_json) { resp_value }
+      Crack::XML.should_receive(:parse).with(resp_json) { resp_value }
       klass.stub(:new).with(expected)
-      mock_config.should_receive(:signature).with(:ingest) { "some_sig" }
+      mock_config.should_receive(:signature).with(:update) { "some_sig" }
       klass.send(meth)
     end
     it "should do an HTTP post call, parse response and call new" do
+      mock_config.should_receive(:build_url).with(media_type: :klasses,
+                                                  format:     :xml)
       RestClient.should_receive(:post).with(:url, params) { resp_json }
-      JSON.should_receive(:parse).with(resp_json) { resp_value }
+      Crack::XML.should_receive(:parse).with(resp_json) { resp_value }
       klass.should_receive(:new).with(expected)
       klass.send(meth)
     end
