@@ -73,7 +73,8 @@ module Helix
     def self.get_data_sets(opts)
       config       = Helix::Config.instance
       url          = config.build_url(format: :json)
-      raw_response = config.get_response(url, opts.merge(sig_type: :view))
+      # We allow opts[:sig_type] for internal negative testing only.
+      raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
       data_sets    = raw_response[plural_media_type]
     end
 
@@ -137,7 +138,8 @@ module Helix
     def load(opts={})
       memo_cfg    = config
       url         = memo_cfg.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
-      raw_attrs   = memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      # We allow opts[:sig_type] for internal negative testing only.
+      raw_attrs   = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
       @attributes = massage_raw_attrs(raw_attrs)
       self
     end

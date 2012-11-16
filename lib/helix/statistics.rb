@@ -116,14 +116,16 @@ module Helix
         {guid: guid, media_type: "#{media_type}s".to_sym, action: :statistics} :
         {media_type: :statistics, action: "#{media_type}_delivery".to_sym}
       url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      # We allow opts[:sig_type] for internal negative testing only.
+      memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
     end
 
     def self.storage(media_type, opts)
       memo_cfg = Helix::Config.instance
       url_opts = {media_type: :statistics, action: storage_action_for(media_type)}
       url = memo_cfg.build_url(url_opts)
-      memo_cfg.get_response(url, opts.merge(sig_type: :view))
+      # We allow opts[:sig_type] for internal negative testing only.
+      memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
     end
 
     def self.storage_action_for(media_type)

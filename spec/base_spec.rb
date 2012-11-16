@@ -94,16 +94,15 @@ describe Helix::Base do
     its(:arity) { should eq(1) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and an opts Hash" do
-      let(:opts) { mock(Object, merge: :merged) }
+      let(:opts) { {opts_key1: :opts_val1} }
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
       it "should build a JSON URL -> the_url" do
         mock_config.should_receive(:build_url).with(format: :json)
         klass.send(meth, opts)
       end
-      it "should get_response(the_url, opts.merge(sig_type: :view) -> raw_response" do
-        opts.should_receive(:merge).with(sig_type: :view) { :opts_with_view_sig }
-        mock_config.should_receive(:get_response).with(:built_url, :opts_with_view_sig)
+      it "should get_response(the_url, {sig_type: :view}.merge(opts) -> raw_response" do
+        mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view}.merge(opts))
         klass.send(meth, opts)
       end
       it "should read raw_response[plural_media_type] -> data_sets" do
