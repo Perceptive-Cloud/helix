@@ -338,7 +338,7 @@ base_url to create RESTful URLs.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#signature-instance_method" title="#signature (instance method)">- (String) <strong>signature</strong>(sig_type) </a>
+      <a href="#signature-instance_method" title="#signature (instance method)">- (String) <strong>signature</strong>(sig_type, opts = {}) </a>
     
 
     
@@ -901,7 +901,7 @@ base_url to create RESTful URLs</p>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sig_type'>sig_type</span>    <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:sig_type</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_params'>params</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>signature:</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>signature:</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span>    <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='label'>params:</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
   <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -913,7 +913,7 @@ base_url to create RESTful URLs</p>
       <div class="method_details ">
   <h3 class="signature " id="signature-instance_method">
   
-    - (<tt>String</tt>) <strong>signature</strong>(sig_type) 
+    - (<tt>String</tt>) <strong>signature</strong>(sig_type, opts = {}) 
   
 
   
@@ -990,7 +990,7 @@ base_url to create RESTful URLs</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 98</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_prepare_signature_memoization'>prepare_signature_memoization</span>
   <span class='id identifier rubyid_memo_sig'>memo_sig</span> <span class='op'>=</span> <span class='id identifier rubyid_existing_sig_for'>existing_sig_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_memo_sig'>memo_sig</span> <span class='kw'>if</span> <span class='id identifier rubyid_memo_sig'>memo_sig</span>
@@ -1000,7 +1000,7 @@ base_url to create RESTful URLs</p>
 
   <span class='id identifier rubyid_lk'>lk</span> <span class='op'>=</span> <span class='id identifier rubyid_license_key'>license_key</span>
   <span class='ivar'>@signature_expiration_for</span><span class='lbracket'>[</span><span class='id identifier rubyid_lk'>lk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>+</span> <span class='const'>TIME_OFFSET</span>
-  <span class='ivar'>@signature_for</span><span class='lbracket'>[</span><span class='id identifier rubyid_lk'>lk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_url_for'>url_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@signature_for</span><span class='lbracket'>[</span><span class='id identifier rubyid_lk'>lk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_url_for'>url_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1012,7 +1012,7 @@ base_url to create RESTful URLs</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Nov 15 14:11:58 2012 by
+  Generated on Fri Nov 16 15:13:23 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

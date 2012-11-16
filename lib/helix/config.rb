@@ -86,7 +86,7 @@ module Helix
     # @return [String] The full RESTful URL string object
     def get_response(url, opts={})
       sig_type    = opts.delete(:sig_type)
-      params      = opts.merge(signature: signature(sig_type))
+      params      = opts.merge(signature: signature(sig_type, opts))
       response    = RestClient.get(url, params: params)
       JSON.parse(response)
     end
@@ -95,7 +95,7 @@ module Helix
     #
     # @param [Symbol] sig_type The type of signature required for calls.
     # @return [String] The signature needed to pass around for calls.
-    def signature(sig_type)
+    def signature(sig_type, opts={})
       prepare_signature_memoization
       memo_sig = existing_sig_for(sig_type)
       return memo_sig if memo_sig
@@ -105,7 +105,7 @@ module Helix
 
       lk = license_key
       @signature_expiration_for[lk][sig_type] = Time.now + TIME_OFFSET
-      @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type))
+      @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type, opts))
     end
 
     private

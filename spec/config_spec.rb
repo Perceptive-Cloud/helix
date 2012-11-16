@@ -279,7 +279,7 @@ describe Helix::Config do
       let(:returned_json) { '{"key": "val"}' }
       let(:json_parsed)   { { "key" => "val" } }
       it "should call RestClient.get and return a hash from parsed JSON" do
-        obj.stub(:signature).with(:the_sig_type) { string }
+        obj.stub(:signature).with(:the_sig_type, opts) { string }
         RestClient.should_receive(:get).with(string, params) { returned_json }
         expect(obj.send(meth, string, opts)).to eq(json_parsed)
       end
@@ -315,7 +315,7 @@ describe Helix::Config do
     let(:meth)  { :signature }
 
     subject     { obj.method(meth) }
-    its(:arity) { should eq(1) }
+    its(:arity) { should eq(-2) }
 
     it "should prepare_signature_memoization" do
       obj.should_receive(:prepare_signature_memoization)
