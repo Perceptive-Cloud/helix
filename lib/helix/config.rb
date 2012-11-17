@@ -140,8 +140,8 @@ module Helix
     def url_for(sig_type, opts={})
       contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
       url  = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
-      url += "&contributor=#{contributor}" if contributor
-      url += "&library_id=#{contributor}"  if library_id
+      url += "&contributor=#{contributor}"  if contributor
+      url += "&library_id=#{library_id}"    if library_id
       url
     end
 
