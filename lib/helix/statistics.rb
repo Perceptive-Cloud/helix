@@ -4,6 +4,14 @@ module Helix
 
   module Statistics
 
+    unless defined?(self::STORAGE_ACTION_FOR)
+      STORAGE_ACTION_FOR = {
+        track: "track_ingest/disk_usage",
+        image: "image_ingest/disk_usage",
+        video: "video_publish/disk_usage",
+      }
+    end
+
     # @example
     #   Helix::Statistics.album_delivery #=> Array of Hashes of stats data
     #
@@ -129,11 +137,7 @@ module Helix
     end
 
     def self.storage_action_for(media_type)
-      {
-        track: "track_ingest/disk_usage",
-        image: "image_ingest/disk_usage",
-        video: "video_publish/disk_usage",
-      }[media_type].to_sym
+      STORAGE_ACTION_FOR[media_type].to_sym
     end
 
   end
