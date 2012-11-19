@@ -85,6 +85,22 @@
 <div class="clear"></div>
 
 
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="STORAGE_ACTION_FOR-constant" class="">STORAGE_ACTION_FOR =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>track:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>track_ingest/disk_usage</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='label'>image:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>image_ingest/disk_usage</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='label'>video:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>video_publish/disk_usage</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -472,12 +488,12 @@
       <pre class="lines">
 
 
-11
-12
-13</pre>
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_album_delivery'>album_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image_delivery'>image_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -539,12 +555,12 @@
       <pre class="lines">
 
 
-19
-20
-21</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_album_storage'>album_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image_storage'>image_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -606,12 +622,12 @@
       <pre class="lines">
 
 
-27
-28
-29</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_delivery'>audio_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_delivery'>delivery</span><span class='lparen'>(</span><span class='symbol'>:track</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -673,11 +689,11 @@
       <pre class="lines">
 
 
-35
-36</pre>
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_ingest'>audio_ingest</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -738,12 +754,12 @@
       <pre class="lines">
 
 
-42
-43
-44</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_storage'>audio_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_storage'>storage</span><span class='lparen'>(</span><span class='symbol'>:track</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -805,12 +821,12 @@
       <pre class="lines">
 
 
-50
-51
-52</pre>
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image_delivery'>image_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_delivery'>delivery</span><span class='lparen'>(</span><span class='symbol'>:image</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -872,12 +888,12 @@
       <pre class="lines">
 
 
-58
-59
-60</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_image_storage'>image_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_storage'>storage</span><span class='lparen'>(</span><span class='symbol'>:image</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -939,12 +955,12 @@
       <pre class="lines">
 
 
-66
-67
-68</pre>
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_track_delivery'>track_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_delivery'>audio_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1006,12 +1022,12 @@
       <pre class="lines">
 
 
-74
-75
-76</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_track_ingest'>track_ingest</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_ingest'>audio_ingest</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1073,12 +1089,12 @@
       <pre class="lines">
 
 
-82
-83
-84</pre>
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_track_storage'>track_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_audio_storage'>audio_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1140,12 +1156,12 @@
       <pre class="lines">
 
 
-90
-91
-92</pre>
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_video_delivery'>video_delivery</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_delivery'>delivery</span><span class='lparen'>(</span><span class='symbol'>:video</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1207,12 +1223,12 @@
       <pre class="lines">
 
 
-98
-99
-100</pre>
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_video_ingest'>video_ingest</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='comment'># encode, source, or breakdown
@@ -1274,12 +1290,12 @@
       <pre class="lines">
 
 
-106
-107
-108</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/statistics.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_video_storage'>video_storage</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_storage'>storage</span><span class='lparen'>(</span><span class='symbol'>:video</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1294,7 +1310,7 @@
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 16 17:57:56 2012 by
+  Generated on Mon Nov 19 14:08:01 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

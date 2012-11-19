@@ -1,7 +1,7 @@
 require 'rest_client'
 require 'json'
 require 'yaml'
-require 'crack'
+require 'active_support/core_ext'
 
 module Helix
   class Base
@@ -27,8 +27,7 @@ module Helix
       url       = config.build_url(media_type:  plural_media_type,
                                    format:      :xml)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
-      #TODO: Crack may be removeable due to active_support/core_ext
-      attrs     = Crack::XML.parse(response)
+      attrs     = Hash.from_xml(response)
       self.new(attributes: attrs[media_type_sym.to_s], config: config)
     end
 

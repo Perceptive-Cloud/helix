@@ -45,7 +45,7 @@ describe Helix::Base do
       mock_config.should_receive(:build_url).with(media_type: :klasses,
                                                   format:     :xml)
       RestClient.stub(:post).with(:url, params) { resp_json }
-      Crack::XML.should_receive(:parse).with(resp_json) { resp_value }
+      Hash.should_receive(:from_xml).with(resp_json) { resp_value }
       klass.stub(:new).with(expected)
       mock_config.should_receive(:signature).with(:update) { "some_sig" }
       klass.send(meth)
@@ -54,7 +54,7 @@ describe Helix::Base do
       mock_config.should_receive(:build_url).with(media_type: :klasses,
                                                   format:     :xml)
       RestClient.should_receive(:post).with(:url, params) { resp_json }
-      Crack::XML.should_receive(:parse).with(resp_json) { resp_value }
+      Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
       klass.should_receive(:new).with(expected)
       klass.send(meth)
     end

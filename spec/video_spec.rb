@@ -50,7 +50,7 @@ describe Helix::Video do
       mock_config.should_receive(:build_url).with(build_opts)
       mock_config.should_receive(:signature).with(:ingest, sig_opts)  { :some_sig }
       RestClient.should_receive(:post).with(:url, import_xml, params) { resp_json }
-      Crack::XML.should_receive(:parse).with(resp_json)               { resp_value }
+      Hash.should_receive(:from_xml).with(resp_json)                  { resp_value }
       klass.should_receive(:new).with(resp_value[klass_sym].merge(config: mock_config))
       klass.send(meth)
     end
