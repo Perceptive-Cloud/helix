@@ -18,25 +18,16 @@ module Helix
     # normally be called as Helix::Base.create
     #
     # @example
-    #   Helix::Video.create({title: "My new video"})
+    #   Helix::Album.create({title: "My new album"})
     #
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
       config    = Helix::Config.instance
-      #xml       = '<?xml version="1.0" encoding="UTF-8"?>
-      #              <add>
-      #                <list>
-      #                  <entry>
-      #                    <src>http://www.minhreigen.com/videos/play.mp4</src>
-      #                    <title>Summer camp dance</title>
-      #                    <description>This one is the best</description>
-      #                  </entry>
-      #                </list>
-      #              </add>'.gsub!(/\s{2,}|\n/, "")
       url       = config.build_url(media_type:  plural_media_type,
                                    format:      :xml)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
+      #TODO: Crack may be removeable due to active_support/core_ext
       attrs     = Crack::XML.parse(response)
       self.new(attributes: attrs[media_type_sym.to_s], config: config)
     end
