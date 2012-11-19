@@ -303,8 +303,7 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
 37
 38
 39
-40
-41</pre>
+40</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 28</span>
@@ -319,8 +318,7 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
   <span class='id identifier rubyid_opts'>opts</span>      <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>contributor:</span>  <span class='symbol'>:helix</span><span class='comma'>,</span> <span class='label'>library_id:</span> <span class='symbol'>:development</span> <span class='rbrace'>}</span> 
   <span class='id identifier rubyid_params'>params</span>    <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>signature:</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:ingest</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_response'>response</span>  <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_xml'>xml</span><span class='comma'>,</span> <span class='label'>params:</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='comment'>#TODO: Crack may be removeable due to active_support/core_ext
-</span>  <span class='id identifier rubyid_attrs'>attrs</span>     <span class='op'>=</span> <span class='const'>Crack</span><span class='op'>::</span><span class='const'>XML</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_attrs'>attrs</span>     <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_from_xml'>from_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='lbracket'>[</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -397,7 +395,7 @@ this method as a way to build URLs.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Nov 19 14:08:01 2012 by
+  Generated on Mon Nov 19 14:21:06 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>
