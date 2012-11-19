@@ -1,5 +1,4 @@
-http://nestacms.com/docs/creating-content/markdown-cheat-sheet
-http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet
+Cheat_Sheet
 
 # Helix
 
@@ -60,7 +59,7 @@ Supported Ruby versions
 
 How To
 ------
-
+Warning: How To is not currently finished, it may be inaccurate. 
 ###Setup YAML
 ```yaml
 site: 'http://service.twistage.com'
@@ -159,11 +158,11 @@ Credits
 
 Helix was written by Kevin Baird and Michael Wood.
 
-Helix is maintained and funded by [Twistage, inc](http://twistage.com)
+Helix is maintained and funded by [Twistage, Inc](http://twistage.com)
 
-The names and logos for twistage are trademarks of twistage, inc.
+The names and logos for twistage are trademarks of Twistage, Inc.
 
 License
 -------
 
-Helix is Copyright © 2008-2012 Twistage, inc.
+Helix is Copyright © 2008-2012 Twistage, Inc.
