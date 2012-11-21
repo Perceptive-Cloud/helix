@@ -9,7 +9,7 @@ describe Helix::Video do
 
   let(:klass) { Helix::Video }
 
-  subject { klass }
+  subject                 { klass }
   its(:ancestors)         { should include(Helix::Base) }
   its(:guid_name)         { should eq('video_id') }
   its(:media_type_sym)    { should be(:video)   }
@@ -78,9 +78,9 @@ describe Helix::Video do
   end
 
   describe ".get_url" do
-    let(:meth)        { :get_url }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
+    let(:meth)  { :get_url }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
     it "should call Helix::Config#build_url with url opts" do
       Helix::Config.instance.should_receive(:build_url).with(klass.send(:get_url_opts))
       klass.send(meth)
@@ -88,9 +88,9 @@ describe Helix::Video do
   end
 
   describe ".get_params" do
-    let(:meth)        { :get_params }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
+    let(:meth)  { :get_params }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
     it "should call Helix::Config#signature and return a hash of params" do
       Helix::Config.instance.should_receive(:signature).with(:ingest, sig_opts) { :sig }
       expect(klass.send(meth)).to eq({ params: { signature: :sig } })
