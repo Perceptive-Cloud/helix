@@ -24,20 +24,33 @@ module Helix
     #   new_video.video_id # => dd891b83ba39e
     #
     # @param [Hash] attrs The attributes for creating a video
-    # @return [Helix::Video] An instance of Helix::Video.
+    # @return [RestClient] The response object.
     def self.import(attrs={})
-      config    = Helix::Config.instance
-      xml       = { list: { entry: attrs } }.to_xml(root: :add)
-      url_opts  = { action:       :create_many, 
-                    media_type:   plural_media_type,
-                    format:       :xml}
-      url       = config.build_url(url_opts)
-      opts      = { contributor:  :helix, library_id: :development } 
-      params    = { signature: config.signature(:ingest, opts)}
-      response  = RestClient.post(url, xml, params: params)
-      attrs     = Hash.from_xml(response)
-      self.new(attributes: attrs[media_type_sym.to_s], config: config)
+      RestClient.post(self.get_url, self.get_xml(attrs), self.get_params)
     end
-  end
 
+    private
+
+    def self.get_xml(attrs={})
+      return attrs[:use_raw_xml] if attrs[:use_raw_xml].present?
+      { list: { entry: attrs } }.to_xml(root: :add)
+    end
+
+    def self.get_url_opts
+      { action:     :create_many, 
+        media_type: plural_media_type,
+        format:     :xml }
+    end
+
+    def self.get_url
+      Helix::Config.instance.build_url(self.get_url_opts)
+    end
+
+    def self.get_params
+      opts  = { contributor: :helix, library_id: :development }
+      sig   = Helix::Config.instance.signature(:ingest, opts)
+      { params: { signature: sig } } 
+    end
+
+  end
 end

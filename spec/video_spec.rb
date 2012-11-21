@@ -3,8 +3,8 @@ require 'helix'
 
 describe Helix::Video do
 
-  def import_xml
-    { list: { entry: {} } }.to_xml(root: :add)
+  def import_xml(values={})
+    { list: { entry: values } }.to_xml(root: :add)
   end
 
   let(:klass) { Helix::Video }
@@ -17,10 +17,16 @@ describe Helix::Video do
 
   describe "Constants"
 
+  let(:sig_opts)  { { contributor:  :helix, 
+                      library_id:   :development } }
+  let(:url_opts)  { { action:       :create_many, 
+                      media_type:   "videos", 
+                      format:       :xml } }
+
   describe "an instance" do
-    let(:obj) { klass.new({'video_id' => 'some_video_guid'}) }
-    subject { obj }
-    its(:media_type_sym) { should be(:video) }
+    let(:obj)             { klass.new({'video_id' => 'some_video_guid'}) }
+    subject               { obj }
+    its(:media_type_sym)  { should be(:video) }
   end
 
   describe ".import" do
@@ -28,32 +34,68 @@ describe Helix::Video do
     let(:mock_config) { mock(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-1) }
-    let(:klass_sym)   { :klass }
-    let(:resp_json)   { :json }
-    let(:sig)         { :some_sig }
-    let(:resp_value)  { { klass:        { attributes: nil } } }
-    let(:params)      { { params:       { signature: :some_sig } } }  
-    let(:sig_opts)    { { contributor:  :helix, 
-                          library_id:   :development } }
-    let(:build_opts)  { { action:       :create_many, 
-                          media_type:   :klasses, 
-                          format:       :xml } }
-    let(:xml)         { import_xml }
-    before do
-      klass.stub(:plural_media_type)                { :klasses  }
-      klass.stub(:media_type_sym)                   { klass_sym }
-      mock_config.stub(:build_url).with(build_opts) { :url }
-      mock_config.stub(:signature).with(:ingest)    { :some_sig }
-      Helix::Config.stub(:instance)                 { mock_config }
-    end
+    let(:params)      { { params: { signature: :some_sig } } }  
+    before            { Helix::Config.stub(:instance) { mock_config } } 
+
     it "should get an ingest signature" do
-      mock_config.should_receive(:build_url).with(build_opts)
-      mock_config.should_receive(:signature).with(:ingest, sig_opts)  { :some_sig }
-      RestClient.should_receive(:post).with(:url, import_xml, params) { resp_json }
-      Hash.should_receive(:from_xml).with(resp_json)                  { resp_value }
-      klass.should_receive(:new).with(resp_value[klass_sym].merge(config: mock_config))
+      mock_config.should_receive(:build_url).with(url_opts)
+      mock_config.should_receive(:signature).with(:ingest, sig_opts) { :some_sig }
+      RestClient.should_receive(:post).with(nil, import_xml, params)
       klass.send(meth)
     end
   end
+
+  describe ".get_xml" do 
+    let(:meth)  { :get_xml }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(-1) }
+    context "when :use_raw_xml is present in attrs" do
+      let(:use_raw_xml) { { use_raw_xml: :xml } }
+      it "should return the value of attrs[:use_raw_xml]" do
+        expect(klass.send(meth, use_raw_xml)).to eq(:xml)
+      end
+    end
+    context "when hash is passed without :use_raw_xml" do
+      let(:attrs) { { attribute: :value } }
+      it "should convert attrs into xml" do
+        expect(klass.send(meth, attrs)).to eq(import_xml(attrs))
+      end
+    end
+    context "when nothing in passed in" do
+      it "should return valid xml" do
+        expect(klass.send(meth)).to eq(import_xml)
+      end
+    end
+  end
+
+  describe ".get_url_opts" do
+    let(:meth)  { :get_url_opts }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
+    it "should return a valid hash url options for Helix::Config#build_url" do
+       expect(klass.send(meth)).to eq(url_opts)
+    end
+  end
+
+  describe ".get_url" do
+    let(:meth)        { :get_url }
+    subject           { klass.method(meth) }
+    its(:arity)       { should eq(0) }
+    it "should call Helix::Config#build_url with url opts" do
+      Helix::Config.instance.should_receive(:build_url).with(klass.send(:get_url_opts))
+      klass.send(meth)
+    end
+  end
+
+  describe ".get_params" do
+    let(:meth)        { :get_params }
+    subject           { klass.method(meth) }
+    its(:arity)       { should eq(0) }
+    it "should call Helix::Config#signature and return a hash of params" do
+      Helix::Config.instance.should_receive(:signature).with(:ingest, sig_opts) { :sig }
+      expect(klass.send(meth)).to eq({ params: { signature: :sig } })
+    end
+  end
+
 
 end
