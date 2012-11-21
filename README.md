@@ -1,5 +1,3 @@
-Cheat_Sheet
-
 # Helix
 
 The Helix gem allows developers to easily connect to and manipulate the Twistage API.
