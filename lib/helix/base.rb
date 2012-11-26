@@ -1,4 +1,4 @@
-require 'rest_client'
+require 'rest-client'
 require 'json'
 require 'yaml'
 require 'active_support/core_ext'
