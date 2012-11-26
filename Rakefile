@@ -11,9 +11,10 @@ task :reinstall_helix do
 end
 
 task :push do
-  #`gem build helix.gemspec`
-  #`gem push helix-0.0.0.pre.gem`
-  #`gem owner helix -a mykewould@gmail.com`
+  `rm helix-*.pre.gem`
+  `gem build helix.gemspec`
+  `gem push helix-*.pre.gem`
+  `gem owner helix -a mykewould@gmail.com`
   #`sudo gem i helix-0.0.0.pre.gem --pre`
 end
 
