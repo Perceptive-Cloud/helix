@@ -16,6 +16,7 @@ module Helix
     def self.media_type_sym; :video; end
 
     # Used to import videos from a URL into the Twistage system.
+    # Doc reference: /doc/api/video/import
     #
     # @example
     #   video = Helix::Video.import(src:          "www.google.com/video.mp4", 
@@ -23,10 +24,12 @@ module Helix
     #                               description:  "A random video.")
     #   new_video.video_id # => dd891b83ba39e
     #
-    # @param [Hash] attrs The attributes for creating a video
+    # @param [Hash] attrs The attributes for creating a video.
     # @return [RestClient] The response object.
     def self.import(attrs={})
-      RestClient.post(self.get_url, self.get_xml(attrs), self.get_params)
+      RestClient.post(self.get_url, 
+                      self.get_xml(attrs), 
+                      self.get_params(self.extract_params(attrs)))
     end
 
     private
@@ -36,7 +39,7 @@ module Helix
     # takes raw xml as an argument. Allowing for xml files to be
     # used in place of attributes.
     #
-    #
+    # @param [Hash] attrs The attributes for creating xml.
     # @return [String] Returns xml either from a raw entry or generated from attributes.
     def self.get_xml(attrs={})
       return attrs[:use_raw_xml] if attrs[:use_raw_xml].present?
@@ -61,12 +64,18 @@ module Helix
       Helix::Config.instance.build_url(self.get_url_opts)
     end
 
+    def self.extract_params(attrs)
+      [:contributor, :library_id].each_with_object({}) do |param, hash|
+        hash[param] = attrs[param] unless attrs[param].nil?
+      end
+    end
+
     # Gets the hash used in adding the signature to the API
     # call.
     #
     # @return [Hash] Returns a formatted hash for passing in the signature to the API call. 
-    def self.get_params
-      opts  = { contributor: :helix, library_id: :development }
+    def self.get_params(opts={})
+      opts  = { contributor: :helix, library_id: :development }.merge(opts)
       sig   = Helix::Config.instance.signature(:ingest, opts)
       { params: { signature: sig } } 
     end

@@ -90,10 +90,22 @@ describe Helix::Video do
   describe ".get_params" do
     let(:meth)  { :get_params }
     subject     { klass.method(meth) }
-    its(:arity) { should eq(0) }
+    its(:arity) { should eq(-1) }
     it "should call Helix::Config#signature and return a hash of params" do
       Helix::Config.instance.should_receive(:signature).with(:ingest, sig_opts) { :sig }
       expect(klass.send(meth)).to eq({ params: { signature: :sig } })
+    end
+  end
+
+  describe ".extract_params" do
+    let(:meth)          { :extract_params }
+    subject             { klass.method(meth) }
+    its(:arity)         { should eq(1) }
+    let(:expected_hash) { { contributor: :con, library_id: :id } }
+    let(:attrs)         { { extra_key_one: :one, 
+                            extra_key_two: :two }.merge(expected_hash) }
+    it "should return the correct key values from attributes" do
+      expect(klass.send(meth, attrs)).to eq(expected_hash)
     end
   end
 

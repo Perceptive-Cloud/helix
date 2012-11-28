@@ -105,9 +105,9 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      memo_cfg = config
-      url      = memo_cfg.build_url(format: :xml, guid: guid, media_type: plural_media_type)
-      RestClient.delete(url, params: {signature: memo_cfg.signature(:update)})
+      config   = Helix::Config.instance
+      url      = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      RestClient.delete(url, params: {signature: config.signature(:update)})
     end
 
     # Creates a string that associates to the class id.
