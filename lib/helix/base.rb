@@ -10,6 +10,7 @@ module Helix
       METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type ]
     end
 
+    ### OPTIMIZE: make config a smarter ||= Helix::Config.instance method, accessible on demand
     attr_accessor :attributes, :config
 
     # Creates a new record via API and then returns an instance of that record.
