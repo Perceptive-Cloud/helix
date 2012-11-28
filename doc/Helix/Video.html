@@ -226,7 +226,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Used to import videos from a URL into the Twistage system.</p>
+<p>Used to import videos from a URL into the Twistage system. Doc reference:
+/doc/api/video/import</p>
 
 
   </div>
@@ -259,7 +260,7 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       
         &mdash;
         <div class='inline'>
-<p>The attributes for creating a video</p>
+<p>The attributes for creating a video.</p>
 </div>
       
     </li>
@@ -291,15 +292,19 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       <pre class="lines">
 
 
-28
 29
-30</pre>
+30
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_params'>get_params</span><span class='rparen'>)</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span> 
+                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span> 
+                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_extract_params'>extract_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -375,7 +380,7 @@ this method as a way to build URLs.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Nov 20 18:21:26 2012 by
+  Generated on Tue Nov 27 16:58:06 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>
