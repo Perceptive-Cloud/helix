@@ -19,16 +19,16 @@ module Helix
     # Doc reference: /doc/api/video/import
     #
     # @example
-    #   video = Helix::Video.import(src:          "www.google.com/video.mp4", 
-    #                               title:        "Some Title, 
+    #   video = Helix::Video.import(src:          "www.google.com/video.mp4",
+    #                               title:        "Some Title,
     #                               description:  "A random video.")
     #   new_video.video_id # => dd891b83ba39e
     #
     # @param [Hash] attrs The attributes for creating a video.
     # @return [RestClient] The response object.
     def self.import(attrs={})
-      RestClient.post(self.get_url, 
-                      self.get_xml(attrs), 
+      RestClient.post(self.get_url,
+                      self.get_xml(attrs),
                       self.get_params(self.extract_params(attrs)))
     end
 
@@ -50,9 +50,9 @@ module Helix
     # url.
     #
     #
-    # @return [Hash] 
+    # @return [Hash]
     def self.get_url_opts
-      { action:     :create_many, 
+      { action:     :create_many,
         media_type: plural_media_type,
         format:     :xml }
     end
@@ -73,11 +73,11 @@ module Helix
     # Gets the hash used in adding the signature to the API
     # call.
     #
-    # @return [Hash] Returns a formatted hash for passing in the signature to the API call. 
+    # @return [Hash] Returns a formatted hash for passing in the signature to the API call.
     def self.get_params(opts={})
       opts  = { contributor: :helix, library_id: :development }.merge(opts)
       sig   = Helix::Config.instance.signature(:ingest, opts)
-      { params: { signature: sig } } 
+      { params: { signature: sig } }
     end
 
   end
