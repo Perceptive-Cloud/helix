@@ -55,9 +55,10 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
     def self.find_all(opts)
+      config = Helix::Config.instance
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
-      data_sets.map { |attrs| self.new(attributes: attrs) }
+      data_sets.map { |attrs| self.new(attributes: attrs, config: config) }
     end
 
     def self.get_data_sets(opts)
