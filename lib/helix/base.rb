@@ -10,8 +10,8 @@ module Helix
       METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type ]
     end
 
-    ### OPTIMIZE: make config a smarter ||= Helix::Config.instance method, accessible on demand
-    attr_accessor :attributes, :config
+    attr_accessor :attributes
+    attr_writer   :config
 
     # Creates a new record via API and then returns an instance of that record.
     #
@@ -24,7 +24,6 @@ module Helix
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
-      config    = Helix::Config.instance
       url       = config.build_url(media_type:  plural_media_type,
                                    format:      :xml)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
@@ -42,7 +41,6 @@ module Helix
     # @param [String] guid an id in guid form.
     # @return [Base] An instance of Helix::Base
     def self.find(guid)
-      config = Helix::Config.instance
       item   = self.new(attributes: { guid_name => guid }, config: config)
       item.load
     end
@@ -56,14 +54,12 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
     def self.find_all(opts)
-      config = Helix::Config.instance
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new(attributes: attrs, config: config) }
     end
 
     def self.get_data_sets(opts)
-      config       = Helix::Config.instance
       url          = config.build_url(format: :json)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
@@ -99,6 +95,14 @@ module Helix
       @config     = opts[:config]
     end
 
+    def self.config
+      Helix::Config.instance
+    end
+
+    def config
+      @config ||= Helix::Config.instance
+    end
+
     # Deletes the record of the Helix::Base instance.
     #
     # @example
@@ -107,7 +111,6 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      config   = Helix::Config.instance
       url      = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
       RestClient.delete(url, params: {signature: config.signature(:update)})
     end
