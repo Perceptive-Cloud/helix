@@ -118,9 +118,9 @@ describe Helix::Base do
         let(:data_set) { (0..2).to_a }
         before(:each) do mock_config.stub(:get_response) { {plural_media_type => data_set } } end
         it "should map instantiation with attributes: each data set element" do
-          klass.should_receive(:new).with(attributes: data_set[0]) { :a }
-          klass.should_receive(:new).with(attributes: data_set[1]) { :b }
-          klass.should_receive(:new).with(attributes: data_set[2]) { :c }
+          klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
+          klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
+          klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
           expect(klass.send(meth, opts)).to eq([:a, :b, :c])
         end
       end
