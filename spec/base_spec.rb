@@ -24,6 +24,16 @@ describe Helix::Base do
 
   ### CLASS METHODS
 
+  describe ".config" do
+    let(:meth)  { :config }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
+    describe "when called" do
+      subject     { klass.send(meth) }
+      it { should eq(Helix::Config.instance) }
+    end
+  end
+
   describe ".create" do
     let(:meth)        { :create }
     let(:mock_config) { mock(Helix::Config) }
@@ -131,6 +141,23 @@ describe Helix::Base do
     let(:obj) { klass.new({}) }
 
     ### INSTANCE METHODS
+
+    describe ".config" do
+      let(:meth)  { :config }
+      subject     { obj.method(meth) }
+      its(:arity) { should eq(0) }
+      describe "when called" do
+        subject     { obj.send(meth) }
+        context "and @config is already set" do
+          before(:each) do obj.instance_variable_set(:@config, :cached_val) end
+          it { should be(:cached_val) }
+        end
+        context "and @config is NOT already set" do
+          before(:each) do obj.instance_variable_set(:@config, nil) end
+          it { should eq(Helix::Config.instance) }
+        end
+      end
+    end
 
     describe "#destroy" do
       let(:meth)   { :destroy }
