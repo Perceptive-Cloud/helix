@@ -88,7 +88,7 @@ module Helix
       sig_type    = opts.delete(:sig_type)
       params      = opts.merge(signature: signature(sig_type, opts))
       response    = RestClient.get(url, params: params)
-      JSON.parse(response)
+      parse_response_by_url_format(response, url)
     end
 
     # Fetches the signature for a specific license key.
@@ -121,6 +121,19 @@ module Helix
 
     def license_key
       @credentials['license_key']
+    end
+
+    def parse_response_by_url_format(response, url)
+      ### FIXME: This is ugly. Clean it up.
+      if url =~ /json/
+        JSON.parse(response)
+      elsif url =~ /xml/
+        Hash.from_xml(response)
+      elsif url =~ /csv/
+        response
+      else
+        raise "Could not parse #{url}"
+      end
     end
 
     def prepare_signature_memoization
