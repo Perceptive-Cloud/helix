@@ -39,8 +39,12 @@ module Helix
     # @example
     #   Helix::Statistics.audio_ingest #=> Array of Hashes of stats data
     #
+    # Takes one of :encode, :source, or :breakdown as the :action value. Defaults to :breakdown.
+    #
     # @return [Array of Hashes] Statistics information.
     def self.audio_ingest(opts={})
+      opts[:action] ||= :breakdown
+      self.storage(:track, opts.merge(action: :"track_ingest/#{opts[:action]}"))
     end
 
     # @example
@@ -78,6 +82,8 @@ module Helix
     # @example
     #   Helix::Statistics.track_ingest #=> Array of Hashes of stats data
     #
+    # Takes one of :encode, :source, or :breakdown as the :action value. Defaults to :breakdown.
+    #
     # @return [Array of Hashes] Statistics information.
     def self.track_ingest(opts={})
       self.audio_ingest(opts)
@@ -102,9 +108,12 @@ module Helix
     # @example
     #   Helix::Statistics.video_ingest #=> Array of Hashes of stats data
     #
+    # Takes one of :encode, :source, or :breakdown as the :action value. Defaults to :breakdown.
+    #
     # @return [Array of Hashes] Statistics information.
     def self.video_ingest(opts={})
-      # encode, source, or breakdown
+      opts[:action] ||= :breakdown
+      self.storage(:video, opts.merge(action: :"video_publish/#{opts[:action]}"))
     end
 
     # @example
@@ -133,7 +142,8 @@ module Helix
     def self.storage(media_type, opts)
       memo_cfg = Helix::Config.instance
       format   = opts.delete(:format)
-      url_opts = {media_type: :statistics, action: storage_action_for(media_type)}
+      action   = opts.delete(:action) || storage_action_for(media_type)
+      url_opts = {media_type: :statistics, action: action}
       url_opts.merge!(format: format) if format
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
