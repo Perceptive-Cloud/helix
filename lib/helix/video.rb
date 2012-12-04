@@ -49,7 +49,6 @@ module Helix
     # Standard hash values used to generate the create_many
     # url.
     #
-    #
     # @return [Hash]
     def self.get_url_opts
       { action:     :create_many,
