@@ -147,8 +147,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Used to import videos from a URL into the Twistage system.</p>
+    <span class="summary_desc"><div class='inline'><p>
+Used to import videos from a URL into the Twistage system.
+</p>
 </div></span>
   
 </li>
@@ -171,8 +172,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The class name, to be used by supporting classes.</p>
+    <span class="summary_desc"><div class='inline'><p>
+The class name, to be used by supporting classes.
+</p>
 </div></span>
   
 </li>
@@ -191,7 +193,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Base.html" title="Helix::Base (class)">Base</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Base.html#create-class_method" title="Helix::Base.create (method)">create</a></span>, <span class='object_link'><a href="Base.html#destroy-instance_method" title="Helix::Base#destroy (method)">#destroy</a></span>, <span class='object_link'><a href="Base.html#find-class_method" title="Helix::Base.find (method)">find</a></span>, <span class='object_link'><a href="Base.html#find_all-class_method" title="Helix::Base.find_all (method)">find_all</a></span>, <span class='object_link'><a href="Base.html#get_data_sets-class_method" title="Helix::Base.get_data_sets (method)">get_data_sets</a></span>, <span class='object_link'><a href="Base.html#guid-instance_method" title="Helix::Base#guid (method)">#guid</a></span>, <span class='object_link'><a href="Base.html#guid_name-class_method" title="Helix::Base.guid_name (method)">guid_name</a></span>, <span class='object_link'><a href="Base.html#initialize-instance_method" title="Helix::Base#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="Base.html#load-instance_method" title="Helix::Base#load (method)">#load</a></span>, <span class='object_link'><a href="Base.html#method_missing-instance_method" title="Helix::Base#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="Base.html#plural_media_type-class_method" title="Helix::Base.plural_media_type (method)">plural_media_type</a></span>, <span class='object_link'><a href="Base.html#update-instance_method" title="Helix::Base#update (method)">#update</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Base.html#config-class_method" title="Helix::Base.config (method)">config</a></span>, <span class='object_link'><a href="Base.html#create-class_method" title="Helix::Base.create (method)">create</a></span>, <span class='object_link'><a href="Base.html#destroy-instance_method" title="Helix::Base#destroy (method)">#destroy</a></span>, <span class='object_link'><a href="Base.html#find-class_method" title="Helix::Base.find (method)">find</a></span>, <span class='object_link'><a href="Base.html#find_all-class_method" title="Helix::Base.find_all (method)">find_all</a></span>, <span class='object_link'><a href="Base.html#get_data_sets-class_method" title="Helix::Base.get_data_sets (method)">get_data_sets</a></span>, <span class='object_link'><a href="Base.html#guid-instance_method" title="Helix::Base#guid (method)">#guid</a></span>, <span class='object_link'><a href="Base.html#guid_name-class_method" title="Helix::Base.guid_name (method)">guid_name</a></span>, <span class='object_link'><a href="Base.html#initialize-instance_method" title="Helix::Base#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="Base.html#load-instance_method" title="Helix::Base#load (method)">#load</a></span>, <span class='object_link'><a href="Base.html#method_missing-instance_method" title="Helix::Base#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="Base.html#plural_media_type-class_method" title="Helix::Base.plural_media_type (method)">plural_media_type</a></span>, <span class='object_link'><a href="Base.html#update-instance_method" title="Helix::Base#update (method)">#update</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -225,9 +227,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Used to import videos from a URL into the Twistage system. Doc reference:
-/doc/api/video/import</p>
+    <p>
+Used to import videos from a URL into the Twistage system. Doc reference:
+/doc/api/video/import
+</p>
 
 
   </div>
@@ -238,8 +241,8 @@
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code">video = Helix::Video.import(src:          &quot;www.google.com/video.mp4&quot;, 
-                            title:        &quot;Some Title, 
+      <pre class="example code">video = Helix::Video.import(src:          &quot;www.google.com/video.mp4&quot;,
+                            title:        &quot;Some Title,
                             description:  &quot;A random video.&quot;)
 new_video.video_id # =&gt; dd891b83ba39e</pre>
     
@@ -259,8 +262,9 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       
       
         &mdash;
-        <div class='inline'>
-<p>The attributes for creating a video.</p>
+        <div class='inline'><p>
+The attributes for creating a video.
+</p>
 </div>
       
     </li>
@@ -278,8 +282,9 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       
       
         &mdash;
-        <div class='inline'>
-<p>The response object.</p>
+        <div class='inline'><p>
+The response object.
+</p>
 </div>
       
     </li>
@@ -302,9 +307,9 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span> 
-                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span> 
-                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_extract_params'>extract_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span>
+                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span>
+                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -322,9 +327,10 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The class name, to be used by supporting classes. Such as Config which uses
-this method as a way to build URLs.</p>
+    <p>
+The class name, to be used by supporting classes. Such as Config which uses
+this method as a way to build URLs.
+</p>
 
 
   </div>
@@ -350,8 +356,9 @@ this method as a way to build URLs.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>Name of the class.</p>
+        <div class='inline'><p>
+Name of the class.
+</p>
 </div>
       
     </li>
@@ -380,9 +387,9 @@ this method as a way to build URLs.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Nov 27 16:58:06 2012 by
+  Generated on Wed Dec  5 11:28:49 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.3 (ruby-1.9.3).
+  0.8.3 (ruby-1.9.2).
 </div>
 
   </body>

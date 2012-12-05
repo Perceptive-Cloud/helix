@@ -1,8 +1,8 @@
 lib/helix.rb 5a9ef594ea1fd4af7b00d4875b4bff96d3ed8a88
-lib/helix/base.rb 86f34174fadbc8f2d3e22c22411e4f675247d628
+lib/helix/base.rb fd21fe0f220f7becb967acef61dbc7504a1cab81
+lib/helix/video.rb 4a5d77b972855b7e5deef23d492c7658edc94572
 lib/helix/album.rb 0d9569165508ebdc420f3143857e0e72c3ea0561
 lib/helix/image.rb 279902473fb01d491beabc94ea2bcce611011016
-lib/helix/video.rb 07c3ab548e76ae40755941b8630e0fc49cbf8a38
-lib/helix/track.rb c132203bbe8eab087320f54646bc12347c620491
-lib/helix/config.rb 4dd94a64ea779470c6a24a2178ae7ac03505ecca
-lib/helix/statistics.rb 42266268b78f4a9a21d35bfd331705fd26d31028
+lib/helix/track.rb c319b3d99c88ce476539c27370b4692933006151
+lib/helix/config.rb 9fa09c641b64fc99eff205bd51d0ebd74bcffd60
+lib/helix/statistics.rb 40561eaa1576fae93c0784c89e8a7dae86fad36f
