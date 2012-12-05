@@ -6,12 +6,12 @@ describe Helix::Track do
   def import_xml(values={})
     { list: { entry: values } }.to_xml(root: :add)
   end
-  
+
   let(:klass) { Helix::Track }
 
-  subject { klass }
-  its(:ancestors) { should include(Helix::Base) }
-  its(:guid_name) { should eq('track_id') }
+  subject                 { klass }
+  its(:ancestors)         { should include(Helix::Base) }
+  its(:guid_name)         { should eq('track_id') }
   its(:media_type_sym)    { should be(:track)   }
   its(:plural_media_type) { should eq('tracks') }
 
@@ -24,8 +24,8 @@ describe Helix::Track do
                       format:       :xml } }
 
   describe "an instance" do
-    let(:obj) { klass.new({'track_id' => 'some_track_guid'}) }
-    subject { obj }
+    let(:obj)            { klass.new({'track_id' => 'some_track_guid'}) }
+    subject              { obj }
     its(:media_type_sym) { should be(:track) }
   end
 
