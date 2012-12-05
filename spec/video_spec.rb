@@ -96,18 +96,4 @@ describe Helix::Video do
       expect(klass.send(meth)).to eq({ params: { signature: :sig } })
     end
   end
-
-  describe ".extract_params" do
-    let(:meth)          { :extract_params }
-    subject             { klass.method(meth) }
-    its(:arity)         { should eq(1) }
-    let(:expected_hash) { { contributor: :con, library_id: :id } }
-    let(:attrs)         { { extra_key_one: :one, 
-                            extra_key_two: :two }.merge(expected_hash) }
-    it "should return the correct key values from attributes" do
-      expect(klass.send(meth, attrs)).to eq(expected_hash)
-    end
-  end
-
-
 end

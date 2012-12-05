@@ -29,7 +29,7 @@ module Helix
     def self.import(attrs={})
       RestClient.post(self.get_url,
                       self.get_xml(attrs),
-                      self.get_params(self.extract_params(attrs)))
+                      self.get_params(attrs))
     end
 
     private
@@ -63,21 +63,17 @@ module Helix
       Helix::Config.instance.build_url(self.get_url_opts)
     end
 
-    def self.extract_params(attrs)
-      [:contributor, :library_id].each_with_object({}) do |param, hash|
-        hash[param] = attrs[param] unless attrs[param].nil?
-      end
-    end
-
     # Gets the hash used in adding the signature to the API
     # call.
     #
     # @return [Hash] Returns a formatted hash for passing in the signature to the API call.
     def self.get_params(opts={})
-      opts  = { contributor: :helix, library_id: :development }.merge(opts)
-      sig   = Helix::Config.instance.signature(:ingest, opts)
-      { params: { signature: sig } }
+      opts        = { contributor: :helix, library_id: :development }.merge(opts)
+      sig         = Helix::Config.instance.signature(:ingest, opts)
+      #TODO: Find a better way to handle all the different params needed for a call, such as
+      #attributes vs signature params vs process params. :url params is a temp fix. 
+      url_params  = (opts[:url_params].nil? ? {} : opts[:url_params])
+      { params: (params  = { signature: sig }.merge(url_params)) }
     end
-
   end
 end

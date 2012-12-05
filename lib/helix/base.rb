@@ -60,7 +60,8 @@ module Helix
     end
 
     def self.get_data_sets(opts)
-      url          = config.build_url(format: :json)
+      url          = config.build_url(format:     :json, 
+                                      media_type: self.plural_media_type)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
       data_sets    = raw_response[plural_media_type]

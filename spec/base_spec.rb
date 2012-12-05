@@ -108,7 +108,8 @@ describe Helix::Base do
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
       it "should build a JSON URL -> the_url" do
-        mock_config.should_receive(:build_url).with(format: :json)
+        mock_config.should_receive(:build_url).with(format:     :json, 
+                                                    media_type: plural_media_type)
         klass.send(meth, opts)
       end
       it "should get_response(the_url, {sig_type: :view}.merge(opts) -> raw_response" do
