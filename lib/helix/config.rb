@@ -128,7 +128,10 @@ module Helix
       if url =~ /json/
         JSON.parse(response)
       elsif url =~ /xml/
-        Hash.from_xml(response)
+        #TODO: Cleanup Nori and response gsub.
+        Nori.parser = :nokogiri
+        xml = response.gsub(/<custom-fields type='array'>/, '<custom-fields type=\'hash\'>')
+        Nori.parse(xml)
       elsif url =~ /csv/
         response
       else
