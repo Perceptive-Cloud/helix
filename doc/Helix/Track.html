@@ -148,7 +148,7 @@
 
   
     <span class="summary_desc"><div class='inline'><p>
-Used to import videos from a URL into the Twistage system.
+Used to import tracks from a URL into the Twistage system.
 </p>
 </div></span>
   
@@ -228,8 +228,8 @@ The class name, to be used by supporting classes.
 </h3><div class="docstring">
   <div class="discussion">
     <p>
-Used to import videos from a URL into the Twistage system. Doc reference:
-/doc/api/video/import
+Used to import tracks from a URL into the Twistage system. Doc reference:
+/doc/api/track/import
 </p>
 
 
@@ -241,10 +241,10 @@ Used to import videos from a URL into the Twistage system. Doc reference:
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code">video = Helix::Video.import(src:          &quot;www.google.com/video.mp4&quot;,
+      <pre class="example code">track = Helix::Track.import(src:          &quot;www.google.com/track.mp4&quot;,
                             title:        &quot;Some Title,
-                            description:  &quot;A random video.&quot;)
-new_video.video_id # =&gt; dd891b83ba39e</pre>
+                            description:  &quot;A random track.&quot;)
+new_track.track_id # =&gt; dd891b83ba39e</pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -263,7 +263,7 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       
         &mdash;
         <div class='inline'><p>
-The attributes for creating a video.
+The attributes for creating a track.
 </p>
 </div>
       
@@ -389,7 +389,7 @@ Name of the class.
 </div>
 
     <div id="footer">
-  Generated on Wed Dec  5 11:28:49 2012 by
+  Generated on Thu Dec  6 16:55:26 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.2).
 </div>

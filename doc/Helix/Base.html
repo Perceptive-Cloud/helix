@@ -1108,7 +1108,7 @@ The array of instance objects for a class.
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span>     <span class='symbol'>:json</span><span class='comma'>,</span> 
+  <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span>     <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:format</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:json</span><span class='comma'>,</span> 
                                   <span class='label'>media_type:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
   <span class='comment'># We allow opts[:sig_type] for internal negative testing only.
 </span>  <span class='id identifier rubyid_raw_response'>raw_response</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1609,7 +1609,7 @@ Returns an instance of the class after update.
 </div>
 
     <div id="footer">
-  Generated on Wed Dec  5 11:28:49 2012 by
+  Generated on Thu Dec  6 16:55:26 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.2).
 </div>
