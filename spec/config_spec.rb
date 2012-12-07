@@ -462,4 +462,13 @@ describe Helix::Config do
       end
     end
   end
+
+  [ :signature_for, :signature_expiration_for ].each do |meth|
+    describe "##{meth}" do
+      it "should respond to :#{meth}" do
+        expect(obj).to respond_to(meth)
+      end
+    end
+  end
+
 end

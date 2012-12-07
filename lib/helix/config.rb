@@ -19,6 +19,7 @@ module Helix
     end
 
     attr_accessor :credentials
+    attr_reader   :signature_for, :signature_expiration_for
 
     # Creates a singleton of itself, setting the config
     # to a specified YAML file. If no file is specified the default
