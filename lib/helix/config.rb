@@ -62,6 +62,11 @@ module Helix
       url      = add_sub_urls(base_url, opts)
     end
 
+    def clear_signatures!
+      @signature_for            = {}
+      @signature_expiration_for = {}
+    end
+
     # Creates the base url with information collected from credentials.
     #
     # @param [Hash] opts a hash of options for building URL

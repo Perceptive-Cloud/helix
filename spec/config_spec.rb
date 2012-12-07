@@ -237,6 +237,24 @@ describe Helix::Config do
     end
   end
 
+  describe "#clear_signatures!" do
+    let(:meth)  { :clear_signatures! }
+
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(0) }
+
+    it "should set @signature_for to {}" do
+      obj.send(meth)
+      expect(obj.instance_variable_get(:@signature_for)).to eq({})
+    end
+
+    it "should set @signature_expiration_for to {}" do
+      obj.send(meth)
+      expect(obj.instance_variable_get(:@signature_expiration_for)).to eq({})
+    end
+
+  end
+
   describe "#existing_sig_for" do
     let(:meth)  { :existing_sig_for }
 
