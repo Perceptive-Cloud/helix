@@ -12,16 +12,16 @@ module Helix
     # @return [Symbol] Name of the class.
     def self.media_type_sym; :track; end
     
-    # Used to import videos from a URL into the Twistage system.
-    # Doc reference: /doc/api/video/import
+    # Used to import tracks from a URL into the Twistage system.
+    # Doc reference: /doc/api/track/import
     #
     # @example
-    #   video = Helix::Video.import(src:          "www.google.com/video.mp4",
+    #   track = Helix::Track.import(src:          "www.google.com/track.mp4",
     #                               title:        "Some Title,
-    #                               description:  "A random video.")
-    #   new_video.video_id # => dd891b83ba39e
+    #                               description:  "A random track.")
+    #   new_track.track_id # => dd891b83ba39e
     #
-    # @param [Hash] attrs The attributes for creating a video.
+    # @param [Hash] attrs The attributes for creating a track.
     # @return [RestClient] The response object.
     def self.import(attrs={})
       #TODO: Pull shared logic (with video) into a shared lib file.
