@@ -14,6 +14,6 @@ spec = Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/Twistage/helix/'
   s.add_dependency "json", ">= 1.5.4"
   s.add_dependency "rest-client", ">= 1.6.7"
-  s.add_dependency "nori", ">= 1.1.3"
+  s.add_dependency "nori", "1.1.3"
 end
 
