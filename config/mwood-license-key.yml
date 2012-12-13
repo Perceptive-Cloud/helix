@@ -1,4 +1,5 @@
-site: 'http://service-staging.twistage.com'
-license_key: 'e4ae509a20e8a' #'e4ae509a20e8a' #'993693f2d9a6b'
+site: 'http://service-staging.twistage.com'#http://service-staging.twistage.com'
+license_key: '993693f2d9a6b' #staging new city'e4ae509a20e8a' #staging basher'993693f2d9a6b' #localcorc c5dc8a2e9be75
 video_id: 'e1ec162703eff'
 album_id: 'mea3bdee751a7'
+library_id: 'development'

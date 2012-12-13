@@ -1,5 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 
 require 'simplecov'
-SimpleCov.start 'rails'
-
+SimpleCov.start do
+  add_filter 'spec'
+  add_group 'Libraries', 'lib'
+end
