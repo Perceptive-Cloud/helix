@@ -12,7 +12,7 @@ module Helix
 
     unless defined?(self::DEFAULT_FILENAME)
       DEFAULT_FILENAME = './helix.yml'
-      SCOPES           = %w(reseller company library)
+      SCOPES           = [:reseller, :company, :library]
       SIG_DURATION     = 1200 # in minutes
       TIME_OFFSET      = 1000 * 60 # 1000 minutes, lower to give some margin of error
       VALID_SIG_TYPES  = [ :ingest, :update, :view ]
@@ -33,8 +33,9 @@ module Helix
     # @return [Helix::Config] config returns singleton of Helix::Config
     def self.load(yaml_file_location = DEFAULT_FILENAME)
       config = self.instance
-      config.instance_variable_set(:@filename,    yaml_file_location)
-      config.instance_variable_set(:@credentials, YAML.load(File.open(yaml_file_location)))
+      config.instance_variable_set(:@filename, yaml_file_location)
+      creds = YAML.load(File.open(yaml_file_location)).symbolize_keys
+      config.instance_variable_set(:@credentials, creds)
       config
     end
 
@@ -74,7 +75,7 @@ module Helix
     # @return [String] The base RESTful URL string object
     def get_base_url(opts)
       creds     = credentials
-      base_url  = creds['site']
+      base_url  = creds[:site]
       reseller, company, library = SCOPES.map { |scope| creds[scope] }
       base_url += "/resellers/#{reseller}" if reseller
       if company
@@ -126,7 +127,7 @@ module Helix
     end
 
     def license_key
-      @credentials['license_key']
+      @credentials[:license_key]
     end
 
     def parse_response_by_url_format(response, url)
@@ -161,7 +162,7 @@ module Helix
 
     def url_for(sig_type, opts={})
       contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
-      url  = "#{credentials['site']}/api/#{sig_type}_key?licenseKey=#{credentials['license_key']}&duration=#{SIG_DURATION}"
+      url  = "#{credentials[:site]}/api/#{sig_type}_key?licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
       url += "&contributor=#{contributor}"  if contributor
       url += "&library_id=#{library_id}"    if library_id
       url
