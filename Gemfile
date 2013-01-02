@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rake'
+gem 'json',        '>= 1.5.4'
+gem 'rest-client', '1.6.7'
+gem 'nori',        '1.1.3'
+gem 'active_support/core_ext'
 
 # If we use Travis we'll want these ignored.
 group :development do
