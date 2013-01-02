@@ -8,6 +8,8 @@ gem 'rest-client', '1.6.7'
 gem 'nori',        '1.1.3'
 gem 'active_support'
 gem 'i18n'
+gem 'builder'
+gem 'nokogiri'
 
 # If we use Travis we'll want these ignored.
 group :development do
