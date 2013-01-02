@@ -17,7 +17,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.album_delivery(opts={})
-      self.image_delivery(opts)
+      image_delivery(opts)
     end
 
     # @example
@@ -25,7 +25,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.album_storage(opts={})
-      self.image_storage(opts)
+      image_storage(opts)
     end
 
     # @example
@@ -33,7 +33,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.audio_delivery(opts={})
-      self.delivery(:track, opts)
+      delivery(:track, opts)
     end
 
     # @example
@@ -43,8 +43,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.audio_ingest(opts={})
-      opts[:action] ||= :breakdown
-      self.storage(:track, opts.merge(action: :"track_ingest/#{opts[:action]}"))
+      ingest(:track, opts)
     end
 
     # @example
@@ -52,7 +51,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.audio_storage(opts={})
-      self.storage(:track, opts)
+      storage(:track, opts)
     end
 
     # @example
@@ -60,7 +59,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.image_delivery(opts={})
-      self.delivery(:image, opts)
+      delivery(:image, opts)
     end
 
     # @example
@@ -68,7 +67,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.image_storage(opts={})
-      self.storage(:image, opts)
+      storage(:image, opts)
     end
 
     # @example
@@ -76,7 +75,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.track_delivery(opts={})
-      self.audio_delivery(opts)
+      audio_delivery(opts)
     end
 
     # @example
@@ -86,7 +85,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.track_ingest(opts={})
-      self.audio_ingest(opts)
+      audio_ingest(opts)
     end
 
     # @example
@@ -94,7 +93,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.track_storage(opts={})
-      self.audio_storage(opts)
+      audio_storage(opts)
     end
 
     # @example
@@ -102,7 +101,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.video_delivery(opts={})
-      self.delivery(:video, opts)
+      delivery(:video, opts)
     end
 
     # @example
@@ -112,8 +111,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.video_ingest(opts={})
-      opts[:action] ||= :breakdown
-      self.storage(:video, opts.merge(action: :"video_publish/#{opts[:action]}"))
+      ingest(:video, opts)
     end
 
     # @example
@@ -121,7 +119,7 @@ module Helix
     #
     # @return [Array of Hashes] Statistics information.
     def self.video_storage(opts={})
-      self.storage(:video, opts)
+      storage(:video, opts)
     end
 
     private
@@ -137,6 +135,12 @@ module Helix
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
       memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+    end
+
+    def self.ingest(media_type, opts)
+      opts[:action] ||= :breakdown
+      action_prefix   = storage_action_for(media_type).to_s.split('/').first
+      storage(media_type, opts.merge(action: :"#{action_prefix}/#{opts[:action]}"))
     end
 
     def self.storage(media_type, opts)
