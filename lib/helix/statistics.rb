@@ -139,7 +139,7 @@ module Helix
 
     def self.ingest(media_type, opts)
       opts[:action] ||= :breakdown
-      action_prefix   = storage_action_for(media_type).to_s.split('/').first
+      action_prefix   = ingest_action_prefix_for(media_type)
       storage(media_type, opts.merge(action: :"#{action_prefix}/#{opts[:action]}"))
     end
 
@@ -152,6 +152,10 @@ module Helix
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
       memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+    end
+
+    def self.ingest_action_prefix_for(media_type)
+      STORAGE_ACTION_FOR[media_type].split('/').first
     end
 
     def self.storage_action_for(media_type)
