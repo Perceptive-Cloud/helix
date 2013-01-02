@@ -3,3 +3,4 @@ helix.yml
 .rspec
 helix-*.pre.gem
 .rvmrc
+Gemfile.lock
