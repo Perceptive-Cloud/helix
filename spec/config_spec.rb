@@ -103,18 +103,27 @@ describe Helix::Config do
     end
   end
 
+  def build_test_url(site, sub_url, guid, action, media_type, format)
+    expected_url  = site
+    expected_url += sub_url unless guid
+    expected_url += "/#{media_type}"
+    expected_url += "/the_guid" if guid
+    expected_url += "/#{action}" if action
+    expected_url += ".#{format}"
+  end
+
   describe "#build_url" do
     site = 'http://example.com'
     let(:meth)  { :build_url }
     subject     { obj.method(meth) }
     its(:arity) { should be(-1) }
-    before(:each) do
-      obj.credentials = {site: site}
-    end
+    before(:each) do obj.credentials = { site: site } end
     shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
-      more_opts ||= {}
-      guid   = more_opts[:guid]
-      action = more_opts[:action]
+      let(:opts)          { more_opts || {} }
+      let(:action)        { opts[:action] } 
+      let(:guid)          { opts[:guid] } 
+      let(:url_pieces)    { [site, sub_url, guid, action, media_type, format] }
+      let(:expected_url)  { build_test_url(*url_pieces) } 
       before(:each) do obj.credentials = {site: 'http://example.com'} end
       context "and credentials has a key for :reseller" do
         before(:each) do obj.credentials.merge!(reseller: 're_id') end
@@ -122,27 +131,18 @@ describe Helix::Config do
           before(:each) do obj.credentials.merge!(company: 'co_id') end
           context "and credentials has a key for :library" do
             before(:each) do obj.credentials.merge!(library: 'lib_id') end
-            expected_url  = "#{site}/resellers/re_id/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
+            let(:sub_url) { "/resellers/re_id/companies/co_id/libraries/lib_id" }
             it { should eq(expected_url) }
           end
           context "and credentials does NOT have a key for :library" do
             before(:each) do obj.credentials.delete(:library) end
-            expected_url  = "#{site}/resellers/re_id/companies/co_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
+            let(:sub_url) { "/resellers/re_id/companies/co_id" }
             it { should eq(expected_url) }
           end
         end
         context "and credentials does NOT have a key for :company" do
           before(:each) do obj.credentials.delete(:company) end
-          expected_url  = "#{site}/resellers/re_id/#{media_type}"
-          expected_url += "/the_guid"  if guid
-          expected_url += "/#{action}" if action
-          expected_url += ".#{format}"
+          let(:sub_url) { "/resellers/re_id" }
           it { should eq(expected_url) }
         end
       end
@@ -152,10 +152,7 @@ describe Helix::Config do
           before(:each) do obj.credentials[:company] = 'co_id' end
           context "and credentials has a key for 'library'" do
             before(:each) do obj.credentials[:library] = 'lib_id' end
-            expected_url  = "#{site}/companies/co_id/libraries/lib_id/#{media_type}"
-            expected_url += "/the_guid"  if guid
-            expected_url += "/#{action}" if action
-            expected_url += ".#{format}"
+            let(:sub_url) { "/companies/co_id/libraries/lib_id" }
             it { should eq(expected_url) }
           end
         end
@@ -165,7 +162,6 @@ describe Helix::Config do
       subject { obj.send(meth) }
       it_behaves_like "reads scope from credentials for build_url", :videos, :json
     end
-=begin
     context "when given opts of {}" do
       subject { obj.send(meth, {}) }
       it_behaves_like "reads scope from credentials for build_url", :videos, :json
@@ -236,7 +232,6 @@ describe Helix::Config do
         end
       end
     end
-=end
   end
 
   describe "#clear_signatures!" do

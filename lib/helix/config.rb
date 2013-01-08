@@ -76,6 +76,7 @@ module Helix
     def get_base_url(opts)
       creds     = credentials
       base_url  = creds[:site]
+      return base_url if opts[:guid]
       reseller, company, library = SCOPES.map { |scope| creds[scope] }
       base_url += "/resellers/#{reseller}" if reseller
       if company
