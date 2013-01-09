@@ -105,7 +105,7 @@ describe Helix::Config do
 
   def build_test_url(site, sub_url, guid, action, media_type, format)
     expected_url  = site
-    expected_url += sub_url unless guid
+    expected_url += sub_url unless guid || action == :create_many
     expected_url += "/#{media_type}"
     expected_url += "/the_guid" if guid
     expected_url += "/#{action}" if action
@@ -157,6 +157,11 @@ describe Helix::Config do
           end
         end
       end
+    end
+    context "when given 'create_many' as an action" do
+      opts =  { action: :create_many }
+      subject { obj.send(meth, opts) }
+      it_behaves_like "reads scope from credentials for build_url", :videos, :json, opts
     end
     context "when given NO opts" do
       subject { obj.send(meth) }
