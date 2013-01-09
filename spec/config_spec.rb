@@ -120,10 +120,10 @@ describe Helix::Config do
     before(:each) do obj.credentials = { site: site } end
     shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
       let(:opts)          { more_opts || {} }
-      let(:action)        { opts[:action] } 
-      let(:guid)          { opts[:guid] } 
+      let(:action)        { opts[:action] }
+      let(:guid)          { opts[:guid] }
       let(:url_pieces)    { [site, sub_url, guid, action, media_type, format] }
-      let(:expected_url)  { build_test_url(*url_pieces) } 
+      let(:expected_url)  { build_test_url(*url_pieces) }
       before(:each) do obj.credentials = {site: 'http://example.com'} end
       context "and credentials has a key for :reseller" do
         before(:each) do obj.credentials.merge!(reseller: 're_id') end
