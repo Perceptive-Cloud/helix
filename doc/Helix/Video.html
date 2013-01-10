@@ -6,7 +6,7 @@
 <title>
   Class: Helix::Video
   
-    &mdash; Documentation by YARD 0.8.3
+    &mdash; Helix Documentation
   
 </title>
 
@@ -92,11 +92,15 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="DurationedMedia.html" title="Helix::DurationedMedia (module)">DurationedMedia</a></span></dd>
+      
+    
   
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/helix/video.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/helix/video.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -147,9 +151,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Used to import videos from a URL into the Twistage system.
-</p>
+    <span class="summary_desc"><div class='inline'><p>Used to import videos from a URL into the Twistage system.</p>
 </div></span>
   
 </li>
@@ -172,9 +174,7 @@ Used to import videos from a URL into the Twistage system.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-The class name, to be used by supporting classes.
-</p>
+    <span class="summary_desc"><div class='inline'><p>The class name, to be used by supporting classes.</p>
 </div></span>
   
 </li>
@@ -183,6 +183,17 @@ The class name, to be used by supporting classes.
     </ul>
   
 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="DurationedMedia.html" title="Helix::DurationedMedia (module)">DurationedMedia</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="DurationedMedia.html#included-class_method" title="Helix::DurationedMedia.included (method)">included</a></span></p>
 
   
   
@@ -227,10 +238,8 @@ The class name, to be used by supporting classes.
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>
-Used to import videos from a URL into the Twistage system. Doc reference:
-/doc/api/video/import
-</p>
+    <p>Used to import videos from a URL into the Twistage system.
+Doc reference: /doc/api/video/import</p>
 
 
   </div>
@@ -262,9 +271,7 @@ new_video.video_id # =&gt; dd891b83ba39e</pre>
       
       
         &mdash;
-        <div class='inline'><p>
-The attributes for creating a video.
-</p>
+        <div class='inline'><p>The attributes for creating a video.</p>
 </div>
       
     </li>
@@ -282,9 +289,7 @@ The attributes for creating a video.
       
       
         &mdash;
-        <div class='inline'><p>
-The response object.
-</p>
+        <div class='inline'><p>The response object.</p>
 </div>
       
     </li>
@@ -297,19 +302,19 @@ The response object.
       <pre class="lines">
 
 
-29
-30
 31
 32
-33</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span>
-                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span>
-                  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span>
+                  <span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span>
+                  <span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -327,10 +332,8 @@ The response object.
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>
-The class name, to be used by supporting classes. Such as Config which uses
-this method as a way to build URLs.
-</p>
+    <p>The class name, to be used by supporting classes. Such as Config which uses
+this method as a way to build URLs.</p>
 
 
   </div>
@@ -356,9 +359,7 @@ this method as a way to build URLs.
       
       
         &mdash;
-        <div class='inline'><p>
-Name of the class.
-</p>
+        <div class='inline'><p>Name of the class.</p>
 </div>
       
     </li>
@@ -371,10 +372,10 @@ Name of the class.
       <pre class="lines">
 
 
-16</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span><span class='semicolon'>;</span> <span class='symbol'>:video</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -387,9 +388,9 @@ Name of the class.
 </div>
 
     <div id="footer">
-  Generated on Thu Dec  6 16:55:26 2012 by
+  Generated on Wed Jan  9 16:22:52 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.3 (ruby-1.9.2).
+  0.8.3 (ruby-1.9.3).
 </div>
 
   </body>

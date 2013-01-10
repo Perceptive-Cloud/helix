@@ -1,8 +1,9 @@
-lib/helix.rb 5a9ef594ea1fd4af7b00d4875b4bff96d3ed8a88
-lib/helix/base.rb a9f1d6c40e73e87fc7face05ed000a369d86a152
-lib/helix/video.rb 4a5d77b972855b7e5deef23d492c7658edc94572
-lib/helix/album.rb 0d9569165508ebdc420f3143857e0e72c3ea0561
+lib/helix.rb f0b26ce32065364c3640b982a5014299af645cca
+lib/helix/base.rb 7e9e21ce423ce6fdcef23e912b63d418a56ae226
 lib/helix/image.rb 279902473fb01d491beabc94ea2bcce611011016
-lib/helix/track.rb b3ca1c99be1288877b63f3db589fbe72e57bfcf2
-lib/helix/config.rb d57b377fa637b0b46e67d15c596d1c34947ec547
-lib/helix/statistics.rb 40561eaa1576fae93c0784c89e8a7dae86fad36f
+lib/helix/track.rb d4be85126c842ded9dd6e36c3fdb7b27107933be
+lib/helix/video.rb e5a15f6a55e64fa10f366186ad7a509ab5116127
+lib/helix/album.rb 0d9569165508ebdc420f3143857e0e72c3ea0561
+lib/helix/config.rb d6ce74c86dd57e583425464cec2cd8a55bb94d47
+lib/helix/statistics.rb 10916c64e6eff01dbc57cbaac2902a7d875072fc
+lib/helix/durationed_media.rb cd9d0355de7fdd5b718c52b1dab517cb00ced607
