@@ -53,14 +53,14 @@ module Helix
     #
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
-    def self.find_all(opts)
+    def self.find_all(opts={})
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new(attributes: attrs, config: config) }
     end
 
     def self.get_data_sets(opts)
-      url          = config.build_url(format:     opts[:format] || :json, 
+      url          = config.build_url(format:     opts[:format] || :json,
                                       media_type: self.plural_media_type)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_response = config.get_response(url, {sig_type: :view}.merge(opts))

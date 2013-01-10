@@ -101,14 +101,14 @@ describe Helix::Base do
     let(:meth)  { :find_all }
     let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
     subject     { klass.method(meth) }
-    its(:arity) { should eq(1) }
+    its(:arity) { should eq(-1) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and an opts Hash" do
       let(:opts) { {opts_key1: :opts_val1} }
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
       it "should build a JSON URL -> the_url" do
-        mock_config.should_receive(:build_url).with(format:     :json, 
+        mock_config.should_receive(:build_url).with(format:     :json,
                                                     media_type: plural_media_type)
         klass.send(meth, opts)
       end
