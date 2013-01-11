@@ -29,11 +29,11 @@ module Helix
     # @param [Hash] attrs The attributes for creating a video.
     # @return [RestClient] The response object.
     def self.import(attrs={})
-      RestClient.post(get_url,
-                      get_xml(attrs),
-                      get_params(attrs))
+      rest_post(:create_many, attrs)
     end
 
+    def self.slice(attrs={})
+      rest_post(:slice, attrs)
+    end
   end
-
 end

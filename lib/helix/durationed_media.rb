@@ -4,17 +4,22 @@ module Helix
 
     module ClassMethods
 
+      private
+
       # Standard hash values used to generate the create_many
       # url.
       #
       # @return [Hash]
-      def get_url_opts
-        { action:     :create_many,
-          media_type: plural_media_type,
-          format:     :xml }
+      def url_opts_for(format=nil)
+        { slice:        { action:       :slice,
+                          media_type:   plural_media_type,
+                          content_type: :xml,
+                          formats:      format },
+          create_many: {  action:       :create_many,
+                          media_type:   plural_media_type,
+                          content_type: :xml }
+        }
       end
-
-      private
 
       # Gets the hash used in adding the signature to the API
       # call.
@@ -32,8 +37,9 @@ module Helix
       # Gets the url used in the create_many import call.
       #
       # @return [String] Returns the valid url used for the API call.
-      def get_url
-        Helix::Config.instance.build_url(self.get_url_opts)
+      def get_url_for(api_call, opts)
+        url_opts = url_opts_for(opts[:formats])[api_call].merge(opts)
+        Helix::Config.instance.build_url(url_opts)
       end
 
       # Method allows for :use_raw_xml to be passed into attributes.
@@ -45,9 +51,15 @@ module Helix
       # @return [String] Returns xml either from a raw entry or generated from attributes.
       def get_xml(attrs={})
         return attrs[:use_raw_xml] if attrs[:use_raw_xml].present?
-        { list: { entry: attrs } }.to_xml(root: :add)
+        xml_opts = {root: :add }
+        { list: { entry: attrs[:url_params] || {} } }.to_xml(xml_opts)
       end
 
+      def rest_post(api_call, attrs)
+        RestClient.post(get_url_for(api_call, attrs),
+                        get_xml(attrs),
+                        get_params(attrs))
+      end
     end
 
     def self.included(klass); klass.extend(ClassMethods); end

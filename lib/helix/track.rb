@@ -26,10 +26,7 @@ module Helix
     # @param [Hash] attrs The attributes for creating a track.
     # @return [RestClient] The response object.
     def self.import(attrs={})
-      #TODO: Pull shared logic (with video) into a shared lib file.
-      RestClient.post(get_url,
-                      get_xml(attrs),
-                      get_params(attrs))
+      rest_post(:create_many, attrs)
     end
 
   end

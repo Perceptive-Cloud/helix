@@ -103,13 +103,13 @@ describe Helix::Config do
     end
   end
 
-  def build_test_url(site, sub_url, guid, action, media_type, format)
+  def build_test_url(site, sub_url, guid, action, media_type, content_type)
     expected_url  = site
     expected_url += sub_url unless guid || action == :create_many
     expected_url += "/#{media_type}"
     expected_url += "/the_guid" if guid
     expected_url += "/#{action}" if action
-    expected_url += ".#{format}"
+    expected_url += ".#{content_type}"
   end
 
   describe "#build_url" do
@@ -118,11 +118,11 @@ describe Helix::Config do
     subject     { obj.method(meth) }
     its(:arity) { should be(-1) }
     before(:each) do obj.credentials = { site: site } end
-    shared_examples_for "reads scope from credentials for build_url" do |media_type,format,more_opts|
+    shared_examples_for "reads scope from credentials for build_url" do |media_type,content_type,more_opts|
       let(:opts)          { more_opts || {} }
       let(:action)        { opts[:action] }
       let(:guid)          { opts[:guid] }
-      let(:url_pieces)    { [site, sub_url, guid, action, media_type, format] }
+      let(:url_pieces)    { [site, sub_url, guid, action, media_type, content_type] }
       let(:expected_url)  { build_test_url(*url_pieces) }
       before(:each) do obj.credentials = {site: 'http://example.com'} end
       context "and credentials has a key for :reseller" do
@@ -201,39 +201,39 @@ describe Helix::Config do
         it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
       end
     end
-    [ :json, :xml ].each do |format|
-      context "when given opts[:format] of :#{format}" do
-        subject { obj.send(meth, format: format) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format
+    [ :json, :xml ].each do |content_type|
+      context "when given opts[:content_type] of :#{content_type}" do
+        subject { obj.send(meth, content_type: content_type) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, content_type
       end
-      context "when given opts[:format] of :#{format} and opts[:guid] of :the_guid" do
-        subject { obj.send(meth, format: format, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid}
+      context "when given opts[:content_type] of :#{content_type} and opts[:guid] of :the_guid" do
+        subject { obj.send(meth, content_type: content_type, guid: :the_guid) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, content_type, {guid: :the_guid}
       end
-      context "when given opts[:format] of :#{format} and opts[:action] of :the_action" do
-        subject { obj.send(meth, format: format, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {action: :the_action}
+      context "when given opts[:content_type] of :#{content_type} and opts[:action] of :the_action" do
+        subject { obj.send(meth, content_type: content_type, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, content_type, {action: :the_action}
       end
-      context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
-        subject { obj.send(meth, format: format, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", :videos, format, {guid: :the_guid, action: :the_action}
+      context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, and opts[:action] of :the_action" do
+        subject { obj.send(meth, content_type: content_type, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", :videos, content_type, {guid: :the_guid, action: :the_action}
       end
       [ :videos, :tracks ].each do |media_type|
-        context "when given opts[:format] of :#{format} and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, format: format, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format
+        context "when given opts[:content_type] of :#{content_type} and opts[:media_type] of :#{media_type}" do
+          subject { obj.send(meth, content_type: content_type, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, content_type
         end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, format: format, guid: :the_guid, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid}
+        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
+          subject { obj.send(meth, content_type: content_type, guid: :the_guid, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {guid: :the_guid}
         end
-        context "when given opts[:format] of :#{format}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, format: format, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {action: :the_action}
+        context "when given opts[:content_type] of :#{content_type}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { obj.send(meth, content_type: content_type, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {action: :the_action}
         end
-        context "when given opts[:format] of :#{format}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, format: format, guid: :the_guid, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, format, {guid: :the_guid, action: :the_action}
+        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
+          subject { obj.send(meth, content_type: content_type, guid: :the_guid, action: :the_action, media_type: media_type) }
+          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {guid: :the_guid, action: :the_action}
         end
       end
     end
