@@ -6,21 +6,6 @@ module Helix
 
       private
 
-      # Standard hash values used to generate the create_many
-      # url.
-      #
-      # @return [Hash]
-      def url_opts_for(format=nil)
-        { slice:        { action:       :slice,
-                          media_type:   plural_media_type,
-                          content_type: :xml,
-                          formats:      format },
-          create_many: {  action:       :create_many,
-                          media_type:   plural_media_type,
-                          content_type: :xml }
-        }
-      end
-
       # Gets the hash used in adding the signature to the API
       # call.
       #
@@ -55,10 +40,46 @@ module Helix
         { list: { entry: attrs[:url_params] || {} } }.to_xml(xml_opts)
       end
 
+      # Used to import tracks from a URL into the Twistage system.
+      # Doc reference: /doc/api/track/import
+      # Doc reference: /doc/api/video/import
+      #
+      # @example
+      #   track = Helix::Track.import(src:          "www.google.com/track.mp4",
+      #                               title:        "Some Title,
+      #                               description:  "A random track.")
+      #   new_track.track_id # => dd891b83ba39e
+      #
+      #   video = Helix::Video.import(src:          "www.google.com/video.mp4",
+      #                               title:        "Some Title,
+      #                               description:  "A random video.")
+      #   new_video.video_id # => dd891b83ba39e
+      #
+      # @param [Hash] attrs The attributes for creating a track.
+      # @return [RestClient] The response object.
+      def import(attrs={})
+        rest_post(:create_many, attrs)
+      end
+
       def rest_post(api_call, attrs)
         RestClient.post(get_url_for(api_call, attrs),
                         get_xml(attrs),
                         get_params(attrs))
+      end
+
+      # Standard hash values used to generate the create_many
+      # url.
+      #
+      # @return [Hash]
+      def url_opts_for(format=nil)
+        { slice:       {  action:       :slice,
+                          media_type:   plural_media_type,
+                          content_type: :xml,
+                          formats:      format },
+          create_many: {  action:       :create_many,
+                          media_type:   plural_media_type,
+                          content_type: :xml }
+        }
       end
     end
 

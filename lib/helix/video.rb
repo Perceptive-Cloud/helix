@@ -17,21 +17,6 @@ module Helix
     # @return [Symbol] Name of the class.
     def self.media_type_sym; :video; end
 
-    # Used to import videos from a URL into the Twistage system.
-    # Doc reference: /doc/api/video/import
-    #
-    # @example
-    #   video = Helix::Video.import(src:          "www.google.com/video.mp4",
-    #                               title:        "Some Title,
-    #                               description:  "A random video.")
-    #   new_video.video_id # => dd891b83ba39e
-    #
-    # @param [Hash] attrs The attributes for creating a video.
-    # @return [RestClient] The response object.
-    def self.import(attrs={})
-      rest_post(:create_many, attrs)
-    end
-
     def self.slice(attrs={})
       rest_post(:slice, attrs)
     end
