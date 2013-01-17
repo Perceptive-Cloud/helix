@@ -102,7 +102,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#get_url_opts-instance_method" title="#get_url_opts (instance method)">- (Hash) <strong>get_url_opts</strong> </a>
+      <a href="#import-instance_method" title="#import (instance method)">- (RestClient) <strong>import</strong>(attrs = {}) </a>
     
 
     
@@ -116,8 +116,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Standard hash values used to generate the create_many
-url.</p>
+    <span class="summary_desc"><div class='inline'><p>Used to import tracks from a URL into the Twistage system.</p>
 </div></span>
   
 </li>
@@ -133,9 +132,9 @@ url.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="get_url_opts-instance_method">
+  <h3 class="signature first" id="import-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get_url_opts</strong> 
+    - (<tt>RestClient</tt>) <strong>import</strong>(attrs = {}) 
   
 
   
@@ -143,23 +142,65 @@ url.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Standard hash values used to generate the create_many
-url.</p>
+    <p>Used to import tracks from a URL into the Twistage system.
+Doc reference: /doc/api/track/import
+Doc reference: /doc/api/video/import</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code">track = Helix::Track.import(src:          &quot;www.google.com/track.mp4&quot;,
+                            title:        &quot;Some Title,
+                            description:  &quot;A random track.&quot;)
+new_track.track_id # =&gt; dd891b83ba39e
+
+video = Helix::Video.import(src:          &quot;www.google.com/video.mp4&quot;,
+                            title:        &quot;Some Title,
+                            description:  &quot;A random video.&quot;)
+new_video.video_id # =&gt; dd891b83ba39e</pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>attrs</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The attributes for creating a track.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
     <li>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>RestClient</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><p>The response object.</p>
+</div>
       
     </li>
   
@@ -171,19 +212,15 @@ url.</p>
       <pre class="lines">
 
 
-11
-12
-13
-14
-15</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/durationed_media.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/durationed_media.rb', line 24</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_get_url_opts'>get_url_opts</span>
-  <span class='lbrace'>{</span> <span class='label'>action:</span>     <span class='symbol'>:create_many</span><span class='comma'>,</span>
-    <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='comma'>,</span>
-    <span class='label'>format:</span>     <span class='symbol'>:xml</span> <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_rest_post'>rest_post</span><span class='lparen'>(</span><span class='symbol'>:create_many</span><span class='comma'>,</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -195,7 +232,7 @@ url.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Jan  9 16:22:52 2013 by
+  Generated on Thu Jan 17 15:45:28 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

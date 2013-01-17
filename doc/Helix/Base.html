@@ -1508,14 +1508,20 @@ them as an array.</p>
 167
 168
 169
-170</pre>
+170
+171
+172
+173</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 164</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_memo_cfg'>memo_cfg</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span>
-  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='symbol'>:xml</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span> <span class='symbol'>:xml</span><span class='comma'>,</span>
+                                <span class='label'>guid:</span>         <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span>
+                                <span class='label'>media_type:</span>   <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span>   <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>signature:</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
@@ -1530,7 +1536,7 @@ them as an array.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Jan  9 16:22:52 2013 by
+  Generated on Thu Jan 17 15:45:28 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

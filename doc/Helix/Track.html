@@ -137,29 +137,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#import-class_method" title="import (class method)">+ (RestClient) <strong>import</strong>(attrs = {}) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Used to import tracks from a URL into the Twistage system.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#media_type_sym-class_method" title="media_type_sym (class method)">+ (Symbol) <strong>media_type_sym</strong> </a>
     
 
@@ -228,103 +205,7 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="import-class_method">
-  
-    + (<tt>RestClient</tt>) <strong>import</strong>(attrs = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Used to import tracks from a URL into the Twistage system.
-Doc reference: /doc/api/track/import</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code">track = Helix::Track.import(src:          &quot;www.google.com/track.mp4&quot;,
-                            title:        &quot;Some Title,
-                            description:  &quot;A random track.&quot;)
-new_track.track_id # =&gt; dd891b83ba39e</pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>attrs</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>The attributes for creating a track.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>RestClient</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The response object.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-28
-29
-30
-31
-32
-33</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/track.rb', line 28</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='comment'>#TODO: Pull shared logic (with video) into a shared lib file.
-</span>  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_get_url'>get_url</span><span class='comma'>,</span>
-                  <span class='id identifier rubyid_get_xml'>get_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span>
-                  <span class='id identifier rubyid_get_params'>get_params</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="media_type_sym-class_method">
+  <h3 class="signature first" id="media_type_sym-class_method">
   
     + (<tt>Symbol</tt>) <strong>media_type_sym</strong> 
   
@@ -390,7 +271,7 @@ this method as a way to build URLs.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Jan  9 16:22:52 2013 by
+  Generated on Thu Jan 17 15:45:28 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>
