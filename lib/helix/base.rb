@@ -162,8 +162,11 @@ module Helix
     # @param [Hash] opts a hash of attributes to update the instance with.
     # @return [Base] Returns an instance of the class after update.
     def update(opts={})
+      RestClient.log = 'helix.log' if opts.delete(:log)
       memo_cfg = config
-      url      = memo_cfg.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      url      = memo_cfg.build_url(content_type: :xml,
+                                    guid:         guid,
+                                    media_type:   plural_media_type)
       params   = {signature: memo_cfg.signature(:update)}.merge(media_type_sym => opts)
       RestClient.put(url, params)
       self

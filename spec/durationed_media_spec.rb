@@ -25,7 +25,8 @@ describe Helix::DurationedMedia do
       let(:mock_config) { mock(Helix::Config) }
       subject           { klass.method(meth) }
       its(:arity)       { should eq(-1) }
-      let(:params)      { { params: { signature: :some_sig } } }
+      let(:params)      { { params:       { signature: :some_sig },
+                            content_type: "text/xml" } }
       before            { Helix::Config.stub(:instance) { mock_config } }
 
       it "should get an ingest signature" do

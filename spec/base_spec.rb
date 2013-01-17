@@ -319,8 +319,8 @@ describe Helix::Base do
         mock_config.stub(:build_url) { :expected_url }
       end
       shared_examples_for "builds URL for update" do
-        it "should build_url(format: :xml, guid: guid, media_type: plural_media_type)" do
-          mock_config.should_receive(:build_url).with(format: :xml, guid: :the_guid, media_type: :the_media_type)
+        it "should build_url(content_type: :xml, guid: guid, media_type: plural_media_type)" do
+          mock_config.should_receive(:build_url).with(content_type: :xml, guid: :the_guid, media_type: :the_media_type)
           RestClient.stub(:put)
           obj.send(meth)
         end
