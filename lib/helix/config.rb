@@ -59,7 +59,7 @@ module Helix
     # @param [Hash] opts a hash of options for building URL
     # @return [String] The full RESTful URL string object
     def build_url(opts={})
-      opts[:content_type] ||= :json
+      opts[:content_type] ||= :xml
       opts[:media_type]   ||= :videos
       base_url              = get_base_url(opts)
       url                   = add_sub_urls(base_url, opts)

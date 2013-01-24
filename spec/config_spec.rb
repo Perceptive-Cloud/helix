@@ -161,44 +161,44 @@ describe Helix::Config do
     context "when given 'create_many' as an action" do
       opts =  { action: :create_many }
       subject { obj.send(meth, opts) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, opts
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml, opts
     end
     context "when given NO opts" do
       subject { obj.send(meth) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml
     end
     context "when given opts of {}" do
       subject { obj.send(meth, {}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml
     end
     context "when given opts of {guid: :the_guid}" do
       subject { obj.send(meth, {guid: :the_guid}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid}
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml, {guid: :the_guid}
     end
     context "when given opts of {action: :the_action}" do
       subject { obj.send(meth, {action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {action: :the_action}
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml, {action: :the_action}
     end
     context "when given opts of {guid: :the_guid, action: :the_action}" do
       subject { obj.send(meth, {guid: :the_guid, action: :the_action}) }
-      it_behaves_like "reads scope from credentials for build_url", :videos, :json, {guid: :the_guid, action: :the_action}
+      it_behaves_like "reads scope from credentials for build_url", :videos, :xml, {guid: :the_guid, action: :the_action}
     end
     [ :videos, :tracks ].each do |media_type|
       context "when given opts[:media_type] of :#{media_type}" do
         subject { obj.send(meth, media_type: media_type) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json
+        it_behaves_like "reads scope from credentials for build_url", media_type, :xml
       end
       context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
         subject { obj.send(meth, media_type: media_type, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid}
+        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {guid: :the_guid}
       end
       context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
         subject { obj.send(meth, media_type: media_type, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {action: :the_action}
+        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {action: :the_action}
       end
       context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
         subject { obj.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :json, {guid: :the_guid, action: :the_action}
+        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {guid: :the_guid, action: :the_action}
       end
     end
     [ :json, :xml ].each do |content_type|
