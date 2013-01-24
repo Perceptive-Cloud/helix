@@ -24,8 +24,8 @@ module Helix
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
-      url       = config.build_url(media_type:  plural_media_type,
-                                   format:      :xml)
+      url       = config.build_url(media_type:    plural_media_type,
+                                   content_type:  :xml)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
       attrs     = Hash.from_xml(response)
       self.new(attributes: attrs[media_type_sym.to_s], config: config)

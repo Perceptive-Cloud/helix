@@ -52,8 +52,8 @@ describe Helix::Base do
       Helix::Config.stub(:instance) { mock_config }
     end
     it "should get an ingest signature" do
-      mock_config.should_receive(:build_url).with(media_type: :klasses,
-                                                  format:     :xml)
+      mock_config.should_receive(:build_url).with(media_type:   :klasses,
+                                                  content_type: :xml)
       RestClient.stub(:post).with(:url, params) { resp_json }
       Hash.should_receive(:from_xml).with(resp_json) { resp_value }
       klass.stub(:new).with(expected)
@@ -61,8 +61,8 @@ describe Helix::Base do
       klass.send(meth)
     end
     it "should do an HTTP post call, parse response and call new" do
-      mock_config.should_receive(:build_url).with(media_type: :klasses,
-                                                  format:     :xml)
+      mock_config.should_receive(:build_url).with(media_type:   :klasses,
+                                                  content_type: :xml)
       RestClient.should_receive(:post).with(:url, params) { resp_json }
       Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
       klass.should_receive(:new).with(expected)
