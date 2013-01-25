@@ -108,8 +108,8 @@ describe Helix::Base do
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
       it "should build a JSON URL -> the_url" do
-        mock_config.should_receive(:build_url).with(format:     :json,
-                                                    media_type: plural_media_type)
+        mock_config.should_receive(:build_url).with(content_type: :xml,
+                                                    media_type:   plural_media_type)
         klass.send(meth, opts)
       end
       it "should get_response(the_url, {sig_type: :view}.merge(opts) -> raw_response" do
@@ -173,7 +173,7 @@ describe Helix::Base do
       it "should get an update signature" do
         url = mock_config.build_url(media_type: :media_type,
                                     guid:       :some_guid,
-                                    format:     :xml)
+                                    content_type:     :xml)
         RestClient.stub(:delete).with(url, params)
         mock_config.should_receive(:signature).with(:update) { :some_sig }
         obj.send(meth)
@@ -181,7 +181,7 @@ describe Helix::Base do
       it "should call for an HTTP delete and return nil" do
         url = mock_config.build_url(media_type: :media_type,
                                     guid:       :some_guid,
-                                    format:     :xml)
+                                    content_type:     :xml)
         RestClient.should_receive(:delete).with(url, params)
         expect(obj.send(meth)).to be_nil
       end
@@ -225,8 +225,8 @@ describe Helix::Base do
           obj.should_receive(:guid) { 'some_guid' }
           obj.send(meth)
         end
-        it "should build_url(format: :json, guid: the_guid, media_type: 'videos')" do
-          mock_config.should_receive(:build_url).with(format: :json, guid: 'some_guid', media_type: 'videos')
+        it "should build_url(content_type: :json, guid: the_guid, media_type: 'videos')" do
+          mock_config.should_receive(:build_url).with(content_type: :json, guid: 'some_guid', media_type: 'videos')
           RestClient.stub(:put)
           obj.send(meth)
         end

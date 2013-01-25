@@ -60,8 +60,8 @@ module Helix
     end
 
     def self.get_data_sets(opts)
-      url          = config.build_url(format:     opts[:format] || :json,
-                                      media_type: self.plural_media_type)
+      url          = config.build_url(content_type: opts[:content_type] || :xml,
+                                      media_type:   self.plural_media_type)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
       data_sets    = raw_response[plural_media_type]
@@ -112,7 +112,8 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      url      = config.build_url(format: :xml, guid: guid, media_type: plural_media_type)
+      RestClient.log = 'helix.log'
+      url      = config.build_url(content_type: :xml, guid: guid, media_type: plural_media_type)
       RestClient.delete(url, params: {signature: config.signature(:update)})
     end
 
@@ -133,7 +134,7 @@ module Helix
     # @return [Base] Returns an instance of the class.
     def load(opts={})
       memo_cfg    = config
-      url         = memo_cfg.build_url(format: :json, guid: self.guid, media_type: plural_media_type)
+      url         = memo_cfg.build_url(content_type: :json, guid: self.guid, media_type: plural_media_type)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_attrs   = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
       @attributes = massage_raw_attrs(raw_attrs)

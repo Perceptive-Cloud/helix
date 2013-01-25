@@ -39,9 +39,9 @@ describe Helix::Statistics do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)
               end
-              it "should delete :format from opts" do
+              it "should delete :content_type from opts" do
                 opts.stub(:delete)
-                opts.should_receive(:delete).with(:format) { "the_#{media_name}_id".to_sym }
+                opts.should_receive(:delete).with(:content_type) { "the_#{media_name}_id".to_sym }
                 mod.send(meth, opts)
               end
               it "should delete :#{media_name}_id from opts" do
@@ -49,20 +49,20 @@ describe Helix::Statistics do
                 opts.should_receive(:delete).with("#{media_name}_id".to_sym) { "the_#{media_name}_id".to_sym }
                 mod.send(meth, opts)
               end
-              context "when opts contains a :format" do
-                before(:each) do opts.merge!(format: :the_format) end
-                it "should call config.build_url(guid: the_#{media_name}_id, media_type: :#{media_name}s, action: :statistics, format: :the_format)" do
+              context "when opts contains a :content_type" do
+                before(:each) do opts.merge!(content_type: :the_format) end
+                it "should call config.build_url(guid: the_#{media_name}_id, media_type: :#{media_name}s, action: :statistics, content_type: :the_format)" do
                   build_opts_url = {
                     guid: "the_#{media_name}_id".to_sym,
                     media_type: "#{media_name}s".to_sym,
                     action: :statistics,
-                    format: :the_format
+                    content_type: :the_format
                   }
                   mock_config.should_receive(:build_url).with(build_opts_url) { :built_url }
                   mod.send(meth, opts)
                 end
               end
-              context "when opts did NOT contain a :format" do
+              context "when opts did NOT contain a :content_type" do
                 it "should call config.build_url(guid: the_#{media_name}_id, media_type: :#{media_name}s, action: :statistics)" do
                   mock_config.should_receive(:build_url).with({guid: "the_#{media_name}_id".to_sym, media_type: "#{media_name}s".to_sym, action: :statistics}) { :built_url }
                   mod.send(meth, opts)
@@ -79,9 +79,9 @@ describe Helix::Statistics do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)
               end
-              it "should delete :format from opts" do
+              it "should delete :content_type from opts" do
                 opts.stub(:delete)
-                opts.should_receive(:delete).with(:format) { nil }
+                opts.should_receive(:delete).with(:content_type) { nil }
                 mod.send(meth, opts)
               end
               it "should (fail to) delete :#{media_name}_id from opts" do
@@ -89,15 +89,15 @@ describe Helix::Statistics do
                 opts.should_receive(:delete).with("#{media_name}_id".to_sym) { nil }
                 mod.send(meth, opts)
               end
-              context "when opts contains a :format" do
-                before(:each) do opts.merge!(format: :the_format) end
-                it "should call config.build_url(media_type: :statistics, action: :#{media_name}_delivery, format: :the_format)" do
-                  build_url_opts = {media_type: :statistics, action: "#{media_name}_delivery".to_sym, format: :the_format}
+              context "when opts contains a :content_type" do
+                before(:each) do opts.merge!(content_type: :the_format) end
+                it "should call config.build_url(media_type: :statistics, action: :#{media_name}_delivery, content_type: :the_format)" do
+                  build_url_opts = {media_type: :statistics, action: "#{media_name}_delivery".to_sym, content_type: :the_format}
                   mock_config.should_receive(:build_url).with(build_url_opts) { :built_url }
                   mod.send(meth, opts)
                 end
               end
-              context "when opts did NOT contain a :format" do
+              context "when opts did NOT contain a :content_type" do
                 it "should call config.build_url(media_type: :statistics, action: :#{media_name}_delivery)" do
                   mock_config.should_receive(:build_url).with({media_type: :statistics, action: "#{media_name}_delivery".to_sym}) { :built_url }
                   mod.send(meth, opts)
