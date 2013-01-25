@@ -112,7 +112,6 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      RestClient.log = 'helix.log'
       url      = config.build_url(content_type: :xml, guid: guid, media_type: plural_media_type)
       RestClient.delete(url, params: {signature: config.signature(:update)})
     end
