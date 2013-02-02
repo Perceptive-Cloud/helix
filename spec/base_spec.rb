@@ -138,6 +138,18 @@ describe Helix::Base do
     end
   end
 
+  describe ".massage_time_attrs" do
+    let(:meth)      { :massage_time_attrs }
+    subject         { klass.method(meth) }
+    its(:arity)     { should eq(1) }
+    let(:time)      { Time.new(2013) }
+    let(:attrs)     { { key_one: time.to_s, key_two: { key_three: time, key_four: { key_five: time.to_s } } } }
+    let(:expected)  { { key_one: time, key_two: { key_three: time, key_four: { key_five: time } } } }
+    it "should turn stringified time values into time objects" do
+      expect(klass.send(meth, attrs)).to eq(expected)
+    end
+  end
+
   describe "an instance" do
     let(:obj) { klass.new({}) }
 

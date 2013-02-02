@@ -2,6 +2,7 @@ require 'rest-client'
 require 'json'
 require 'yaml'
 require 'nori'
+require 'time'
 
 module Helix
   class Base
@@ -56,7 +57,8 @@ module Helix
     def self.find_all(opts={})
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
-      data_sets.map { |attrs| self.new(attributes: attrs, config: config) }
+      data_sets.map { |attrs| self.new( attributes: massage_time_attrs(attrs),
+                                        config:     config) }
     end
 
     def self.get_data_sets(opts)
@@ -178,6 +180,16 @@ module Helix
       # FIXME: Albums JSON output is embedded as the only member of an Array.
       proper_hash = raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?(guid_name)
       proper_hash ? raw_attrs : raw_attrs.first
+    end
+
+    def self.massage_time_attrs(attrs)
+      return attrs unless attrs.is_a?(Hash)
+      attrs.each do |key, val|
+        begin
+          attrs[key] = Time.parse(val) if val.is_a?(String)
+        rescue ArgumentError;end
+        massage_time_attrs(val) if val.is_a?(Hash)
+      end
     end
 
   end
