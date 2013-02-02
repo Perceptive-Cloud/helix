@@ -138,6 +138,18 @@ describe Helix::Base do
     end
   end
 
+  describe ".massage_attrs" do
+    let(:meth)  { :massage_attrs }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(1) }
+    let(:attrs) { Hash.new }
+    it "should call massage_custom_field_attrs and massage_time_attrs" do
+      klass.should_receive(:massage_time_attrs).and_return attrs
+      klass.should_receive(:massage_custom_field_attrs).and_return attrs
+      klass.send(meth, attrs)
+    end
+  end
+
   describe ".massage_time_attrs" do
     let(:meth)      { :massage_time_attrs }
     subject         { klass.method(meth) }
@@ -147,6 +159,17 @@ describe Helix::Base do
     let(:expected)  { { key_one: time, key_two: { key_three: time, key_four: { key_five: time } } } }
     it "should turn stringified time values into time objects" do
       expect(klass.send(meth, attrs)).to eq(expected)
+    end
+  end
+
+  describe ".massage_custom_field_attrs" do
+    let(:meth)        { :massage_custom_field_attrs }
+    subject           { klass.method(meth) }
+    its(:arity)       { should eq(1) }
+    let(:custom_hash) { { "custom_fields" => {"boole"=>[nil, nil], "@type"=>"hash"} } }
+    let(:expected)    { { "custom_fields" => [{"name"=>"boole", "value"=>""}, {"name"=>"boole", "value"=>""}] } }
+    it "should turn custom_hash into expected" do
+      expect(klass.send(meth, custom_hash)).to eq(expected)
     end
   end
 

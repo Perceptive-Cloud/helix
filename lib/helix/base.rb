@@ -57,7 +57,7 @@ module Helix
     def self.find_all(opts={})
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
-      data_sets.map { |attrs| self.new( attributes: massage_time_attrs(attrs),
+      data_sets.map { |attrs| self.new( attributes: massage_attrs(attrs),
                                         config:     config) }
     end
 
@@ -182,14 +182,31 @@ module Helix
       proper_hash ? raw_attrs : raw_attrs.first
     end
 
+    def self.massage_attrs(attrs)
+      return attrs unless attrs.is_a?(Hash)
+      Hash[massage_custom_field_attrs(massage_time_attrs(attrs)).sort]
+    end
+
     def self.massage_time_attrs(attrs)
       return attrs unless attrs.is_a?(Hash)
       attrs.each do |key, val|
         begin
           attrs[key] = Time.parse(val) if val.is_a?(String)
-        rescue ArgumentError;end
-        massage_time_attrs(val) if val.is_a?(Hash)
+        rescue ArgumentError,RangeError;end
+        massage_time_attrs(val)
       end
+    end
+
+    def self.massage_custom_field_attrs(attrs)
+      return attrs unless attrs.is_a?(Hash)
+      return attrs unless attrs["custom_fields"].is_a?(Hash)
+      attrs["custom_fields"].delete_if { |key, val| key.to_s =~ /@/ }
+      attrs["custom_fields"].each do |key, val|
+        attrs["custom_fields"] = val.each.map do |val_val|
+          { "name" => key, "value" => val_val.to_s }
+        end
+      end
+      attrs
     end
 
   end
