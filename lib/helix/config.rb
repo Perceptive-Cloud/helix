@@ -36,6 +36,7 @@ module Helix
       config.instance_variable_set(:@filename, yaml_file_location)
       creds = YAML.load(File.open(yaml_file_location)).symbolize_keys
       config.instance_variable_set(:@credentials, creds)
+      RestClient.proxy = config.proxy
       config
     end
 
@@ -155,6 +156,18 @@ module Helix
       @signature_for[lk]            ||= {}
       @signature_expiration_for[lk] ||= {}
     end
+
+    def proxy
+      if @credentials[:proxy_uri]
+        protocol, uri = @credentials[:proxy_uri].split "://"
+        user, pass    = @credentials[:proxy_username], @credentials[:proxy_password]
+        auth_delim    = pass.nil? ? '' : ':'
+        "#{protocol}://#{user}#{auth_delim}#{pass}@#{uri}"
+      elsif @credentials[:proxy] == 'true'
+        ENV['http_proxy']
+      end
+    end
+
 
     def sig_expired_for?(sig_type)
       expires_at = @signature_expiration_for[license_key][sig_type]
