@@ -34,7 +34,7 @@ describe Helix::Config do
   end
 
   describe ".load" do
-    let(:meth) { :load }
+    let(:meth)      { :load }
     let(:mock_obj)  { mock(klass, proxy: :stubbed_proxy) }
     let(:mock_file) { mock(File)  }
     let(:mock_cred) { mock(Hash, symbolize_keys: :symbolized_creds) }
@@ -360,6 +360,15 @@ describe Helix::Config do
     it "should set @signature_expiration_for[license_key] to {}" do
       obj.send(meth)
       expect(obj.instance_variable_get(:@signature_expiration_for)).to eq(lk: {})
+    end
+  end
+
+  describe "#proxy" do
+    let(:meth)  { :proxy }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(0) }
+    it "should do something" do
+
     end
   end
 
