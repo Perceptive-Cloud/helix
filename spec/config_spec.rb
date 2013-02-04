@@ -35,7 +35,7 @@ describe Helix::Config do
 
   describe ".load" do
     let(:meth) { :load }
-    let(:mock_obj)  { mock(klass) }
+    let(:mock_obj)  { mock(klass, proxy: :stubbed_proxy) }
     let(:mock_file) { mock(File)  }
     let(:mock_cred) { mock(Hash, symbolize_keys: :symbolized_creds) }
     before(:each) do
@@ -66,6 +66,10 @@ describe Helix::Config do
         File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
         YAML.stub(:load).with(mock_file) { mock_cred }
         mock_obj.should_receive(:instance_variable_set).with(:@credentials, mock_cred.symbolize_keys)
+        klass.send(meth)
+      end
+      it "should set the proxy" do
+        mock_obj.should_receive(:proxy) { :mock_proxy }
         klass.send(meth)
       end
       it "should return the instance" do
