@@ -529,13 +529,13 @@ them as an array.</p>
       <pre class="lines">
 
 
-94
-95
 96
-97</pre>
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='ivar'>@attributes</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:attributes</span><span class='rbracket'>]</span>
@@ -615,16 +615,16 @@ them as an array.</p>
       <pre class="lines">
 
 
-148
-149
 150
 151
 152
 153
-154</pre>
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 148</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_sym'>method_sym</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -670,12 +670,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attributes'>attributes</span>
   <span class='ivar'>@attributes</span>
@@ -702,12 +702,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-103
-104
-105</pre>
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_config'>config</span>
   <span class='ivar'>@config</span> <span class='op'>||=</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>Config</span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
@@ -739,12 +739,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-99
-100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span>
   <span class='const'>Helix</span><span class='op'>::</span><span class='const'>Config</span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
@@ -828,20 +828,20 @@ normally be called as Helix::Base.create</p>
       <pre class="lines">
 
 
-26
 27
 28
 29
 30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_attributes'>attributes</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>       <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>media_type:</span>  <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='comma'>,</span>
-                               <span class='label'>format:</span>      <span class='symbol'>:xml</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>       <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>media_type:</span>    <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='comma'>,</span>
+                               <span class='label'>content_type:</span>  <span class='symbol'>:xml</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span>  <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>signature:</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_attrs'>attrs</span>     <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_from_xml'>from_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='lbracket'>[</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span>
@@ -922,13 +922,13 @@ guid lookup.</p>
       <pre class="lines">
 
 
-43
 44
 45
-46</pre>
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_guid'>guid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_item'>item</span>   <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_guid_name'>guid_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_guid'>guid</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span>
@@ -1011,19 +1011,21 @@ them as an array.</p>
       <pre class="lines">
 
 
-56
 57
 58
 59
-60</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_all'>find_all</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span> <span class='op'>=</span> <span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>|</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>|</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='label'>attributes:</span> <span class='id identifier rubyid_massage_attrs'>massage_attrs</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span><span class='comma'>,</span>
+                                    <span class='label'>config:</span>     <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1045,20 +1047,20 @@ them as an array.</p>
       <pre class="lines">
 
 
-62
-63
 64
 65
 66
 67
-68</pre>
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span>     <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:format</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:json</span><span class='comma'>,</span>
-                                  <span class='label'>media_type:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:xml</span><span class='comma'>,</span>
+                                  <span class='label'>media_type:</span>   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
   <span class='comment'># We allow opts[:sig_type] for internal negative testing only.
 </span>  <span class='id identifier rubyid_raw_response'>raw_response</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span>    <span class='op'>=</span> <span class='id identifier rubyid_raw_response'>raw_response</span><span class='lbracket'>[</span><span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rbracket'>]</span>
@@ -1118,12 +1120,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-76
-77
-78</pre>
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid_name'>guid_name</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span><span class='rbrace'>}</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
@@ -1183,12 +1185,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-86
-87
-88</pre>
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_media_type'>plural_media_type</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_media_type_sym'>media_type_sym</span><span class='rbrace'>}</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span>
@@ -1255,16 +1257,16 @@ them as an array.</p>
       <pre class="lines">
 
 
-114
-115
 116
-117</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 116</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
-  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='symbol'>:xml</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span> <span class='symbol'>:xml</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='label'>params:</span> <span class='lbrace'>{</span><span class='label'>signature:</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1323,12 +1325,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-126
-127
-128</pre>
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_guid'>guid</span>
   <span class='ivar'>@attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_guid_name'>guid_name</span><span class='rbracket'>]</span>
@@ -1405,21 +1407,21 @@ them as an array.</p>
       <pre class="lines">
 
 
-134
-135
 136
 137
 138
 139
 140
-141</pre>
+141
+142
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_memo_cfg'>memo_cfg</span>    <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span>
-  <span class='id identifier rubyid_url'>url</span>         <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>format:</span> <span class='symbol'>:json</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>         <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span> <span class='symbol'>:json</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>media_type:</span> <span class='id identifier rubyid_plural_media_type'>plural_media_type</span><span class='rparen'>)</span>
   <span class='comment'># We allow opts[:sig_type] for internal negative testing only.
 </span>  <span class='id identifier rubyid_raw_attrs'>raw_attrs</span>   <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='ivar'>@attributes</span> <span class='op'>=</span> <span class='id identifier rubyid_massage_raw_attrs'>massage_raw_attrs</span><span class='lparen'>(</span><span class='id identifier rubyid_raw_attrs'>raw_attrs</span><span class='rparen'>)</span>
@@ -1502,8 +1504,6 @@ them as an array.</p>
       <pre class="lines">
 
 
-164
-165
 166
 167
 168
@@ -1511,10 +1511,12 @@ them as an array.</p>
 170
 171
 172
-173</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 166</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
@@ -1536,7 +1538,7 @@ them as an array.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Jan 17 15:45:28 2013 by
+  Generated on Mon Feb  4 14:12:16 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>
