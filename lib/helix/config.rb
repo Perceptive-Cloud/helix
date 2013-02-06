@@ -162,11 +162,11 @@ module Helix
         protocol, uri = @credentials[:proxy_uri].split "://"
         user, pass    = @credentials[:proxy_username], @credentials[:proxy_password]
         proxy_str     = "#{protocol}://"
-        proxy_str    += "#{user}:" if user
-        proxy_str    += "#{pass}" if (user && pass)
-        proxy_str    += '@' if user
+        proxy_str    += "#{user}:"  if user
+        proxy_str    += "#{pass}"   if user && pass
+        proxy_str    += '@'         if user
         proxy_str    += "#{uri}"
-      elsif @credentials[:proxy_used] == 'true'
+      elsif @credentials[:proxy_used] == true
         ENV['http_proxy']
       end
     end

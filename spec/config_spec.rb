@@ -369,7 +369,7 @@ describe Helix::Config do
     its(:arity) { should eq(0) }
     it "should return the system proxy" do
       ENV['http_proxy'] = 'http://test.proxy'
-      obj.credentials[:proxy_used] = 'true'
+      obj.credentials[:proxy_used] = true
       expect(obj.send(meth)).to eq(ENV['http_proxy'])
     end
     it "should return the proxy specified in the config" do
