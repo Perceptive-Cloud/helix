@@ -367,8 +367,18 @@ describe Helix::Config do
     let(:meth)  { :proxy }
     subject     { obj.method(meth) }
     its(:arity) { should eq(0) }
-    it "should do something" do
-
+    it "should return the system proxy" do
+      ENV['http_proxy'] = 'http://test.proxy'
+      obj.credentials[:proxy_used] = 'true'
+      expect(obj.send(meth)).to eq(ENV['http_proxy'])
+    end
+    it "should return the proxy specified in the config" do
+      obj.credentials[:proxy_uri] = 'http://test.proxy'
+      expect(obj.send(meth)).to eq 'http://test.proxy' 
+    end
+    it "should return just proxy uri if only pass exists" do
+      obj.credentials[:proxy_password] = 'fake_pass'
+      expect(obj.send(meth)).to eq 'http://test.proxy'
     end
   end
 
