@@ -71,7 +71,7 @@ describe Helix::Base do
   end
 
   describe ".find" do
-    let(:meth)  { :find }
+    let(:meth)        { :find }
     let(:mock_config) { mock(Helix::Config) }
     let(:mock_obj)    { mock(klass, :load => :output_of_load) }
     subject     { klass.method(meth) }
@@ -97,17 +97,16 @@ describe Helix::Base do
     end
   end
 
-  describe ".find_all" do
-    let(:meth)  { :find_all }
+  shared_examples_for "a search all with opts" do
     let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
-    subject     { klass.method(meth) }
-    its(:arity) { should eq(-1) }
+    subject           { klass.method(meth) }
+    its(:arity)       { should eq(-1) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and an opts Hash" do
       let(:opts) { {opts_key1: :opts_val1} }
       let(:plural_media_type) { :videos }
       before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
-      it "should build a JSON URL -> the_url" do
+      it "should build a XML URL -> the_url" do
         mock_config.should_receive(:build_url).with(content_type: :xml,
                                                     media_type:   plural_media_type)
         klass.send(meth, opts)
@@ -136,6 +135,63 @@ describe Helix::Base do
         end
       end
     end
+  end
+
+  shared_examples_for "a search all without opts" do
+    let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+    subject           { klass.method(meth) }
+    before(:each) do Helix::Config.stub(:instance) { mock_config } end
+    context "when given a config instances and NO opts Hash" do
+      let(:plural_media_type) { :videos }
+      before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
+      it "should build a XML URL -> the_url" do
+        mock_config.should_receive(:build_url).with(content_type: :xml,
+                                                    media_type:   plural_media_type)
+        klass.send(meth)
+      end
+      it "should get_response(the_url, {sig_type: :view} -> raw_response" do
+        mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view})
+        klass.send(meth)
+      end
+      it "should read raw_response[plural_media_type] -> data_sets" do
+        mock_raw_response = mock(Object)
+        mock_config.stub(:get_response) { mock_raw_response }
+        mock_raw_response.should_receive(:[]).with(plural_media_type)
+        klass.send(meth)
+      end
+      context "when data_sets is nil" do
+        it "should return []" do expect(klass.send(meth)).to eq([]) end
+      end
+      context "when data_sets is NOT nil" do
+        let(:data_set) { (0..2).to_a }
+        before(:each) do mock_config.stub(:get_response) { {plural_media_type => data_set } } end
+        it "should map instantiation with attributes: each data set element" do
+          klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
+          klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
+          klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
+          expect(klass.send(meth)).to eq([:a, :b, :c])
+        end
+      end
+    end
+  end
+
+  describe ".find_all" do
+    let(:meth) { :find_all }
+    it_behaves_like "a search all with opts"
+    it_behaves_like "a search all without opts"
+  end
+
+  describe ".all" do
+    let(:meth)  { :all }
+    subject     { klass.method(meth) }
+    its(:arity) { should eq(0) }
+    it_behaves_like "a search all without opts"
+  end
+
+  describe ".where" do
+    let(:meth) { :where }
+    it_behaves_like "a search all with opts"
+    it_behaves_like "a search all without opts"
   end
 
   describe ".massage_attrs" do
@@ -170,6 +226,9 @@ describe Helix::Base do
     let(:expected)    { { "custom_fields" => [{"name"=>"boole", "value"=>""}, {"name"=>"boole", "value"=>""}] } }
     it "should turn custom_hash into expected" do
       expect(klass.send(meth, custom_hash)).to eq(expected)
+    end
+    it "should return the custom_hash in its form" do
+      expect(klass.send(meth, expected)).to eq(expected)
     end
   end
 

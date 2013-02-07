@@ -61,6 +61,14 @@ module Helix
                                         config:     config) }
     end
 
+    def self.where(opts={})
+      find_all(opts)
+    end
+
+    def self.all
+      find_all
+    end
+
     def self.get_data_sets(opts)
       url          = config.build_url(content_type: opts[:content_type] || :xml,
                                       media_type:   self.plural_media_type)
@@ -191,7 +199,9 @@ module Helix
       return attrs unless attrs.is_a?(Hash)
       attrs.each do |key, val|
         begin
-          attrs[key] = Time.parse(val) if val.is_a?(String)
+          if val.is_a?(String) && val =~ /(\d{4}-\d{2}-\d{2})/
+            attrs[key] = Time.parse(val)
+          end
         rescue ArgumentError,RangeError;end
         massage_time_attrs(val)
       end
@@ -200,13 +210,14 @@ module Helix
     def self.massage_custom_field_attrs(attrs)
       return attrs unless attrs.is_a?(Hash)
       return attrs unless attrs["custom_fields"].is_a?(Hash)
-      attrs["custom_fields"].delete_if { |key, val| key.to_s =~ /@/ }
+      attrs["custom_fields"].delete_if { |key, val| key.to_s =~ /^@/ }
+      cfs = []
       attrs["custom_fields"].each do |key, val|
-        attrs["custom_fields"] = val.each.map do |val_val|
-          { "name" => key, "value" => val_val.to_s }
+        val.each do |val_val|
+          cfs << { "name" => key, "value" => val_val.to_s }
         end
       end
-      attrs
+      attrs.merge({'custom_fields' => cfs})
     end
 
   end
