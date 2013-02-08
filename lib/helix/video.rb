@@ -1,9 +1,9 @@
-require 'helix/base'
+require 'helix/media'
 require 'active_support/core_ext'
 
 module Helix
 
-  class Video < Base
+  class Video < Media
 
     include DurationedMedia
 
