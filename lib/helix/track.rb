@@ -1,6 +1,8 @@
+require 'helix/media'
+
 module Helix
 
-  class Track < Base
+  class Track < Media
 
     include DurationedMedia
 

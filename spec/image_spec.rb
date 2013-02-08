@@ -9,6 +9,9 @@ describe Helix::Image do
   its(:guid_name) { should eq('image_id') }
   its(:media_type_sym)    { should be(:image)   }
   its(:plural_media_type) { should eq('images') }
+  [:find, :create, :all, :find_all, :where].each do |crud_call|
+    it { should respond_to(crud_call) }
+  end
 
   describe "Constants"
 
@@ -16,6 +19,9 @@ describe Helix::Image do
     let(:obj) { klass.new({'image_id' => 'some_image_guid'}) }
     subject { obj }
     its(:media_type_sym) { should be(:image) }
+    [:destroy, :update].each do |crud_call|
+      it { should respond_to(crud_call) }
+    end
   end
 
 end

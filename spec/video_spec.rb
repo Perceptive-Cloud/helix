@@ -12,6 +12,9 @@ describe Helix::Video do
   its(:guid_name)         { should eq('video_id') }
   its(:media_type_sym)    { should be(:video)   }
   its(:plural_media_type) { should eq('videos') }
+  [:find, :create, :all, :find_all, :where].each do |crud_call|
+    it { should respond_to(crud_call) }
+  end
 
   describe "Constants"
 
@@ -31,6 +34,9 @@ describe Helix::Video do
         klass.should_receive(:get_stillframe)
         obj.send(meth)
       end
+    end
+    [:destroy, :update].each do |crud_call|
+      it { should respond_to(crud_call) }
     end
   end
 

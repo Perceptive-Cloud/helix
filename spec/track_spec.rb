@@ -8,6 +8,9 @@ describe Helix::Track do
   its(:guid_name)         { should eq('track_id') }
   its(:media_type_sym)    { should be(:track)   }
   its(:plural_media_type) { should eq('tracks') }
+  [:find, :create, :all, :find_all, :where].each do |crud_call|
+    it { should respond_to(crud_call) }
+  end
 
   describe "Constants"
 
@@ -15,5 +18,8 @@ describe Helix::Track do
     let(:obj)            { klass.new({'track_id' => 'some_track_guid'}) }
     subject              { obj }
     its(:media_type_sym) { should be(:track) }
+    [:destroy, :update].each do |crud_call|
+      it { should respond_to(crud_call) }
+    end
   end
 end

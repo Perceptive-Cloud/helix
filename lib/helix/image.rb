@@ -1,8 +1,8 @@
-require 'helix/base'
+require 'helix/media'
 
 module Helix
 
-  class Image < Base
+  class Image < Media
 
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
