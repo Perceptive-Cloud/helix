@@ -118,6 +118,20 @@ module Helix
       @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type, opts))
     end
 
+    def proxy
+      if @credentials[:proxy_uri]
+        protocol, uri = @credentials[:proxy_uri].split "://"
+        user, pass    = @credentials[:proxy_username], @credentials[:proxy_password]
+        proxy_str     = "#{protocol}://"
+        proxy_str    += "#{user}:"  if user
+        proxy_str    += "#{pass}"   if user && pass
+        proxy_str    += '@'         if user
+        proxy_str    += "#{uri}"
+      elsif @credentials[:proxy_used] == true
+        ENV['http_proxy']
+      end
+    end
+
     private
 
     def error_message_for(sig_type)
@@ -156,21 +170,6 @@ module Helix
       @signature_for[lk]            ||= {}
       @signature_expiration_for[lk] ||= {}
     end
-
-    def proxy
-      if @credentials[:proxy_uri]
-        protocol, uri = @credentials[:proxy_uri].split "://"
-        user, pass    = @credentials[:proxy_username], @credentials[:proxy_password]
-        proxy_str     = "#{protocol}://"
-        proxy_str    += "#{user}:"  if user
-        proxy_str    += "#{pass}"   if user && pass
-        proxy_str    += '@'         if user
-        proxy_str    += "#{uri}"
-      elsif @credentials[:proxy_used] == true
-        ENV['http_proxy']
-      end
-    end
-
 
     def sig_expired_for?(sig_type)
       expires_at = @signature_expiration_for[license_key][sig_type]
