@@ -167,6 +167,11 @@ describe Helix::Base do
     it "should return the custom_hash in its form" do
       expect(klass.send(meth, expected)).to eq(expected)
     end
+    let(:custom_hash_with_false)  { { "custom_fields" => {"boole"=>false, "@type"=>"hash"} } }
+    let(:expected_with_false)     { { "custom_fields" => [{"name"=>"boole", "value"=>"false"}] } }
+    it "should turn custom_hash into expected" do
+      expect(klass.send(meth, custom_hash_with_false)).to eq(expected_with_false)
+    end
   end
 
   describe "an instance" do

@@ -6,6 +6,7 @@ require 'helix/album'
 require 'helix/image'
 require 'helix/config'
 require 'helix/statistics'
+require 'helix/library'
 
 module Helix
 end

@@ -23,6 +23,7 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
     def self.find_all(opts={})
+      RestClient.log = 'helix.log' if opts.delete(:log)
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?
       data_sets.map { |attrs| self.new( attributes: massage_attrs(attrs),
@@ -161,6 +162,7 @@ module Helix
       attrs["custom_fields"].delete_if { |key, val| key.to_s =~ /^@/ }
       cfs = []
       attrs["custom_fields"].each do |key, val|
+        val = [val] unless val.is_a?(Array)
         val.each do |val_val|
           cfs << { "name" => key, "value" => val_val.to_s }
         end
