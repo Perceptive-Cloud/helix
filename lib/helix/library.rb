@@ -9,7 +9,7 @@ module Helix
     #
     #
     # @example
-    #   Helix::Image.media_type_sym #=> :image
+    #   Helix::Library.media_type_sym #=> :library
     #
     # @return [Symbol] Name of the class.
     def self.media_type_sym; :library; end
@@ -17,7 +17,7 @@ module Helix
     # Creates a string associated with a class name pluralized
     #
     # @example
-    #   Helix::Video.plural_media_type #=> "videos"
+    #   Helix::Library.plural_media_type #=> "libraries"
     #
     # @return [String] The class name pluralized
     def self.plural_media_type
