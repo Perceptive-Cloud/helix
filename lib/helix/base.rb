@@ -29,14 +29,23 @@ module Helix
                                         config:     config) }
     end
 
+    # (see .find_all)
     def self.where(opts={})
       find_all(opts)
     end
 
+    # (see .find_all)
+    # @note this method takes no query options, unlike find_all
     def self.all
       find_all
     end
 
+    # Does a GET call to the api and defaults to content_type xml and
+    # signature_type view.
+    #
+    #
+    # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
+    # @return [Array] The array of attributes (for a model) in hash form.
     def self.get_data_sets(opts)
       url          = config.build_url(content_type: opts[:content_type] || :xml,
                                       media_type:   self.plural_media_type)
@@ -74,10 +83,12 @@ module Helix
       @config     = opts[:config]
     end
 
+    # Returns the singleton instance of the Helix::Config.
     def self.config
       Helix::Config.instance
     end
 
+    # (see .config)
     def config
       @config ||= Helix::Config.instance
     end

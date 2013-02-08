@@ -1,11 +1,11 @@
 lib/helix.rb ad2cbf30d69fbd1e8ebfe8d5a0c541b17d465d69
 lib/helix/tag.rb 92b2b68f7e0d77b64c50ceb2309b297904842ebf
-lib/helix/base.rb 0c4a13dfb37c04c5fe48a3f75b6da3ab881c4e0b
-lib/helix/track.rb 6b2a02bfe1fa16a403d02503bb94ea483426ee7b
-lib/helix/image.rb 279902473fb01d491beabc94ea2bcce611011016
+lib/helix/base.rb ff8f3eaa1cff46c4cd20025bebcb09e8ff00d459
+lib/helix/track.rb c5b769befac441937d6802d9b17a06e90c68e615
+lib/helix/image.rb 22724955baa3cb43b9ea54412cacd68d35f95efa
 lib/helix/video.rb a5aa94d0a747330cdc061e28f3642a866d703eab
 lib/helix/media.rb db09eda6ba466253b4073c032c16aa00625057ea
-lib/helix/album.rb 0d9569165508ebdc420f3143857e0e72c3ea0561
+lib/helix/album.rb 532a8f0a60227a57d88411a93851b6db4d66163b
 lib/helix/config.rb 50acb9b3ec26fc22cd9dace8608f7019086afdd1
 lib/helix/statistics.rb 2ddecbf1153350083932c01eeefd20377a97909d
 lib/helix/exceptions.rb 7bb5af262cbd5cd2c1ef312a1f8f5abe837a7ecd
