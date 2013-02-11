@@ -24,6 +24,10 @@ module Helix
       "#{self.media_type_sym.to_s.gsub(/y/, '')}ies"
     end
 
+    def self.known_attributes
+      [:player_profile, :ingest_profile, :secure_stream_callback_url, :hooks_attributes]
+    end
+
   end
 
 end

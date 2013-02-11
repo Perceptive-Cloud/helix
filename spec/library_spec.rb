@@ -12,6 +12,17 @@ describe Helix::Library do
     it { should respond_to(crud_call) }
   end
 
+  describe ".known_attributes" do
+    let(:meth)            { :known_attributes }
+    let(:expected_attrs)  { [ :player_profile, 
+                              :ingest_profile, 
+                              :secure_stream_callback_url, 
+                              :hooks_attributes] }
+    it "should equal expected_attrs" do
+      expect(klass.send(meth)).to eq(expected_attrs)
+    end
+  end
+
   describe "Constants"
 
   describe "an instance" do
