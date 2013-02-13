@@ -68,7 +68,7 @@ describe Helix::Video do
 
   describe ".get_stillframe" do
     let(:meth)        { :get_stillframe }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { mock(Helix::Config, credentials: { server: nil } ) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-2) }
     let(:image_data)  { :some_image_data }
@@ -78,6 +78,7 @@ describe Helix::Video do
     context "when no height or width is passed in " do
       let(:full_url) { "#{base_url}original.jpg" }
       it "should build the correct url and return data" do
+        klass.should_receive(:config).and_return mock_config
         RestClient.should_receive(:get).with(full_url).and_return image_data
         expect(klass.send(meth, guid)).to eq(image_data)
       end
@@ -89,6 +90,7 @@ describe Helix::Video do
         let(:full_url)  { "#{base_url}#{dim_val}#{url_tag}.jpg" }
         let(:opts)      { { dimension => dim_val } }
         it "should build the correct url and return data" do
+          klass.should_receive(:config).and_return mock_config  
           RestClient.should_receive(:get).with(full_url).and_return image_data
           expect(klass.send(meth, guid, opts)).to eq(image_data)
         end
@@ -99,6 +101,7 @@ describe Helix::Video do
       let(:full_url)  { "#{base_url}#{dim_val}w#{dim_val}h.jpg" }
       let(:opts)      { { height: dim_val, width: dim_val } }
       it "should build the correct url and return data" do
+        klass.should_receive(:config).and_return mock_config  
         RestClient.should_receive(:get).with(full_url).and_return image_data
         expect(klass.send(meth, guid, opts)).to eq(image_data)
       end
