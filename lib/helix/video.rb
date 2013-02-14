@@ -38,10 +38,27 @@ module Helix
       RestClient.get(url)
     end
 
+    # Used to download data for the given Video.
+    #
+    # @example
+    #   video      = Helix::Video.find("239c59483d346")
+    #   video_data = video.download #=> xDC\xF1?\xE9*?\xFF\xD9
+    #   File.open("my_video.mp4", "w") { |f| f.puts video_data }
+    #
+    # @param [Hash] opts a hash of options for building URL
+    # @return [String] Raw video data, save it to a file
     def download(opts={})
       generic_download(opts.merge(action: :file))
     end
 
+    # Used to play the given Video.
+    #
+    # @example
+    #   video      = Helix::Video.find("239c59483d346")
+    #   video_data = video.play #=> xDC\xF1?\xE9*?\xFF\xD9
+    #
+    # @param [Hash] opts a hash of options for building URL
+    # @return [String] Raw video data
     def play(opts={})
       generic_download(opts.merge(action: :play))
     end
