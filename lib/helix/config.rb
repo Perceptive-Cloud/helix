@@ -52,6 +52,7 @@ module Helix
       url  += "/#{guid}"            if guid
       url  += "/formats/#{format}"  if format
       url  += "/#{action}"          if action
+      return url if opts[:content_type].blank?
       "#{url}.#{opts[:content_type]}"
     end
 

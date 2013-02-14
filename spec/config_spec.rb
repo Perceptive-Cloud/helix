@@ -241,6 +241,16 @@ describe Helix::Config do
         end
       end
     end
+    dl_opts = {action: :file, content_type: '', guid: :the_guid, media_type: :videos}
+    context "when given opts of #{dl_opts}" do
+      subject { obj.send(meth, dl_opts) }
+      it { should eq("http://example.com/videos/the_guid/file") }
+    end
+    dp_opts = {action: :play, content_type: '', guid: :the_guid, media_type: :videos}
+    context "when given opts of #{dp_opts}" do
+      subject { obj.send(meth, dp_opts) }
+      it { should eq("http://example.com/videos/the_guid/play") }
+    end
   end
 
   describe "#clear_signatures!" do
