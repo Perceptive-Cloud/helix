@@ -30,6 +30,7 @@ module Helix
     # @param [String] guid an id in guid form.
     # @return [Base] An instance of Helix::Base
     def self.find(guid)
+      raise ArgumentError.new("find requires a non-nil guid argument - received a nil argument.") if guid.nil?
       item   = self.new(attributes: { guid_name => guid }, config: config)
       item.load
     end

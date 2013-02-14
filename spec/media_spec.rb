@@ -51,7 +51,6 @@ describe Helix::Media do
     its(:arity) { should eq(1) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a Helix::Config instance and a guid" do
-      let(:guid)       { :a_guid }
       let(:guid_name)  { :the_guid_name }
       let(:mock_attrs) { mock(Object, :[]= => :output_of_setting_val) }
       before(:each) do
@@ -59,13 +58,22 @@ describe Helix::Media do
         klass.stub(:guid_name)  { guid_name  }
         klass.stub(:new)        { mock_obj }
       end
-      it "should instantiate with {attributes: guid_name => the_guid, config: config}" do
-        klass.should_receive(:new).with({attributes: {guid_name => guid}, config: mock_config})
-        klass.send(meth, guid)
+      context "and the guid is nil" do
+        it "should raise an ArgumentError complaining about a nil guid" do
+          msg = 'find requires a non-nil guid argument - received a nil argument.'
+          lambda { klass.send(meth, nil) }.should raise_error(ArgumentError, msg)
+        end
       end
-      it "should load" do
-        mock_obj.should_receive(:load)
-        klass.send(meth, guid)
+      context "and the guid is non-nil" do
+        let(:guid) { :a_guid }
+        it "should instantiate with {attributes: guid_name => the_guid, config: config}" do
+          klass.should_receive(:new).with({attributes: {guid_name => guid}, config: mock_config})
+          klass.send(meth, guid)
+        end
+        it "should load" do
+          mock_obj.should_receive(:load)
+          klass.send(meth, guid)
+        end
       end
     end
   end
