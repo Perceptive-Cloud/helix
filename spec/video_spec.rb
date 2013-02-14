@@ -55,6 +55,36 @@ describe Helix::Video do
       end
     end
 
+    describe "#play" do
+      let(:meth)        { :play }
+      let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
+      subject      { obj.method(meth) }
+      let(:params) { { params: {signature: :some_sig } } }
+      let(:csv_text) { ',s3_url,,,' }
+      before do
+        obj.stub(:config)            { mock_config }
+        obj.stub(:guid)              { :some_guid  }
+        obj.stub(:plural_media_type) { :media_type }
+        RestClient.stub(:get) { csv_text }
+      end
+      build_url_h = {action: :play, content_type: "", guid: :some_guid, media_type: :media_type}
+      it "should build_url(#{build_url_h})" do
+        mock_config.should_receive(:build_url).with(build_url_h)
+        obj.send(meth)
+      end
+      it "should get a view signature" do
+        mock_config.should_receive(:signature).with(:view) { :some_sig }
+        obj.send(meth)
+      end
+      it "should return an HTTP get to the built URL with the view sig" do
+        url = mock_config.build_url(media_type: :media_type,
+                                    guid:       :some_guid,
+                                    content_type:     :xml)
+        RestClient.should_receive(:get).with(url, params) { :expected }
+        expect(obj.send(meth)).to be(:expected)
+      end
+    end
+
     describe "#stillframe" do
       let(:meth)        { :stillframe }
       let(:mock_config) { mock(Helix::Config) }
