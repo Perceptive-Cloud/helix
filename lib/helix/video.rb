@@ -34,17 +34,29 @@ module Helix
     # @return [String] Stillframe jpg data, save it to a file with extension .jpg.
     def self.get_stillframe(guid, opts={})
       RestClient.log = 'helix.log' if opts.delete(:log)
-      server  = opts[:server] || config.credentials[:server] || "service-staging"
-      width   = opts[:width].to_s  + "w" unless opts[:width].nil?
-      height  = opts[:height].to_s + "h" unless opts[:height].nil?
-      width   = "original" if opts[:width].nil? && opts[:height].nil?
-      url     = "#{server}.twistage.com/videos/#{guid}/screenshots/"
-      url    << "#{width.to_s}#{height.to_s}.jpg"
+      url = get_stillframe_url(guid, opts)
       RestClient.get(url)
     end
 
     def stillframe(opts={})
       self.class.get_stillframe(self.guid, opts)
     end
+
+    private
+
+    def self.get_stillframe_dimensions(opts)
+      width   = opts[:width].to_s  + "w" unless opts[:width].nil?
+      height  = opts[:height].to_s + "h" unless opts[:height].nil?
+      width   = "original" if opts[:width].nil? && opts[:height].nil?
+      [width, height]
+    end
+
+    def self.get_stillframe_url(guid, opts)
+      server  = opts[:server] || config.credentials[:server] || "service-staging"
+      width, height = get_stillframe_dimensions(opts)
+      url     = "#{server}.twistage.com/videos/#{guid}/screenshots/"
+      url    << "#{width.to_s}#{height.to_s}.jpg"
+    end
+
   end
 end
