@@ -5,6 +5,7 @@ require 'rdoc/task'
 require 'rspec/core/rake_task'
 
 task :reinstall_helix do
+  `rm helix-*.pre.gem`
   `sudo gem uni helix`
   `gem build helix.gemspec`
   `sudo gem i helix-*.gem`
