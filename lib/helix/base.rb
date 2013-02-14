@@ -8,7 +8,7 @@ module Helix
   class Base
 
     unless defined?(self::METHODS_DELEGATED_TO_CLASS)
-      METHODS_DELEGATED_TO_CLASS = [ :guid_name, :media_type_sym, :plural_media_type ]
+      METHODS_DELEGATED_TO_CLASS = [ :guid_name, :resource_label_sym, :plural_resource_label ]
     end
 
     attr_accessor :attributes
@@ -48,11 +48,11 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of attributes (for a model) in hash form.
     def self.get_data_sets(opts)
-      url          = config.build_url(content_type: opts[:content_type] || :xml,
-                                      media_type:   self.plural_media_type)
+      url          = config.build_url(content_type:   opts[:content_type] || :xml,
+                                      resource_label: self.plural_resource_label)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
-      data_sets    = raw_response[plural_media_type]
+      data_sets    = raw_response[plural_resource_label]
     end
 
     # Creates a string that associates to the class id.
@@ -62,17 +62,17 @@ module Helix
     #
     # @return [String] The guid name for a specific class.
     def self.guid_name
-      "#{self.media_type_sym}_id"
+      "#{self.resource_label_sym}_id"
     end
 
     # Creates a string associated with a class name pluralized
     #
     # @example
-    #   Helix::Video.plural_media_type #=> "videos"
+    #   Helix::Video.plural_resource_label #=> "videos"
     #
     # @return [String] The class name pluralized
-    def self.plural_media_type
-      "#{self.media_type_sym}s"
+    def self.plural_resource_label
+      "#{self.resource_label_sym}s"
     end
 
     METHODS_DELEGATED_TO_CLASS.each do |meth|
@@ -111,7 +111,7 @@ module Helix
     # @return [Base] Returns an instance of the class.
     def load(opts={})
       memo_cfg    = config
-      url         = memo_cfg.build_url(content_type: :json, guid: self.guid, media_type: plural_media_type)
+      url         = memo_cfg.build_url(content_type: :json, guid: self.guid, resource_label: plural_resource_label)
       # We allow opts[:sig_type] for internal negative testing only.
       raw_attrs   = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
       @attributes = massage_raw_attrs(raw_attrs)
@@ -168,6 +168,10 @@ module Helix
         end
       end
       attrs.merge({'custom_fields' => cfs})
+    end
+
+    def self.resource_label_sym
+      to_s.split('::').last.singularize.downcase.to_sym
     end
 
   end

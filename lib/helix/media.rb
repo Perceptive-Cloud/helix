@@ -13,11 +13,11 @@ module Helix
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
-      url       = config.build_url(media_type:    plural_media_type,
-                                   content_type:  :xml)
+      url       = config.build_url(resource_label: plural_resource_label,
+                                   content_type:   :xml)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
       attrs     = Hash.from_xml(response)
-      self.new(attributes: attrs[media_type_sym.to_s], config: config)
+      self.new(attributes: attrs[resource_label_sym.to_s], config: config)
     end
 
     # Finds and returns a record in instance form for a class, through
@@ -43,7 +43,7 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      url      = config.build_url(content_type: :xml, guid: guid, media_type: plural_media_type)
+      url      = config.build_url(content_type: :xml, guid: guid, resource_label: plural_resource_label)
       RestClient.delete(url, params: {signature: config.signature(:update)})
     end
 
@@ -58,10 +58,10 @@ module Helix
     def update(opts={})
       RestClient.log = 'helix.log' if opts.delete(:log)
       memo_cfg = config
-      url      = memo_cfg.build_url(content_type: :xml,
-                                    guid:         guid,
-                                    media_type:   plural_media_type)
-      params   = {signature: memo_cfg.signature(:update)}.merge(media_type_sym => opts)
+      url      = memo_cfg.build_url(content_type:   :xml,
+                                    guid:           guid,
+                                    resource_label: plural_resource_label)
+      params   = {signature: memo_cfg.signature(:update)}.merge(resource_label_sym => opts)
       RestClient.put(url, params)
       self
     end

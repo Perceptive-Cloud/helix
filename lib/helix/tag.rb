@@ -10,9 +10,9 @@ module Helix
     #
     #
     # @example
-    #   Helix::Tag.media_type_sym #=> :tag
+    #   Helix::Tag.resource_label_sym #=> :tag
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :tag; end
+    def self.resource_label_sym; super; end
   end
 end

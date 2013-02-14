@@ -5,10 +5,10 @@ describe Helix::Base do
 
   def set_stubs(obj, even_sig=false)
     obj.instance_variable_set(:@attributes, {})
-    obj.stub(:media_type_sym)    { :video      }
-    obj.stub(:plural_media_type) { 'videos'    }
-    obj.stub(:guid)              { 'some_guid' }
-    obj.stub(:signature)         { 'some_sig'  } if even_sig
+    obj.stub(:resource_label_sym)    { :video      }
+    obj.stub(:plural_resource_label) { 'videos'    }
+    obj.stub(:guid)                  { 'some_guid' }
+    obj.stub(:signature)             { 'some_sig'  } if even_sig
   end
 
   let(:klass) { Helix::Base }
@@ -18,7 +18,7 @@ describe Helix::Base do
   describe "Constants" do
     describe "METHODS_DELEGATED_TO_CLASS" do
       subject { klass::METHODS_DELEGATED_TO_CLASS }
-      it { should eq([:guid_name, :media_type_sym, :plural_media_type]) }
+      it { should eq([:guid_name, :resource_label_sym, :plural_resource_label]) }
     end
   end
 
@@ -41,21 +41,21 @@ describe Helix::Base do
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and an opts Hash" do
       let(:opts) { {opts_key1: :opts_val1} }
-      let(:plural_media_type) { :videos }
-      before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
+      let(:plural_resource_label) { :videos }
+      before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
       it "should build a XML URL -> the_url" do
-        mock_config.should_receive(:build_url).with(content_type: :xml,
-                                                    media_type:   plural_media_type)
+        mock_config.should_receive(:build_url).with(content_type:   :xml,
+                                                    resource_label: plural_resource_label)
         klass.send(meth, opts)
       end
       it "should get_response(the_url, {sig_type: :view}.merge(opts) -> raw_response" do
         mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view}.merge(opts))
         klass.send(meth, opts)
       end
-      it "should read raw_response[plural_media_type] -> data_sets" do
+      it "should read raw_response[plural_resource_label] -> data_sets" do
         mock_raw_response = mock(Object)
         mock_config.stub(:get_response) { mock_raw_response }
-        mock_raw_response.should_receive(:[]).with(plural_media_type)
+        mock_raw_response.should_receive(:[]).with(plural_resource_label)
         klass.send(meth, opts)
       end
       context "when data_sets is nil" do
@@ -63,7 +63,7 @@ describe Helix::Base do
       end
       context "when data_sets is NOT nil" do
         let(:data_set) { (0..2).to_a }
-        before(:each) do mock_config.stub(:get_response) { {plural_media_type => data_set } } end
+        before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
         it "should map instantiation with attributes: each data set element" do
           klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
           klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
@@ -79,21 +79,21 @@ describe Helix::Base do
     subject           { klass.method(meth) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when given a config instances and NO opts Hash" do
-      let(:plural_media_type) { :videos }
-      before(:each) do klass.stub(:plural_media_type) { plural_media_type } end
+      let(:plural_resource_label) { :videos }
+      before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
       it "should build a XML URL -> the_url" do
-        mock_config.should_receive(:build_url).with(content_type: :xml,
-                                                    media_type:   plural_media_type)
+        mock_config.should_receive(:build_url).with(content_type:   :xml,
+                                                    resource_label: plural_resource_label)
         klass.send(meth)
       end
       it "should get_response(the_url, {sig_type: :view} -> raw_response" do
         mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view})
         klass.send(meth)
       end
-      it "should read raw_response[plural_media_type] -> data_sets" do
+      it "should read raw_response[plural_resource_label] -> data_sets" do
         mock_raw_response = mock(Object)
         mock_config.stub(:get_response) { mock_raw_response }
-        mock_raw_response.should_receive(:[]).with(plural_media_type)
+        mock_raw_response.should_receive(:[]).with(plural_resource_label)
         klass.send(meth)
       end
       context "when data_sets is nil" do
@@ -101,7 +101,7 @@ describe Helix::Base do
       end
       context "when data_sets is NOT nil" do
         let(:data_set) { (0..2).to_a }
-        before(:each) do mock_config.stub(:get_response) { {plural_media_type => data_set } } end
+        before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
         it "should map instantiation with attributes: each data set element" do
           klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
           klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
@@ -227,15 +227,15 @@ describe Helix::Base do
         obj.stub(:massage_raw_attrs)    { :massaged_attrs }
         mock_config.stub(:build_url)    { :expected_url   }
         mock_config.stub(:get_response) { :raw_attrs      }
-        klass.stub(:media_type_sym)     { :video          }
+        klass.stub(:resource_label_sym) { :video          }
       end
       shared_examples_for "builds URL for load" do
         it "should call #guid" do
           obj.should_receive(:guid) { 'some_guid' }
           obj.send(meth)
         end
-        it "should build_url(content_type: :json, guid: the_guid, media_type: 'videos')" do
-          mock_config.should_receive(:build_url).with(content_type: :json, guid: 'some_guid', media_type: 'videos')
+        it "should build_url(content_type: :json, guid: the_guid, resource_label: 'videos')" do
+          mock_config.should_receive(:build_url).with(content_type: :json, guid: 'some_guid', resource_label: 'videos')
           RestClient.stub(:put)
           obj.send(meth)
         end

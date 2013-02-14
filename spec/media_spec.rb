@@ -18,15 +18,15 @@ describe Helix::Media do
     let(:params)      { { signature: "some_sig" } }
     let(:expected)    { { attributes: { attribute: :value }, config: mock_config } }
     before(:each) do
-      klass.stub(:plural_media_type) { :klasses }
-      klass.stub(:media_type_sym)    { klass_sym }
-      mock_config.stub(:build_url).with(action: :create_many, media_type: :klasses) { :url }
+      klass.stub(:plural_resource_label) { :klasses }
+      klass.stub(:resource_label_sym)    { klass_sym }
+      mock_config.stub(:build_url).with(action: :create_many, resource_label: :klasses) { :url }
       mock_config.stub(:signature).with(:update) { "some_sig" }
       Helix::Config.stub(:instance) { mock_config }
     end
     it "should get an ingest signature" do
-      mock_config.should_receive(:build_url).with(media_type:   :klasses,
-                                                  content_type: :xml)
+      mock_config.should_receive(:build_url).with(resource_label: :klasses,
+                                                  content_type:   :xml)
       RestClient.stub(:post).with(:url, params) { resp_json }
       Hash.should_receive(:from_xml).with(resp_json) { resp_value }
       klass.stub(:new).with(expected)
@@ -34,8 +34,8 @@ describe Helix::Media do
       klass.send(meth)
     end
     it "should do an HTTP post call, parse response and call new" do
-      mock_config.should_receive(:build_url).with(media_type:   :klasses,
-                                                  content_type: :xml)
+      mock_config.should_receive(:build_url).with(resource_label: :klasses,
+                                                  content_type:   :xml)
       RestClient.should_receive(:post).with(:url, params) { resp_json }
       Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
       klass.should_receive(:new).with(expected)
@@ -89,20 +89,20 @@ describe Helix::Media do
       before do
         obj.stub(:config)            { mock_config }
         obj.stub(:guid)              { :some_guid  }
-        obj.stub(:plural_media_type) { :media_type }
+        obj.stub(:plural_resource_label) { :resource_label }
       end
       it "should get an update signature" do
-        url = mock_config.build_url(media_type: :media_type,
-                                    guid:       :some_guid,
-                                    content_type:     :xml)
+        url = mock_config.build_url(resource_label: :resource_label,
+                                    guid:           :some_guid,
+                                    content_type:   :xml)
         RestClient.stub(:delete).with(url, params)
         mock_config.should_receive(:signature).with(:update) { :some_sig }
         obj.send(meth)
       end
       it "should call for an HTTP delete and return nil" do
-        url = mock_config.build_url(media_type: :media_type,
-                                    guid:       :some_guid,
-                                    content_type:     :xml)
+        url = mock_config.build_url(resource_label: :resource_label,
+                                    guid:           :some_guid,
+                                    content_type:   :xml)
         RestClient.should_receive(:delete).with(url, params)
         expect(obj.send(meth)).to be_nil
       end
@@ -115,14 +115,14 @@ describe Helix::Media do
       before(:each) do
         obj.stub(:config) { mock_config }
         obj.stub(:guid)   { :the_guid }
-        obj.stub(:media_type_sym) { :video }
-        obj.stub(:plural_media_type) { :the_media_type }
+        obj.stub(:resource_label_sym) { :video }
+        obj.stub(:plural_resource_label) { :the_resource_label }
         mock_config.stub(:signature).with(:update) { 'some_sig' }
         mock_config.stub(:build_url) { :expected_url }
       end
       shared_examples_for "builds URL for update" do
-        it "should build_url(content_type: :xml, guid: guid, media_type: plural_media_type)" do
-          mock_config.should_receive(:build_url).with(content_type: :xml, guid: :the_guid, media_type: :the_media_type)
+        it "should build_url(content_type: :xml, guid: guid, resource_label: plural_resource_label)" do
+          mock_config.should_receive(:build_url).with(content_type: :xml, guid: :the_guid, resource_label: :the_resource_label)
           RestClient.stub(:put)
           obj.send(meth)
         end

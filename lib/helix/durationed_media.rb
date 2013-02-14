@@ -75,13 +75,13 @@ module Helix
       #
       # @return [Hash]
       def url_opts_for(format=nil)
-        { slice:       {  action:       :slice,
-                          media_type:   plural_media_type,
-                          content_type: :xml,
-                          formats:      format },
-          create_many: {  action:       :create_many,
-                          media_type:   plural_media_type,
-                          content_type: :xml }
+        { slice:       {  action:         :slice,
+                          resource_label: plural_resource_label,
+                          content_type:   :xml,
+                          formats:        format },
+          create_many: {  action:         :create_many,
+                          resource_label: plural_resource_label,
+                          content_type:   :xml }
         }
       end
     end

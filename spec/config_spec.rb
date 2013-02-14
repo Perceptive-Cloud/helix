@@ -5,10 +5,10 @@ describe Helix::Config do
 
   def set_stubs(obj, even_sig=false)
     obj.instance_variable_set(:@attributes, {})
-    obj.stub(:media_type_sym)    { :video      }
-    obj.stub(:plural_media_type) { 'videos'    }
-    obj.stub(:guid)              { 'some_guid' }
-    obj.stub(:signature)         { 'some_sig'  } if even_sig
+    obj.stub(:resource_label_sym)    { :video      }
+    obj.stub(:plural_resource_label) { 'videos'    }
+    obj.stub(:guid)                  { 'some_guid' }
+    obj.stub(:signature)             { 'some_sig'  } if even_sig
   end
 
   let(:klass) { Helix::Config  }
@@ -107,10 +107,10 @@ describe Helix::Config do
     end
   end
 
-  def build_test_url(site, sub_url, guid, action, media_type, content_type)
+  def build_test_url(site, sub_url, guid, action, resource_label, content_type)
     expected_url  = site
     expected_url += sub_url unless guid || action == :create_many
-    expected_url += "/#{media_type}"
+    expected_url += "/#{resource_label}"
     expected_url += "/the_guid" if guid
     expected_url += "/#{action}" if action
     expected_url += ".#{content_type}"
@@ -122,11 +122,11 @@ describe Helix::Config do
     subject     { obj.method(meth) }
     its(:arity) { should be(-1) }
     before(:each) do obj.credentials = { site: site } end
-    shared_examples_for "reads scope from credentials for build_url" do |media_type,content_type,more_opts|
+    shared_examples_for "reads scope from credentials for build_url" do |resource_label,content_type,more_opts|
       let(:opts)          { more_opts || {} }
       let(:action)        { opts[:action] }
       let(:guid)          { opts[:guid] }
-      let(:url_pieces)    { [site, sub_url, guid, action, media_type, content_type] }
+      let(:url_pieces)    { [site, sub_url, guid, action, resource_label, content_type] }
       let(:expected_url)  { build_test_url(*url_pieces) }
       before(:each) do obj.credentials = {site: 'http://example.com'} end
       context "and credentials has a key for :reseller" do
@@ -187,22 +187,22 @@ describe Helix::Config do
       subject { obj.send(meth, {guid: :the_guid, action: :the_action}) }
       it_behaves_like "reads scope from credentials for build_url", :videos, :xml, {guid: :the_guid, action: :the_action}
     end
-    [ :videos, :tracks ].each do |media_type|
-      context "when given opts[:media_type] of :#{media_type}" do
-        subject { obj.send(meth, media_type: media_type) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :xml
+    [ :videos, :tracks ].each do |resource_label|
+      context "when given opts[:resource_label] of :#{resource_label}" do
+        subject { obj.send(meth, resource_label: resource_label) }
+        it_behaves_like "reads scope from credentials for build_url", resource_label, :xml
       end
-      context "when given opts[:media_type] of :#{media_type} and opts[:guid] of :the_guid" do
-        subject { obj.send(meth, media_type: media_type, guid: :the_guid) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {guid: :the_guid}
+      context "when given opts[:resource_label] of :#{resource_label} and opts[:guid] of :the_guid" do
+        subject { obj.send(meth, resource_label: resource_label, guid: :the_guid) }
+        it_behaves_like "reads scope from credentials for build_url", resource_label, :xml, {guid: :the_guid}
       end
-      context "when given opts[:media_type] of :#{media_type} and opts[:action] of :the_action" do
-        subject { obj.send(meth, media_type: media_type, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {action: :the_action}
+      context "when given opts[:resource_label] of :#{resource_label} and opts[:action] of :the_action" do
+        subject { obj.send(meth, resource_label: resource_label, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", resource_label, :xml, {action: :the_action}
       end
-      context "when given opts[:media_type] of :#{media_type}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
-        subject { obj.send(meth, media_type: media_type, guid: :the_guid, action: :the_action) }
-        it_behaves_like "reads scope from credentials for build_url", media_type, :xml, {guid: :the_guid, action: :the_action}
+      context "when given opts[:resource_label] of :#{resource_label}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
+        subject { obj.send(meth, resource_label: resource_label, guid: :the_guid, action: :the_action) }
+        it_behaves_like "reads scope from credentials for build_url", resource_label, :xml, {guid: :the_guid, action: :the_action}
       end
     end
     [ :json, :xml ].each do |content_type|
@@ -222,31 +222,31 @@ describe Helix::Config do
         subject { obj.send(meth, content_type: content_type, guid: :the_guid, action: :the_action) }
         it_behaves_like "reads scope from credentials for build_url", :videos, content_type, {guid: :the_guid, action: :the_action}
       end
-      [ :videos, :tracks ].each do |media_type|
-        context "when given opts[:content_type] of :#{content_type} and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, content_type: content_type, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, content_type
+      [ :videos, :tracks ].each do |resource_label|
+        context "when given opts[:content_type] of :#{content_type} and opts[:resource_label] of :#{resource_label}" do
+          subject { obj.send(meth, content_type: content_type, resource_label: resource_label) }
+          it_behaves_like "reads scope from credentials for build_url", resource_label, content_type
         end
-        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, content_type: content_type, guid: :the_guid, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {guid: :the_guid}
+        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, and opts[:resource_label] of :#{resource_label}" do
+          subject { obj.send(meth, content_type: content_type, guid: :the_guid, resource_label: resource_label) }
+          it_behaves_like "reads scope from credentials for build_url", resource_label, content_type, {guid: :the_guid}
         end
-        context "when given opts[:content_type] of :#{content_type}, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, content_type: content_type, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {action: :the_action}
+        context "when given opts[:content_type] of :#{content_type}, opts[:action] of :the_action, and opts[:resource_label] of :#{resource_label}" do
+          subject { obj.send(meth, content_type: content_type, action: :the_action, resource_label: resource_label) }
+          it_behaves_like "reads scope from credentials for build_url", resource_label, content_type, {action: :the_action}
         end
-        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:media_type] of :#{media_type}" do
-          subject { obj.send(meth, content_type: content_type, guid: :the_guid, action: :the_action, media_type: media_type) }
-          it_behaves_like "reads scope from credentials for build_url", media_type, content_type, {guid: :the_guid, action: :the_action}
+        context "when given opts[:content_type] of :#{content_type}, opts[:guid] of :the_guid, opts[:action] of :the_action, and opts[:resource_label] of :#{resource_label}" do
+          subject { obj.send(meth, content_type: content_type, guid: :the_guid, action: :the_action, resource_label: resource_label) }
+          it_behaves_like "reads scope from credentials for build_url", resource_label, content_type, {guid: :the_guid, action: :the_action}
         end
       end
     end
-    dl_opts = {action: :file, content_type: '', guid: :the_guid, media_type: :videos}
+    dl_opts = {action: :file, content_type: '', guid: :the_guid, resource_label: :videos}
     context "when given opts of #{dl_opts}" do
       subject { obj.send(meth, dl_opts) }
       it { should eq("http://example.com/videos/the_guid/file") }
     end
-    dp_opts = {action: :play, content_type: '', guid: :the_guid, media_type: :videos}
+    dp_opts = {action: :play, content_type: '', guid: :the_guid, resource_label: :videos}
     context "when given opts of #{dp_opts}" do
       subject { obj.send(meth, dp_opts) }
       it { should eq("http://example.com/videos/the_guid/play") }

@@ -11,9 +11,9 @@ module Helix
     #
     #
     # @example
-    #   Helix::Track.media_type_sym #=> :track
+    #   Helix::Track.resource_label_sym #=> :track
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :track; end
+    def self.resource_label_sym; super; end
   end
 end

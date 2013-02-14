@@ -48,7 +48,7 @@ module Helix
     # @return [String] The full RESTful URL string object
     def add_sub_urls(base_url, opts)
       guid, action, format = [:guid, :action, :formats].map { |sub| opts[sub] }
-      url   = "#{base_url}/#{opts[:media_type]}"
+      url   = "#{base_url}/#{opts[:resource_label]}"
       url  += "/#{guid}"            if guid
       url  += "/formats/#{format}"  if format
       url  += "/#{action}"          if action
@@ -61,10 +61,10 @@ module Helix
     # @param [Hash] opts a hash of options for building URL
     # @return [String] The full RESTful URL string object
     def build_url(opts={})
-      opts[:content_type] ||= :xml
-      opts[:media_type]   ||= :videos
-      base_url              = get_base_url(opts)
-      url                   = add_sub_urls(base_url, opts)
+      opts[:content_type]   ||= :xml
+      opts[:resource_label] ||= :videos
+      base_url                = get_base_url(opts)
+      url                     = add_sub_urls(base_url, opts)
     end
 
     def clear_signatures!

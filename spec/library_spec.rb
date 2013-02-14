@@ -6,8 +6,8 @@ describe Helix::Library do
   let(:klass)             { Helix::Library }
   subject                 { klass }
   its(:guid_name)         { should eq('library_id') }
-  its(:media_type_sym)    { should be(:library)   }
-  its(:plural_media_type) { should eq('libraries') }
+  its(:resource_label_sym)    { should be(:library)   }
+  its(:plural_resource_label) { should eq('libraries') }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end
@@ -28,7 +28,7 @@ describe Helix::Library do
   describe "an instance" do
     let(:obj)            { klass.new({'library_id' => 'some_library_id'}) }
     subject              { obj }
-    its(:media_type_sym) { should be(:library) }
+    its(:resource_label_sym) { should be(:library) }
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }
     end

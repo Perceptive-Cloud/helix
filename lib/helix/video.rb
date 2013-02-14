@@ -12,10 +12,10 @@ module Helix
     #
     #
     # @example
-    #   Helix::Video.media_type_sym #=> :video
+    #   Helix::Video.resource_label_sym #=> :video
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :video; end
+    def self.resource_label_sym; super; end
 
     def self.slice(attrs={})
       rest_post(:slice, attrs)
@@ -68,7 +68,7 @@ module Helix
 
     def generic_download(opts)
       content_type = opts[:content_type] || ''
-      url = config.build_url(action: opts[:action], content_type: content_type, guid: guid, media_type: plural_media_type)
+      url = config.build_url(action: opts[:action], content_type: content_type, guid: guid, resource_label: plural_resource_label)
       RestClient.get(url, params: {signature: config.signature(:view)})
     end
 

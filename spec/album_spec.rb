@@ -7,8 +7,8 @@ describe Helix::Album do
   subject { klass }
   its(:ancestors) { should include(Helix::Base) }
   its(:guid_name) { should eq('album_id') }
-  its(:media_type_sym)    { should be(:album)   }
-  its(:plural_media_type) { should eq('albums') }
+  its(:resource_label_sym)    { should be(:album)   }
+  its(:plural_resource_label) { should eq('albums') }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end
@@ -26,7 +26,7 @@ describe Helix::Album do
   describe "an instance" do
     let(:obj) { klass.new({'album_id' => 'some_album_guid'}) }
     subject { obj }
-    its(:media_type_sym) { should be(:album) }
+    its(:resource_label_sym) { should be(:album) }
     describe "#update" do
       let(:meth) { :update }
       it "should raise an error" do

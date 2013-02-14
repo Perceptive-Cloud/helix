@@ -9,10 +9,10 @@ module Helix
     #
     #
     # @example
-    #   Helix::Album.media_type_sym #=> :album
+    #   Helix::Album.resource_label_sym #=> :album
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :album; end
+    def self.resource_label_sym; super; end
 
     # Currently update is unsupported for album.
     #

@@ -16,9 +16,10 @@ describe Helix::DurationedMedia do
 
     let(:sig_opts)  { { contributor:  :helix,
                         library_id:   :development } }
-    url_opts      =   { action:       :create_many,
-                        media_type:   klass.send(:plural_media_type),
-                        content_type: :xml }
+
+    url_opts      =   { action:         :create_many,
+                        resource_label: klass.send(:plural_resource_label),
+                        content_type:   :xml }
 
     describe ".import" do
       let(:meth)        { :import }

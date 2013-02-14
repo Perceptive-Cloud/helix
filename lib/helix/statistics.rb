@@ -124,42 +124,42 @@ module Helix
 
     private
 
-    def self.delivery(media_type, opts)
+    def self.delivery(resource_label, opts)
       memo_cfg      = Helix::Config.instance
       content_type  = opts.delete(:content_type)
-      guid          = opts.delete("#{media_type}_id".to_sym)
+      guid          = opts.delete("#{resource_label}_id".to_sym)
       url_opts      = guid ?
-        {guid: guid, media_type: "#{media_type}s".to_sym, action: :statistics} :
-        {media_type: :statistics, action: "#{media_type}_delivery".to_sym}
+        {guid: guid, resource_label: "#{resource_label}s".to_sym, action: :statistics} :
+        {resource_label: :statistics, action: "#{resource_label}_delivery".to_sym}
       url_opts.merge!(content_type: content_type) if content_type
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
       memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
     end
 
-    def self.ingest(media_type, opts)
+    def self.ingest(resource_label, opts)
       opts[:action] ||= :breakdown
-      action_prefix   = ingest_action_prefix_for(media_type)
-      storage(media_type, opts.merge(action: :"#{action_prefix}/#{opts[:action]}"))
+      action_prefix   = ingest_action_prefix_for(resource_label)
+      storage(resource_label, opts.merge(action: :"#{action_prefix}/#{opts[:action]}"))
     end
 
-    def self.storage(media_type, opts)
+    def self.storage(resource_label, opts)
       memo_cfg      = Helix::Config.instance
       content_type  = opts.delete(:content_type)
-      action        = opts.delete(:action) || storage_action_for(media_type)
-      url_opts      = {media_type: :statistics, action: action}
+      action        = opts.delete(:action) || storage_action_for(resource_label)
+      url_opts      = {resource_label: :statistics, action: action}
       url_opts.merge!(content_type: content_type) if content_type
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
       memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
     end
 
-    def self.ingest_action_prefix_for(media_type)
-      STORAGE_ACTION_FOR[media_type].split('/').first
+    def self.ingest_action_prefix_for(resource_label)
+      STORAGE_ACTION_FOR[resource_label].split('/').first
     end
 
-    def self.storage_action_for(media_type)
-      STORAGE_ACTION_FOR[media_type].to_sym
+    def self.storage_action_for(resource_label)
+      STORAGE_ACTION_FOR[resource_label].to_sym
     end
 
   end

@@ -9,19 +9,19 @@ module Helix
     #
     #
     # @example
-    #   Helix::Library.media_type_sym #=> :library
+    #   Helix::Library.resource_label_sym #=> :library
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :library; end
+    def self.resource_label_sym; super; end
 
     # Creates a string associated with a class name pluralized
     #
     # @example
-    #   Helix::Library.plural_media_type #=> "libraries"
+    #   Helix::Library.plural_resource_label #=> "libraries"
     #
     # @return [String] The class name pluralized
-    def self.plural_media_type
-      "#{self.media_type_sym.to_s.gsub(/y/, '')}ies"
+    def self.plural_resource_label
+      "libraries"
     end
 
     def self.known_attributes

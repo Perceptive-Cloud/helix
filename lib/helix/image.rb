@@ -9,10 +9,10 @@ module Helix
     #
     #
     # @example
-    #   Helix::Image.media_type_sym #=> :image
+    #   Helix::Image.resource_label_sym #=> :image
     #
     # @return [Symbol] Name of the class.
-    def self.media_type_sym; :image; end
+    def self.resource_label_sym; super; end
 
   end
 

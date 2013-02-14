@@ -3,10 +3,10 @@ require 'helix'
 
 describe Helix::Tag do
 
-  let(:klass)             { Helix::Tag }
-  subject                 { klass }
-  its(:media_type_sym)    { should be(:tag)   }
-  its(:plural_media_type) { should eq('tags') }
+  let(:klass) { Helix::Tag }
+  subject     { klass }
+  its(:resource_label_sym)    { should be(:tag)   }
+  its(:plural_resource_label) { should eq('tags') }
   it { should_not respond_to(:find) }
   it { should_not respond_to(:create) }
   it { should respond_to(:all)}
@@ -15,9 +15,9 @@ describe Helix::Tag do
   describe "Constants"
 
   describe "an instance" do
-    let(:obj)             { klass.new({}) }
-    subject               { obj }
-    its(:media_type_sym)  { should be(:tag) }
+    let(:obj) { klass.new({}) }
+    subject   { obj }
+    its(:resource_label_sym)  { should be(:tag) }
     it { should_not respond_to(:destroy) }
     it { should_not respond_to(:update) }
   end  

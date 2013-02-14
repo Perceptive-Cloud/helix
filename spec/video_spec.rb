@@ -10,8 +10,8 @@ describe Helix::Video do
   let(:klass)             { Helix::Video }
   subject                 { klass }
   its(:guid_name)         { should eq('video_id') }
-  its(:media_type_sym)    { should be(:video)   }
-  its(:plural_media_type) { should eq('videos') }
+  its(:resource_label_sym)    { should be(:video)   }
+  its(:plural_resource_label) { should eq('videos') }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end
@@ -23,7 +23,7 @@ describe Helix::Video do
   describe "an instance" do
     let(:obj)            { klass.new({video_id: 'some_video_guid'}) }
     subject              { obj }
-    its(:media_type_sym) { should be(:video) }
+    its(:resource_label_sym) { should be(:video) }
 
     describe "#download" do
       let(:meth)        { :download }
@@ -33,11 +33,11 @@ describe Helix::Video do
       before do
         obj.stub(:config)            { mock_config }
         obj.stub(:guid)              { :some_guid  }
-        obj.stub(:plural_media_type) { :media_type }
+        obj.stub(:plural_resource_label) { :resource_label }
         RestClient.stub(:get) { '' }
       end
       { '' => '', mp3: :mp3, nil => '' }.each do |arg,actual|
-        build_url_h = {action: :file, content_type: actual, guid: :some_guid, media_type: :media_type}
+        build_url_h = {action: :file, content_type: actual, guid: :some_guid, resource_label: :resource_label}
         context "when given {content_type: #{arg}" do
           it "should build_url(#{build_url_h})" do
             mock_config.should_receive(:build_url).with(build_url_h)
@@ -64,11 +64,11 @@ describe Helix::Video do
       before do
         obj.stub(:config)            { mock_config }
         obj.stub(:guid)              { :some_guid  }
-        obj.stub(:plural_media_type) { :media_type }
+        obj.stub(:plural_resource_label) { :resource_label }
         RestClient.stub(:get) { '' }
       end
       { '' => '', mp3: :mp3, nil => '' }.each do |arg,actual|
-        build_url_h = {action: :play, content_type: actual, guid: :some_guid, media_type: :media_type}
+        build_url_h = {action: :play, content_type: actual, guid: :some_guid, resource_label: :resource_label}
         context "when given {content_type: #{arg}" do
           it "should build_url(#{build_url_h})" do
             mock_config.should_receive(:build_url).with(build_url_h)
@@ -114,10 +114,10 @@ describe Helix::Video do
     its(:arity)       { should eq(-1) }
     let(:params)      { { params:       { signature: :some_sig },
                           content_type: "text/xml" } }
-    let(:url_opts)    { { action:       :slice,
-                          media_type:   "videos",
-                          content_type: :xml,
-                          formats:      :some_format } }
+    let(:url_opts)    { { action:         :slice,
+                          resource_label: "videos",
+                          content_type:   :xml,
+                          formats:        :some_format } }
     let(:sig_opts)    { { contributor:  :helix,
                           library_id:   :development,
                           formats:      :some_format } }
