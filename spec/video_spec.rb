@@ -46,10 +46,8 @@ describe Helix::Video do
         obj.send(meth)
       end
       it "should return an HTTP get to the built URL with the view sig" do
-        url = mock_config.build_url(media_type: :media_type,
-                                    guid:       :some_guid,
-                                    content_type:     :xml)
-        RestClient.should_receive(:get).with(url, params) { :expected }
+        mock_config.stub(:build_url).with(build_url_h) { :the_url }
+        RestClient.should_receive(:get).with(:the_url, params) { :expected }
         expect(obj.send(meth)).to be(:expected)
       end
     end
@@ -75,10 +73,8 @@ describe Helix::Video do
         obj.send(meth)
       end
       it "should return an HTTP get to the built URL with the view sig" do
-        url = mock_config.build_url(media_type: :media_type,
-                                    guid:       :some_guid,
-                                    content_type:     :xml)
-        RestClient.should_receive(:get).with(url, params) { :expected }
+        mock_config.stub(:build_url).with(build_url_h) { :the_url }
+        RestClient.should_receive(:get).with(:the_url, params) { :expected }
         expect(obj.send(meth)).to be(:expected)
       end
     end
