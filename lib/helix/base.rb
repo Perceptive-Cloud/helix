@@ -127,7 +127,7 @@ module Helix
       begin
         @attributes[method_sym.to_s]
       rescue
-        raise NoMethodError, "#{method_sym} is not recognized within #{self.class.to_s}'s @attributes"
+        raise NoMethodError, "#{method_sym} is not recognized within #{self.class.to_s}'s methods or @attributes"
       end
     end
 

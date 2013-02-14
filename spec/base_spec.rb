@@ -301,7 +301,7 @@ describe Helix::Base do
         context "and @attributes[method_sym.to_s] raises an exception" do
           before(:each) do mock_attributes.should_receive(:[]).with(method_sym.to_s).and_raise("some exception") end
           it "should raise a NoMethodError" do
-            msg = "#{method_sym} is not recognized within #{klass}'s @attributes"
+            msg = "#{method_sym} is not recognized within #{klass}'s methods or @attributes"
             expect(lambda { obj.send(meth, method_sym) }).to raise_error(msg)
           end
         end
