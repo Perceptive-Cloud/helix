@@ -39,15 +39,11 @@ module Helix
     end
 
     def download(opts={})
-      content_type = opts[:content_type] || ''
-      url = config.build_url(action: :file, content_type: content_type, guid: guid, media_type: plural_media_type)
-      RestClient.get(url, params: {signature: config.signature(:view)})
+      generic_download(opts.merge(action: :file))
     end
 
     def play(opts={})
-      content_type = opts[:content_type] || ''
-      url = config.build_url(action: :play, content_type: content_type, guid: guid, media_type: plural_media_type)
-      RestClient.get(url, params: {signature: config.signature(:view)})
+      generic_download(opts.merge(action: :play))
     end
 
     def stillframe(opts={})
@@ -68,6 +64,12 @@ module Helix
       width, height = get_stillframe_dimensions(opts)
       url     = "#{server}.twistage.com/videos/#{guid}/screenshots/"
       url    << "#{width.to_s}#{height.to_s}.jpg"
+    end
+
+    def generic_download(opts)
+      content_type = opts[:content_type] || ''
+      url = config.build_url(action: opts[:action], content_type: content_type, guid: guid, media_type: plural_media_type)
+      RestClient.get(url, params: {signature: config.signature(:view)})
     end
 
   end
