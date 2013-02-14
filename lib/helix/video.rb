@@ -38,13 +38,15 @@ module Helix
       RestClient.get(url)
     end
 
-    def download
-      url = config.build_url(action: :file, content_type: '', guid: guid, media_type: plural_media_type)
+    def download(opts={})
+      content_type = opts[:content_type] || ''
+      url = config.build_url(action: :file, content_type: content_type, guid: guid, media_type: plural_media_type)
       RestClient.get(url, params: {signature: config.signature(:view)})
     end
 
-    def play
-      url = config.build_url(action: :play, content_type: '', guid: guid, media_type: plural_media_type)
+    def play(opts={})
+      content_type = opts[:content_type] || ''
+      url = config.build_url(action: :play, content_type: content_type, guid: guid, media_type: plural_media_type)
       RestClient.get(url, params: {signature: config.signature(:view)})
     end
 
