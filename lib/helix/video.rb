@@ -38,6 +38,11 @@ module Helix
       RestClient.get(url)
     end
 
+    def download
+      url = config.build_url(action: :file, content_type: '', guid: guid, media_type: plural_media_type)
+      RestClient.get(url, params: {signature: config.signature(:view)})
+    end
+
     def stillframe(opts={})
       self.class.get_stillframe(self.guid, opts)
     end
