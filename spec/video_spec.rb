@@ -30,12 +30,11 @@ describe Helix::Video do
       let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
       subject      { obj.method(meth) }
       let(:params) { { params: {signature: :some_sig } } }
-      let(:csv_text) { ',s3_url,,,' }
       before do
         obj.stub(:config)            { mock_config }
         obj.stub(:guid)              { :some_guid  }
         obj.stub(:plural_media_type) { :media_type }
-        RestClient.stub(:get) { csv_text }
+        RestClient.stub(:get) { '' }
       end
       build_url_h = {action: :file, content_type: "", guid: :some_guid, media_type: :media_type}
       it "should build_url(#{build_url_h})" do
@@ -60,12 +59,11 @@ describe Helix::Video do
       let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
       subject      { obj.method(meth) }
       let(:params) { { params: {signature: :some_sig } } }
-      let(:csv_text) { ',s3_url,,,' }
       before do
         obj.stub(:config)            { mock_config }
         obj.stub(:guid)              { :some_guid  }
         obj.stub(:plural_media_type) { :media_type }
-        RestClient.stub(:get) { csv_text }
+        RestClient.stub(:get) { '' }
       end
       build_url_h = {action: :play, content_type: "", guid: :some_guid, media_type: :media_type}
       it "should build_url(#{build_url_h})" do
