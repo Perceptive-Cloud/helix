@@ -2,7 +2,7 @@ require "rake"
 
 spec = Gem::Specification.new do |s|
   s.name        = "helix"
-  s.version     = "0.0.2.6.pre"
+  s.version     = "0.0.2.7.pre"
   s.summary     = "Wrapper library for the video API"
   s.description = "Provides helper libraries for Ruby access to the Twistage API"
   s.authors     = ["Twistage, Inc"]
