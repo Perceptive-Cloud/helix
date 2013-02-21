@@ -22,7 +22,8 @@ module Helix
     #
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of instance objects for a class.
-    def self.find_all(opts={})
+    def self.find_all(original_opts={})
+      opts           = original_opts.clone
       RestClient.log = 'helix.log' if opts.delete(:log)
       data_sets = get_data_sets(opts)
       return [] if data_sets.nil?

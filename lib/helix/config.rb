@@ -95,7 +95,8 @@ module Helix
     # @param [String] url the base part of the URL to be used
     # @param [Hash] opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
-    def get_response(url, opts={})
+    def get_response(url, original_opts={})
+      opts        = original_opts.clone
       sig_type    = opts.delete(:sig_type)
       params      = opts.merge(signature: signature(sig_type, opts))
       response    = RestClient.get(url, params: params)

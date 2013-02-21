@@ -307,25 +307,35 @@ describe Helix::Config do
     subject     { obj.method(meth) }
     its(:arity) { should eq(-2) }
     context "when given a url and options" do
-      let(:opts)          { {sig_type: :the_sig_type} }
-      let(:params)        { { params: { signature: 'mock_sig' } } }
+      let(:opts)          { {sig_type: :the_sig_type, some_key: :some_value} }
+      let(:params)        { { params: { signature: 'mock_sig', some_key: :some_value } } }
       let(:returned_csv)  { 'x,y,z' }
       let(:returned_json) { '{"key": "val"}' }
       let(:returned_xml)  { '<root><inner>inner value</inner></root>' }
       let(:json_parsed)   { { "key" => "val" } }
       let(:xml_parsed)    { { "root" => { "inner" => "inner value" } } }
       before(:each) do
-        obj.stub(:signature).with(:the_sig_type, opts) { 'mock_sig' }
+        obj.stub(:signature).with(:the_sig_type, opts.reject { |k,v| k == :sig_type }) { 'mock_sig' }
       end
       context "and the URL matches /json/" do
         let(:url) { 'blah.json' }
+        before(:each) do RestClient.stub(:get).with(url, params) { returned_json } end
+        it "should clone the options arg" do
+          opts.should_receive(:clone) { opts }
+          obj.send(meth, url, opts)
+        end
         it "should call RestClient.get and return a hash from parsed JSON" do
           RestClient.should_receive(:get).with(url, params) { returned_json }
           expect(obj.send(meth, url, opts)).to eq(json_parsed)
         end
       end
-      context "and the URL matches /json/" do
+      context "and the URL matches /xml/" do
         let(:url) { 'blah.xml' }
+        before(:each) do RestClient.stub(:get).with(url, params) { returned_xml } end
+        it "should clone the options arg" do
+          opts.should_receive(:clone) { opts }
+          obj.send(meth, url, opts)
+        end
         it "should call RestClient.get and return a hash from parsed XML" do
           RestClient.should_receive(:get).with(url, params) { returned_xml }
           expect(obj.send(meth, url, opts)).to eq(xml_parsed)
@@ -333,6 +343,11 @@ describe Helix::Config do
       end
       context "and the URL matches /csv/" do
         let(:url) { 'blah.csv' }
+        before(:each) do RestClient.stub(:get).with(url, params) { returned_csv } end
+        it "should clone the options arg" do
+          opts.should_receive(:clone) { opts }
+          obj.send(meth, url, opts)
+        end
         it "should call RestClient.get and return the raw CSV response" do
           RestClient.should_receive(:get).with(url, params) { returned_csv }
           expect(obj.send(meth, url, opts)).to eq(returned_csv)

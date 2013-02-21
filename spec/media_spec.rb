@@ -143,6 +143,11 @@ describe Helix::Media do
       context "when given an opts argument of {key1: :value1}" do
         let(:opts)  { {key1: :value1} }
         it_behaves_like "builds URL for update"
+        it "clones the opts arg" do
+          RestClient.stub(:put).with(:expected_url, {signature: 'some_sig', video: opts})
+          opts.should_receive(:clone) { opts }
+          obj.send(meth, opts)
+        end
         it "should call RestClient.put(output_of_build_url, {signature: the_sig, video: opts}) and return instance of klass" do
           RestClient.should_receive(:put).with(:expected_url, {signature: 'some_sig', video: opts})
           expect(obj.send(meth, opts)).to be_an_instance_of(klass)

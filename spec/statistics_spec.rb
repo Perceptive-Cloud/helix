@@ -17,6 +17,13 @@ describe Helix::Statistics do
 
   describe "Constants"
 
+  shared_examples_for "clones the stats opts arg" do
+    it "should clone the opts arg" do
+      opts.should_receive(:clone) { opts }
+      mod.send(meth, opts)
+    end
+  end
+
   STATS_TYPES.each do |stats_type|
     STATS_MEDIA_TYPES.each do |resource_label|
 
@@ -35,6 +42,7 @@ describe Helix::Statistics do
             media_name = MEDIA_NAME_OF[resource_label] || resource_label
             context "when given opts containing a :#{media_name}_id" do
               let(:opts) { {group: :daily, "#{media_name}_id".to_sym => "the_#{media_name}_id".to_sym} }
+              it_behaves_like "clones the stats opts arg"
               it "should refer to the Helix::Config instance" do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)
@@ -75,6 +83,7 @@ describe Helix::Statistics do
             end
             context "when given opts NOT containing a :#{media_name}_id" do
               let(:opts) { {group: :daily} }
+              it_behaves_like "clones the stats opts arg"
               it "should refer to the Helix::Config instance" do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)
@@ -114,6 +123,7 @@ describe Helix::Statistics do
             context "when given opts" do
               context "and opts has no :action key" do
                 let(:opts) { {group: :daily} }
+                it_behaves_like "clones the stats opts arg"
                 it "should refer to the Helix::Config instance" do
                   Helix::Config.should_receive(:instance) { mock_config }
                   mod.send(meth, opts)
@@ -130,6 +140,7 @@ describe Helix::Statistics do
               [ :encode, :source, :breakdown ].each do |act|
                 context "and opts has an :action value of :#{act}" do
                   let(:opts) { {action: act, group: :daily} }
+                  it_behaves_like "clones the stats opts arg"
                   it "should refer to the Helix::Config instance" do
                     Helix::Config.should_receive(:instance) { mock_config }
                     mod.send(meth, opts)
@@ -150,6 +161,7 @@ describe Helix::Statistics do
             publish_name = INGEST_NAME_OF[resource_label] || 'ingest'
             context "when given opts" do
               let(:opts) { {group: :daily} }
+              it_behaves_like "clones the stats opts arg"
               it "should refer to the Helix::Config instance" do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)

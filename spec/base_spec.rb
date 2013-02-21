@@ -43,6 +43,10 @@ describe Helix::Base do
       let(:opts) { {opts_key1: :opts_val1} }
       let(:plural_resource_label) { :videos }
       before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
+      it "should clone the opts arg" do
+        opts.should_receive(:clone) { opts }
+        klass.send(meth, opts)
+      end
       it "should build a XML URL -> the_url" do
         mock_config.should_receive(:build_url).with(content_type:   :xml,
                                                     resource_label: plural_resource_label)

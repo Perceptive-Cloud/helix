@@ -153,6 +153,11 @@ describe Helix::Video do
         let(:dim_val)   { 100 }
         let(:full_url)  { "#{base_url}#{dim_val}#{url_tag}.jpg" }
         let(:opts)      { { dimension => dim_val } }
+        it "should clone the opts arg" do
+          RestClient.stub(:get).with(full_url).and_return image_data
+          opts.should_receive(:clone) { opts }
+          klass.send(meth, guid, opts)
+        end
         it "should build the correct url and return data" do
           RestClient.should_receive(:get).with(full_url).and_return image_data
           expect(klass.send(meth, guid, opts)).to eq(image_data)
@@ -163,6 +168,11 @@ describe Helix::Video do
       let(:dim_val)   { 100 }
       let(:full_url)  { "#{base_url}#{dim_val}w#{dim_val}h.jpg" }
       let(:opts)      { { height: dim_val, width: dim_val } }
+      it "should clone the opts arg" do
+        RestClient.stub(:get).with(full_url).and_return image_data
+        opts.should_receive(:clone) { opts }
+        klass.send(meth, guid, opts)
+      end
       it "should build the correct url and return data" do
         RestClient.should_receive(:get).with(full_url).and_return image_data
         expect(klass.send(meth, guid, opts)).to eq(image_data)

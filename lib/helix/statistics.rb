@@ -124,7 +124,8 @@ module Helix
 
     private
 
-    def self.delivery(resource_label, opts)
+    def self.delivery(resource_label, original_opts)
+      opts          = original_opts.clone
       memo_cfg      = Helix::Config.instance
       content_type  = opts.delete(:content_type)
       guid          = opts.delete("#{resource_label}_id".to_sym)
@@ -137,13 +138,15 @@ module Helix
       memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
     end
 
-    def self.ingest(resource_label, opts)
+    def self.ingest(resource_label, original_opts)
+      opts            = original_opts.clone
       opts[:action] ||= :breakdown
       action_prefix   = ingest_action_prefix_for(resource_label)
       storage(resource_label, opts.merge(action: :"#{action_prefix}/#{opts[:action]}"))
     end
 
-    def self.storage(resource_label, opts)
+    def self.storage(resource_label, original_opts)
+      opts          = original_opts.clone
       memo_cfg      = Helix::Config.instance
       content_type  = opts.delete(:content_type)
       action        = opts.delete(:action) || storage_action_for(resource_label)

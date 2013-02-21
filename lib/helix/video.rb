@@ -32,7 +32,8 @@ module Helix
     # @param [String] guid is the string containing the guid for the video.
     # @param [Hash] opts a hash of options for building URL
     # @return [String] Stillframe jpg data, save it to a file with extension .jpg.
-    def self.get_stillframe(guid, opts={})
+    def self.get_stillframe(guid, original_opts={})
+      opts = original_opts.clone
       RestClient.log = 'helix.log' if opts.delete(:log)
       url = get_stillframe_url(guid, opts)
       RestClient.get(url)
