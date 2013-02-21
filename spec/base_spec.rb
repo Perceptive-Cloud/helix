@@ -141,8 +141,8 @@ describe Helix::Base do
     its(:arity) { should eq(1) }
     let(:attrs) { Hash.new }
     it "should call massage_custom_field_attrs and massage_time_attrs" do
-      klass.should_receive(:massage_time_attrs).and_return attrs
-      klass.should_receive(:massage_custom_field_attrs).and_return attrs
+      klass.should_receive(:massage_time_attrs) { attrs }
+      klass.should_receive(:massage_custom_field_attrs) { attrs }
       klass.send(meth, attrs)
     end
   end

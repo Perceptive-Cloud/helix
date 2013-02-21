@@ -93,7 +93,7 @@ describe Helix::Video do
       subject           { obj.method(meth) }
       its(:arity)       { should eq(-1) }
       it "should call self.class.get_stillframe" do
-        obj.stub(:guid).and_return :some_guid
+        obj.stub(:guid) { :some_guid }
         klass.should_receive(:get_stillframe)
         obj.send(meth)
       end
@@ -143,7 +143,7 @@ describe Helix::Video do
     context "when no height or width is passed in " do
       let(:full_url) { "#{base_url}original.jpg" }
       it "should build the correct url and return data" do
-        RestClient.should_receive(:get).with(full_url).and_return image_data
+        RestClient.should_receive(:get).with(full_url) { image_data }
         expect(klass.send(meth, guid)).to eq(image_data)
       end
     end
@@ -154,12 +154,12 @@ describe Helix::Video do
         let(:full_url)  { "#{base_url}#{dim_val}#{url_tag}.jpg" }
         let(:opts)      { { dimension => dim_val } }
         it "should clone the opts arg" do
-          RestClient.stub(:get).with(full_url).and_return image_data
+          RestClient.stub(:get).with(full_url) { image_data }
           opts.should_receive(:clone) { opts }
           klass.send(meth, guid, opts)
         end
         it "should build the correct url and return data" do
-          RestClient.should_receive(:get).with(full_url).and_return image_data
+          RestClient.should_receive(:get).with(full_url) { image_data }
           expect(klass.send(meth, guid, opts)).to eq(image_data)
         end
       end
@@ -169,12 +169,12 @@ describe Helix::Video do
       let(:full_url)  { "#{base_url}#{dim_val}w#{dim_val}h.jpg" }
       let(:opts)      { { height: dim_val, width: dim_val } }
       it "should clone the opts arg" do
-        RestClient.stub(:get).with(full_url).and_return image_data
+        RestClient.stub(:get).with(full_url) { image_data }
         opts.should_receive(:clone) { opts }
         klass.send(meth, guid, opts)
       end
       it "should build the correct url and return data" do
-        RestClient.should_receive(:get).with(full_url).and_return image_data
+        RestClient.should_receive(:get).with(full_url) { image_data }
         expect(klass.send(meth, guid, opts)).to eq(image_data)
       end
     end
