@@ -60,7 +60,7 @@ How To
 ```yaml
 site: 'http://service.twistage.com'
 company: 'my_company'
-license_key: '141a86b5c4091
+license_key: '141a86b5c4091'
 library_id: 'development'
 ```
 Load the YAML file as your config.
