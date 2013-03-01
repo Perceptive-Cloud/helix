@@ -72,9 +72,6 @@ videos = Helix::Video.find_all
 
 If no file is passed in Helix with default to './helix.yml'
 
-
-```
-
 More Information
 ----------------
 
