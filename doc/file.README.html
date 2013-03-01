@@ -115,8 +115,6 @@ gem &#39;helix&#39;, :git =&gt; git@github.com:Twistage/helix.git
 
 <h2>How To</h2>
 
-<p>Warning: How To is not currently finished, it may be inaccurate. </p>
-
 <h3>Setup YAML</h3>
 
 <pre class="code yaml"><code>site: 'http://service.twistage.com'
@@ -129,115 +127,41 @@ license_key: '141a86b5c4091
 <p>Load the YAML file as your config.
 <code>ruby
 Helix::Config.load(&quot;path/to/yaml.yml&quot;)
+videos = Helix::Video.find_all
 </code></p>
 
-<h4>Current CRUD methods supported by all models</h4>
+<p>If no file is passed in Helix with default to &#39;./helix.yml&#39;</p>
 
-<p>.create<br>
-.find<br>
-#update<br>
-#destroy  </p>
+<pre class="code ruby"><code>
+More Information
+----------------
 
-<h4>Current models</h4>
+* [Rubygems](https://rubygems.org/gems/helix)
+* [Issues](https://github.com/twistage/helix/issues)
 
-<p>Videos, Images, Albums, Tracks, Playlists</p>
+Contributing
+------------
 
-<h3>Videos</h3>
+How to contribute
 
-<h5>Required fields: title, description, library, company, and source.</h5>
+Credits
+-------
 
-<pre class="code ruby"><code>video = Helix::Video.create!( title:       'New Video', 
-                              description: 'A video of new things', 
-                              source:      'http://somesource.com/source.mp4'
-                              company:     'some_company',
-                              library:     'some_library')
-video.update({title: &quot;New Title&quot;})
-another_video = Helix::Video.find(some_guid)
-another_video.destroy
+Helix was written by Kevin Baird and Michael Wood.
+
+Helix is maintained and funded by [Twistage, Inc](http://twistage.com)
+
+The names and logos for twistage are trademarks of Twistage, Inc.
+
+License
+-------
+
+Helix is Copyright © 2008-2012 Twistage, Inc.
 </code></pre>
-
-<h3>Albums</h3>
-
-<h5>Required fields: title, library, company.</h5>
-
-<pre class="code ruby"><code>album = Helix::Album.create!( title:       'New Album', 
-                              description: 'A album of new things', 
-                              source:      'http://somesource.com/source.mp4'
-                              company:     'some_company',
-                              library:     'some_library')
-#Update for album is not currently supported
-another_album = Helix::Album.find(some_guid)
-another_album.destroy
-</code></pre>
-
-<h3>Images</h3>
-
-<h5>Required fields: title, description, library, company, and source.</h5>
-
-<pre class="code ruby"><code>image = Helix::Image.create!( title:       'New Image', 
-                              description: 'A image of new things', 
-                              source:      'http://somesource.com/source.jpg'
-                              company:     'some_company',
-                              library:     'some_library')
-image.update({title: &quot;New Title&quot;})
-another_image = Helix::Image.find(some_guid)
-another_image.destroy
-</code></pre>
-
-<h3>Tracks</h3>
-
-<h5>Required fields: title, description, library, company, and source.</h5>
-
-<pre class="code ruby"><code>track = Helix::Track.create!( title:       'New Track', 
-                              description: 'A track of new things', 
-                              source:      'http://somesource.com/source.mp3'
-                              company:     'some_company',
-                              library:     'some_library')
-track.update({title: &quot;New Title&quot;})
-another_track = Helix::Track.find(some_guid)
-another_track.destroy
-</code></pre>
-
-<h3>Playlists</h3>
-
-<h5>Required fields: title, library, company.</h5>
-
-<pre class="code ruby"><code>playlist = Helix::Playlist.create!( title:       'New Playlist', 
-                                    description: 'A playlist of new things', 
-                                    source:      'http://somesource.com/source.mp4'
-                                    company:     'some_company',
-                                    library:     'some_library')
-playlist.update({title: &quot;New Title&quot;})
-another_playlist = Helix::Playlist.find(some_guid)
-another_playlist.destroy
-</code></pre>
-
-<h2>More Information</h2>
-
-<ul>
-<li><a href="https://rubygems.org/gems/helix">Rubygems</a></li>
-<li><a href="https://github.com/twistage/helix/issues">Issues</a></li>
-</ul>
-
-<h2>Contributing</h2>
-
-<p>How to contribute</p>
-
-<h2>Credits</h2>
-
-<p>Helix was written by Kevin Baird and Michael Wood.</p>
-
-<p>Helix is maintained and funded by <a href="http://twistage.com">Twistage, Inc</a></p>
-
-<p>The names and logos for twistage are trademarks of Twistage, Inc.</p>
-
-<h2>License</h2>
-
-<p>Helix is Copyright © 2008-2012 Twistage, Inc.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Thu Feb  7 16:35:41 2013 by
+  Generated on Fri Mar  1 13:20:58 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>
