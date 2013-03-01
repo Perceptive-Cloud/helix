@@ -5,8 +5,8 @@ module Helix
     module ClassMethods
 
       # Used to import tracks from a URL into the Twistage system.
-      # Doc reference: /doc/api/track/import
-      # Doc reference: /doc/api/video/import
+      # API doc reference: /doc/api/track/import
+      # API doc reference: /doc/api/video/import
       #
       # @example
       #   track = Helix::Track.import(src:          "www.google.com/track.mp4",

@@ -18,11 +18,13 @@ module Helix
     def self.resource_label_sym; super; end
 
     # Used to create a slice video from an existing video.
+    # API doc reference: /doc/api/video/slice
     #
     #
     # @example
-    #   xml_string = "<xml></xml>" # Reference Twistage API documentation
-    #                              # to see valid xml to pass.
+    # Reference Twistage API documentation
+    # to see valid xml to pass.
+    #   xml_string = "<xml></xml>"
     #   Helix::Video.slice({  guid:         "239c59483d346",
     #                         use_raw_xml:  xml_string  })
     #
@@ -34,6 +36,7 @@ module Helix
 
     # Used to retrieve a stillframe for a video by using
     # the video guid.
+    # API doc reference: /doc/api/video/still_frames
     #
     # @example
     #   sf_data = Helix::Video.stillframe_for("239c59483d346") #=> xDC\xF1?\xE9*?\xFF\xD9
