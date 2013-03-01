@@ -94,7 +94,7 @@ describe Helix::Video do
       its(:arity)       { should eq(-1) }
       it "should call self.class.get_stillframe" do
         obj.stub(:guid) { :some_guid }
-        klass.should_receive(:get_stillframe)
+        klass.should_receive(:stillframe_for)
         obj.send(meth)
       end
     end
@@ -131,8 +131,8 @@ describe Helix::Video do
     end
   end
 
-  describe ".get_stillframe" do
-    let(:meth)        { :get_stillframe }
+  describe ".stillframe_for" do
+    let(:meth)        { :stillframe_for }
     let(:mock_config) { mock(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-2) }

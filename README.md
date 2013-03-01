@@ -48,7 +48,6 @@ gem 'helix', :git => git@github.com:Twistage/helix.git
 ```
 
 
-
 Supported Ruby versions
 -----------------------
 
@@ -57,88 +56,20 @@ Supported Ruby versions
 
 How To
 ------
-Warning: How To is not currently finished, it may be inaccurate. 
 ###Setup YAML
 ```yaml
 site: 'http://service.twistage.com'
-user: 'my_account@twistage.com'
-password: 'password123'
 company: 'my_company'
-license_key: '141a86b5c4091
+license_key: '141a86b5c4091'
+library_id: 'development'
 ```
 Load the YAML file as your config.
 ```ruby
 Helix::Config.load("path/to/yaml.yml")
+videos = Helix::Video.find_all
 ```
-####Current CRUD methods supported by all models
-.create  
-.find  
-\#update  
-\#destroy  
 
-####Current models
-Videos, Images, Albums, Tracks, Playlists
-
-###Videos
-#####Required fields: title, description, library, company, and source.
-```ruby
-video = Helix::Video.create!( title:       'New Video', 
-                              description: 'A video of new things', 
-                              source:      'http://somesource.com/source.mp4'
-                              company:     'some_company',
-                              library:     'some_library')
-video.update({title: "New Title"})
-another_video = Helix::Video.find(some_guid)
-another_video.destroy
-```
-###Albums
-#####Required fields: title, library, company.
-```ruby
-album = Helix::Album.create!( title:       'New Album', 
-                              description: 'A album of new things', 
-                              source:      'http://somesource.com/source.mp4'
-                              company:     'some_company',
-                              library:     'some_library')
-#Update for album is not currently supported
-another_album = Helix::Album.find(some_guid)
-another_album.destroy
-```
-###Images
-#####Required fields: title, description, library, company, and source.
-```ruby
-image = Helix::Image.create!( title:       'New Image', 
-                              description: 'A image of new things', 
-                              source:      'http://somesource.com/source.jpg'
-                              company:     'some_company',
-                              library:     'some_library')
-image.update({title: "New Title"})
-another_image = Helix::Image.find(some_guid)
-another_image.destroy
-```
-###Tracks
-#####Required fields: title, description, library, company, and source.
-```ruby
-track = Helix::Track.create!( title:       'New Track', 
-                              description: 'A track of new things', 
-                              source:      'http://somesource.com/source.mp3'
-                              company:     'some_company',
-                              library:     'some_library')
-track.update({title: "New Title"})
-another_track = Helix::Track.find(some_guid)
-another_track.destroy
-```
-###Playlists
-#####Required fields: title, library, company.
-```ruby
-playlist = Helix::Playlist.create!( title:       'New Playlist', 
-                                    description: 'A playlist of new things', 
-                                    source:      'http://somesource.com/source.mp4'
-                                    company:     'some_company',
-                                    library:     'some_library')
-playlist.update({title: "New Title"})
-another_playlist = Helix::Playlist.find(some_guid)
-another_playlist.destroy
-```
+If no file is passed in Helix with default to './helix.yml'
 
 More Information
 ----------------
