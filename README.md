@@ -59,10 +59,9 @@ How To
 ###Setup YAML
 ```yaml
 site: 'http://service.twistage.com'
-user: 'my_account@twistage.com'
-password: 'password123'
 company: 'my_company'
 license_key: '141a86b5c4091
+library_id: 'development'
 ```
 Load the YAML file as your config.
 ```ruby
