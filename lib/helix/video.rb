@@ -46,7 +46,7 @@ module Helix
     # @param  [Hash] Opts a hash of options for building URL.
     # @return [String] Stillframe jpg data, save it to a file with extension .jpg.
     def self.stillframe_for(guid, original_opts={})
-      opts             = original_opts.clone
+      opts            = original_opts.clone
       RestClient.log  = 'helix.log' if opts.delete(:log)
       url             = stillframe_url(guid, opts)
       RestClient.get(url)
