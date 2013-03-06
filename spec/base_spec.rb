@@ -37,9 +37,15 @@ describe Helix::Base do
   shared_examples_for "a search all with opts" do
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-1) }
-    before(:each) do Helix::Config.stub(:instance) { mock_config } end
+    context "when there is NOT a config instance" do
+      before(:each) do Helix::Config.stub(:instance) { nil } end
+      it "should raise a NoConfigurationLoaded exception" do
+        lambda { klass.send(meth) }.should raise_error(Helix::NoConfigurationLoaded)
+      end
+    end
     context "when there is a config instance" do
       let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and given an opts Hash" do
         let(:opts)                  { {opts_key1: :opts_val1} }
         let(:plural_resource_label) { :videos }
@@ -82,9 +88,9 @@ describe Helix::Base do
 
   shared_examples_for "a search all without opts" do
     subject { klass.method(meth) }
-    before(:each) do Helix::Config.stub(:instance) { mock_config } end
     context "when there is a config instance" do
       let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
         let(:plural_resource_label) { :videos }
         before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
