@@ -81,38 +81,40 @@ describe Helix::Base do
   end
 
   shared_examples_for "a search all without opts" do
-    let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
-    subject           { klass.method(meth) }
+    subject { klass.method(meth) }
     before(:each) do Helix::Config.stub(:instance) { mock_config } end
-    context "when given a config instances and NO opts Hash" do
-      let(:plural_resource_label) { :videos }
-      before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
-      it "should build a XML URL -> the_url" do
-        mock_config.should_receive(:build_url).with(content_type:   :xml,
-                                                    resource_label: plural_resource_label)
-        klass.send(meth)
-      end
-      it "should get_response(the_url, {sig_type: :view} -> raw_response" do
-        mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view})
-        klass.send(meth)
-      end
-      it "should read raw_response[plural_resource_label] -> data_sets" do
-        mock_raw_response = mock(Object)
-        mock_config.stub(:get_response) { mock_raw_response }
-        mock_raw_response.should_receive(:[]).with(plural_resource_label)
-        klass.send(meth)
-      end
-      context "when data_sets is nil" do
-        it "should return []" do expect(klass.send(meth)).to eq([]) end
-      end
-      context "when data_sets is NOT nil" do
-        let(:data_set) { (0..2).to_a }
-        before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
-        it "should map instantiation with attributes: each data set element" do
-          klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
-          klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
-          klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
-          expect(klass.send(meth)).to eq([:a, :b, :c])
+    context "when there is a config instance" do
+      let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      context "and NOT given an opts Hash" do
+        let(:plural_resource_label) { :videos }
+        before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
+        it "should build a XML URL -> the_url" do
+          mock_config.should_receive(:build_url).with(content_type:   :xml,
+                                                      resource_label: plural_resource_label)
+          klass.send(meth)
+        end
+        it "should get_response(the_url, {sig_type: :view} -> raw_response" do
+          mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view})
+          klass.send(meth)
+        end
+        it "should read raw_response[plural_resource_label] -> data_sets" do
+          mock_raw_response = mock(Object)
+          mock_config.stub(:get_response) { mock_raw_response }
+          mock_raw_response.should_receive(:[]).with(plural_resource_label)
+          klass.send(meth)
+        end
+        context "when data_sets is nil" do
+          it "should return []" do expect(klass.send(meth)).to eq([]) end
+        end
+        context "when data_sets is NOT nil" do
+          let(:data_set) { (0..2).to_a }
+          before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
+          it "should map instantiation with attributes: each data set element" do
+            klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
+            klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
+            klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
+            expect(klass.send(meth)).to eq([:a, :b, :c])
+          end
         end
       end
     end
