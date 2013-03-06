@@ -13,6 +13,7 @@ module Helix
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
+      raise Helix::NoConfigurationLoaded.new if config.nil?
       url       = config.build_url(build_url_opts)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
       attrs     = Hash.from_xml(response)
@@ -30,6 +31,7 @@ module Helix
     # @return [Base] An instance of Helix::Base
     def self.find(guid)
       raise ArgumentError.new("find requires a non-nil guid argument - received a nil argument.") if guid.nil?
+      raise Helix::NoConfigurationLoaded.new if config.nil?
       item   = self.new(attributes: { guid_name => guid }, config: config)
       item.load
     end

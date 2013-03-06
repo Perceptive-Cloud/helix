@@ -17,29 +17,37 @@ describe Helix::Media do
     let(:resp_json)   { "JSON" }
     let(:params)      { { signature: "some_sig" } }
     let(:expected)    { { attributes: { attribute: :value }, config: mock_config } }
-    before(:each) do
-      klass.stub(:plural_resource_label) { :klasses }
-      klass.stub(:resource_label_sym)    { klass_sym }
-      mock_config.stub(:build_url).with(action: :create_many, resource_label: :klasses) { :url }
-      mock_config.stub(:signature).with(:update) { "some_sig" }
-      Helix::Config.stub(:instance) { mock_config }
+    context "when a Helix:Config instance is absent" do
+      before(:each) do Helix::Config.stub(:instance) { nil } end
+      it "should raise a NoConfigurationLoaded exception" do
+        lambda { klass.send(meth) }.should raise_error(Helix::NoConfigurationLoaded)
+      end
     end
-    it "should get an ingest signature" do
-      mock_config.should_receive(:build_url).with(resource_label: :klasses,
-                                                  content_type:   :xml)
-      RestClient.stub(:post).with(:url, params) { resp_json }
-      Hash.should_receive(:from_xml).with(resp_json) { resp_value }
-      klass.stub(:new).with(expected)
-      mock_config.should_receive(:signature).with(:update) { "some_sig" }
-      klass.send(meth)
-    end
-    it "should do an HTTP post call, parse response and call new" do
-      mock_config.should_receive(:build_url).with(resource_label: :klasses,
-                                                  content_type:   :xml)
-      RestClient.should_receive(:post).with(:url, params) { resp_json }
-      Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
-      klass.should_receive(:new).with(expected)
-      klass.send(meth)
+    context "when a Helix:Config instance is present" do
+      before(:each) do
+        klass.stub(:plural_resource_label) { :klasses }
+        klass.stub(:resource_label_sym)    { klass_sym }
+        mock_config.stub(:build_url).with(action: :create_many, resource_label: :klasses) { :url }
+        mock_config.stub(:signature).with(:update) { "some_sig" }
+        Helix::Config.stub(:instance) { mock_config }
+      end
+      it "should get an ingest signature" do
+        mock_config.should_receive(:build_url).with(resource_label: :klasses,
+                                                    content_type:   :xml)
+        RestClient.stub(:post).with(:url, params) { resp_json }
+        Hash.should_receive(:from_xml).with(resp_json) { resp_value }
+        klass.stub(:new).with(expected)
+        mock_config.should_receive(:signature).with(:update) { "some_sig" }
+        klass.send(meth)
+      end
+      it "should do an HTTP post call, parse response and call new" do
+        mock_config.should_receive(:build_url).with(resource_label: :klasses,
+                                                    content_type:   :xml)
+        RestClient.should_receive(:post).with(:url, params) { resp_json }
+        Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
+        klass.should_receive(:new).with(expected)
+        klass.send(meth)
+      end
     end
   end
 
@@ -49,6 +57,30 @@ describe Helix::Media do
     let(:mock_obj)    { mock(klass, :load => :output_of_load) }
     subject     { klass.method(meth) }
     its(:arity) { should eq(1) }
+    context "when a Helix:Config instance is absent" do
+      before(:each) do Helix::Config.stub(:instance) { nil } end
+      context "and given a guid" do
+        let(:guid_name)  { :the_guid_name }
+        let(:mock_attrs) { mock(Object, :[]= => :output_of_setting_val) }
+        before(:each) do
+          klass.stub(:attributes) { mock_attrs }
+          klass.stub(:guid_name)  { guid_name  }
+          klass.stub(:new)        { mock_obj }
+        end
+        context "and the guid is nil" do
+          it "should raise an ArgumentError complaining about a nil guid" do
+            msg = 'find requires a non-nil guid argument - received a nil argument.'
+            lambda { klass.send(meth, nil) }.should raise_error(ArgumentError, msg)
+          end
+        end
+        context "and the guid is non-nil" do
+          let(:guid) { :a_guid }
+          it "should raise a NoConfigurationLoaded exception" do
+            lambda { klass.send(meth, guid) }.should raise_error(Helix::NoConfigurationLoaded)
+          end
+        end
+      end
+    end
     context "when a Helix::Config instance is present" do
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and given a guid" do

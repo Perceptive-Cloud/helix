@@ -3,6 +3,7 @@ require 'json'
 require 'yaml'
 require 'nori'
 require 'time'
+require 'helix/exceptions'
 
 module Helix
   class Base
