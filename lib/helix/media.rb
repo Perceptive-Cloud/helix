@@ -13,8 +13,7 @@ module Helix
     # @param [Hash] attributes a hash containing the attributes used in the create
     # @return [Base] An instance of Helix::Base
     def self.create(attributes={})
-      url       = config.build_url(resource_label: plural_resource_label,
-                                   content_type:   :xml)
+      url       = config.build_url(build_url_opts)
       response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
       attrs     = Hash.from_xml(response)
       self.new(attributes: attrs[resource_label_sym.to_s], config: config)
@@ -43,7 +42,7 @@ module Helix
     #
     # @return [String] The response from the HTTP DELETE call.
     def destroy
-      url      = config.build_url(content_type: :xml, guid: guid, resource_label: plural_resource_label)
+      url = config.build_url(build_url_opts)
       RestClient.delete(url, params: {signature: config.signature(:update)})
     end
 
@@ -59,12 +58,22 @@ module Helix
       opts           = original_opts.clone
       RestClient.log = 'helix.log' if opts.delete(:log)
       memo_cfg = config
-      url      = memo_cfg.build_url(content_type:   :xml,
-                                    guid:           guid,
-                                    resource_label: plural_resource_label)
+      url      = memo_cfg.build_url(build_url_opts)
       params   = {signature: memo_cfg.signature(:update)}.merge(resource_label_sym => opts)
       RestClient.put(url, params)
       self
     end
+
+    private
+
+    def self.build_url_opts
+      {content_type: :xml, resource_label: plural_resource_label}
+    end
+
+    def build_url_opts
+      self.class.build_url_opts.merge({guid: guid, resource_label: plural_resource_label})
+    end
+
   end
+
 end
