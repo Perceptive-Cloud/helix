@@ -13,6 +13,8 @@ IrresponsibleModule:
   enabled: false # Keep off, as it complains about Rails standard practice of no module comments
 LongMethod:
   max_statements: 10 # eventually lower this
+NilCheck:
+  enabled: false # What's the problem with .nil?
 UtilityFunction:
   enabled: false # perhaps keep off, as it complains about functional code
   # perhaps re-enable if it only does so in classes, but not in modules

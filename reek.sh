@@ -1,1 +1,1 @@
-reek -c reek.yml lib spec
+reek -c reek.yml -n lib spec
