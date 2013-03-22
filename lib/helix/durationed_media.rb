@@ -62,9 +62,9 @@ module Helix
       end
 
       def rest_post(api_call, attrs)
-        RestClient.log        = 'helix.log' if attrs.delete(:log)
-        content_type          = url_opts_for[api_call][:content_type]
-        content_type_hash     = { content_type: "text/#{content_type}" }
+        RestClient.log    = 'helix.log' if attrs.delete(:log)
+        content_type      = url_opts_for[api_call][:content_type]
+        content_type_hash = { content_type: "text/#{content_type}" }
         RestClient.post(get_url_for(api_call, attrs),
                         get_xml(attrs),
                         get_params(attrs).merge(content_type_hash))
