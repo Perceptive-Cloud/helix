@@ -139,6 +139,50 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#http_close-class_method" title="http_close (class method)">+ (Object) <strong>http_close</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#http_open-class_method" title="http_open (class method)">+ (Object) <strong>http_open</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#resource_label_sym-class_method" title="resource_label_sym (class method)">+ (Symbol) <strong>resource_label_sym</strong> </a>
     
 
@@ -185,7 +229,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#stillframe_for-class_method" title="stillframe_for (class method)">+ (String) <strong>stillframe_for</strong>(guid, opts = {}) </a>
+      <a href="#stillframe_for-class_method" title="stillframe_for (class method)">+ (String) <strong>stillframe_for</strong>(guid, original_opts = {}) </a>
     
 
     
@@ -202,6 +246,94 @@
     <span class="summary_desc"><div class='inline'><p>Used to retrieve a stillframe for a video by using
 the video guid.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#upload-class_method" title="upload (class method)">+ (Object) <strong>upload</strong>(file_name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#upload_close-class_method" title="upload_close (class method)">+ (Object) <strong>upload_close</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#upload_open-class_method" title="upload_open (class method)">+ (Object) <strong>upload_open</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#upload_server_name-class_method" title="upload_server_name (class method)">+ (Object) <strong>upload_server_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -344,7 +476,67 @@ the video guid.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="resource_label_sym-class_method">
+  <h3 class="signature first" id="http_close-class_method">
+  
+    + (<tt>Object</tt>) <strong>http_close</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_http_close'>http_close</span>
+  <span class='id identifier rubyid_upload_get'>upload_get</span><span class='lparen'>(</span><span class='symbol'>:http_close</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="http_open-class_method">
+  
+    + (<tt>Object</tt>) <strong>http_open</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_http_open'>http_open</span>
+  <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="resource_label_sym-class_method">
   
     + (<tt>Symbol</tt>) <strong>resource_label_sym</strong> 
   
@@ -416,24 +608,20 @@ this method as a way to build URLs.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Used to create a slice video from an existing video.</p>
+    <p>Used to create a slice video from an existing video.
+API doc reference: /doc/api/video/slice</p>
+
+<p>Reference Twistage API documentation
+to see valid xml to pass.
+  xml_string = &quot;<xml></xml>&quot;
+  Helix::Video.slice({  guid:         &quot;239c59483d346&quot;,
+                        use_raw_xml:  xml_string  })</p>
 
 
   </div>
 </div>
 <div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><span class='id identifier rubyid_xml_string'>xml_string</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;xml&gt;&lt;/xml&gt;</span><span class='tstring_end'>&quot;</span></span> <span class='comment'># Reference Twistage API documentation
-</span>                           <span class='comment'># to see valid xml to pass.
-</span><span class='const'>Helix</span><span class='op'>::</span><span class='const'>Video</span><span class='period'>.</span><span class='id identifier rubyid_slice'>slice</span><span class='lparen'>(</span><span class='lbrace'>{</span>  <span class='label'>guid:</span>         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>239c59483d346</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-                      <span class='label'>use_raw_xml:</span>  <span class='id identifier rubyid_xml_string'>xml_string</span>  <span class='rbrace'>}</span><span class='rparen'>)</span></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
+  <p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -477,12 +665,12 @@ this method as a way to build URLs.</p>
       <pre class="lines">
 
 
-31
-32
-33</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_slice'>slice</span><span class='lparen'>(</span><span class='id identifier rubyid_attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_rest_post'>rest_post</span><span class='lparen'>(</span><span class='symbol'>:slice</span><span class='comma'>,</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='rparen'>)</span>
@@ -495,7 +683,7 @@ this method as a way to build URLs.</p>
       <div class="method_details ">
   <h3 class="signature " id="stillframe_for-class_method">
   
-    + (<tt>String</tt>) <strong>stillframe_for</strong>(guid, opts = {}) 
+    + (<tt>String</tt>) <strong>stillframe_for</strong>(guid, original_opts = {}) 
   
 
   
@@ -504,7 +692,8 @@ this method as a way to build URLs.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p>Used to retrieve a stillframe for a video by using
-the video guid.</p>
+the video guid.
+API doc reference: /doc/api/video/still_frames</p>
 
 
   </div>
@@ -578,19 +767,147 @@ the video guid.</p>
       <pre class="lines">
 
 
-45
-46
-47
-48
-49</pre>
+75
+76
+77
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 75</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stillframe_for'>stillframe_for</span><span class='lparen'>(</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_stillframe_for'>stillframe_for</span><span class='lparen'>(</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_opts'>opts</span>            <span class='op'>=</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span>  <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_url'>url</span>             <span class='op'>=</span> <span class='id identifier rubyid_stillframe_url'>stillframe_url</span><span class='lparen'>(</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="upload-class_method">
+  
+    + (<tt>Object</tt>) <strong>upload</strong>(file_name) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+37
+38
+39
+40
+41
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 37</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_file_name'>file_name</span><span class='rparen'>)</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_upload_server_name'>upload_server_name</span><span class='comma'>,</span> 
+                  <span class='lbrace'>{</span> <span class='label'>file:</span>       <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_file_name'>file_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+                  <span class='lbrace'>{</span> <span class='label'>multipart:</span>  <span class='kw'>true</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_http_close'>http_close</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="upload_close-class_method">
+  
+    + (<tt>Object</tt>) <strong>upload_close</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 60</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_upload_close'>upload_close</span>
+  <span class='id identifier rubyid_http_close'>http_close</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="upload_open-class_method">
+  
+    + (<tt>Object</tt>) <strong>upload_open</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_upload_open'>upload_open</span>
+  <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="upload_server_name-class_method">
+  
+    + (<tt>Object</tt>) <strong>upload_server_name</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+44
+45
+46</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 44</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
+  <span class='id identifier rubyid_upload_get'>upload_get</span><span class='lparen'>(</span><span class='symbol'>:http_open</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -676,12 +993,12 @@ the video guid.</p>
       <pre class="lines">
 
 
-60
-61
-62</pre>
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_download'>download</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_generic_download'>generic_download</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>action:</span> <span class='symbol'>:file</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -763,12 +1080,12 @@ the video guid.</p>
       <pre class="lines">
 
 
-72
-73
-74</pre>
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_play'>play</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_generic_download'>generic_download</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>action:</span> <span class='symbol'>:play</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -852,12 +1169,12 @@ the video guid.</p>
       <pre class="lines">
 
 
-86
-87
-88</pre>
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/video.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_stillframe'>stillframe</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_stillframe_for'>stillframe_for</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -872,7 +1189,7 @@ the video guid.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar  1 13:20:58 2013 by
+  Generated on Fri Mar 22 17:31:48 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

@@ -216,7 +216,7 @@ guid lookup.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#update-instance_method" title="#update (instance method)">- (Base) <strong>update</strong>(opts = {}) </a>
+      <a href="#update-instance_method" title="#update (instance method)">- (Base) <strong>update</strong>(original_opts = {}) </a>
     
 
     
@@ -339,6 +339,19 @@ normally be called as Helix::Base.create</p>
     </li>
   
 </ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="NoConfigurationLoaded.html" title="Helix::NoConfigurationLoaded (class)">Helix::NoConfigurationLoaded</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -358,8 +371,8 @@ normally be called as Helix::Base.create</p>
       <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_attributes'>attributes</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>       <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>resource_label:</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='comma'>,</span>
-                               <span class='label'>content_type:</span>   <span class='symbol'>:xml</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>NoConfigurationLoaded</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_url'>url</span>       <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='id identifier rubyid_build_url_opts'>build_url_opts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span>  <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>signature:</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_attrs'>attrs</span>     <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_from_xml'>from_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='id identifier rubyid_attrs'>attrs</span><span class='lbracket'>[</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span>
@@ -457,13 +470,15 @@ guid lookup.</p>
 33
 34
 35
-36</pre>
+36
+37</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_guid'>guid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>find requires a non-nil guid argument - received a nil argument.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_guid'>guid</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>NoConfigurationLoaded</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
   <span class='id identifier rubyid_item'>item</span>   <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>attributes:</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_guid_name'>guid_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_guid'>guid</span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>config:</span> <span class='id identifier rubyid_config'>config</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span>
 <span class='kw'>end</span></pre>
@@ -529,16 +544,16 @@ guid lookup.</p>
       <pre class="lines">
 
 
-45
 46
 47
-48</pre>
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
-  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span> <span class='symbol'>:xml</span><span class='comma'>,</span> <span class='label'>guid:</span> <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>resource_label:</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='id identifier rubyid_build_url_opts'>build_url_opts</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='label'>params:</span> <span class='lbrace'>{</span><span class='label'>signature:</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -549,7 +564,7 @@ guid lookup.</p>
       <div class="method_details ">
   <h3 class="signature " id="update-instance_method">
   
-    - (<tt><span class='object_link'><a href="Base.html" title="Helix::Base (class)">Base</a></span></tt>) <strong>update</strong>(opts = {}) 
+    - (<tt><span class='object_link'><a href="Base.html" title="Helix::Base (class)">Base</a></span></tt>) <strong>update</strong>(original_opts = {}) 
   
 
   
@@ -582,8 +597,6 @@ guid lookup.</p>
       
         <span class='type'>(<tt>Hash</tt>)</span>
       
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
       
       
         &mdash;
@@ -618,7 +631,6 @@ guid lookup.</p>
       <pre class="lines">
 
 
-58
 59
 60
 61
@@ -630,14 +642,13 @@ guid lookup.</p>
 67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/media.rb', line 59</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_opts'>opts</span>           <span class='op'>=</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_memo_cfg'>memo_cfg</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span>
-  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='symbol'>:xml</span><span class='comma'>,</span>
-                                <span class='label'>guid:</span>           <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span>
-                                <span class='label'>resource_label:</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>      <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='id identifier rubyid_build_url_opts'>build_url_opts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span>   <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>signature:</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='symbol'>:update</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
@@ -652,7 +663,7 @@ guid lookup.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar  1 13:20:58 2013 by
+  Generated on Fri Mar 22 17:31:48 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

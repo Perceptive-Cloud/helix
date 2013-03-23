@@ -237,7 +237,7 @@ them as an array.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#find_all-class_method" title="find_all (class method)">+ (Array) <strong>find_all</strong>(opts = {}) </a>
+      <a href="#find_all-class_method" title="find_all (class method)">+ (Array) <strong>find_all</strong>(original_opts = {}) </a>
     
 
     
@@ -488,13 +488,13 @@ them as an array.</p>
       <pre class="lines">
 
 
-82
-83
-84
-85</pre>
+85
+86
+87
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='ivar'>@attributes</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:attributes</span><span class='rbracket'>]</span>
@@ -574,16 +574,16 @@ them as an array.</p>
       <pre class="lines">
 
 
-126
-127
-128
 129
 130
 131
-132</pre>
+132
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_sym'>method_sym</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -629,12 +629,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-14
 15
-16</pre>
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attributes'>attributes</span>
   <span class='ivar'>@attributes</span>
@@ -671,12 +671,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-93
-94
-95</pre>
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_config'>config</span>
   <span class='ivar'>@config</span> <span class='op'>||=</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>Config</span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
@@ -770,12 +770,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-40
-41
-42</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span>
   <span class='id identifier rubyid_find_all'>find_all</span>
@@ -810,12 +810,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-88
-89
-90</pre>
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span>
   <span class='const'>Helix</span><span class='op'>::</span><span class='const'>Config</span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
@@ -828,7 +828,7 @@ them as an array.</p>
       <div class="method_details ">
   <h3 class="signature " id="find_all-class_method">
   
-    + (<tt>Array</tt>) <strong>find_all</strong>(opts = {}) 
+    + (<tt>Array</tt>) <strong>find_all</strong>(original_opts = {}) 
   
 
   
@@ -862,8 +862,6 @@ them as an array.</p>
         <span class='type'>(<tt>Hash</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
       
         &mdash;
         <div class='inline'><p>a hash of options for parameters passed into the HTTP GET</p>
@@ -890,6 +888,19 @@ them as an array.</p>
     </li>
   
 </ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="NoConfigurationLoaded.html" title="Helix::NoConfigurationLoaded (class)">Helix::NoConfigurationLoaded</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -897,18 +908,22 @@ them as an array.</p>
       <pre class="lines">
 
 
-25
 26
 27
 28
 29
 30
-31</pre>
+31
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 26</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_all'>find_all</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_all'>find_all</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>NoConfigurationLoaded</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>      
+  <span class='id identifier rubyid_opts'>opts</span>           <span class='op'>=</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span> <span class='op'>=</span> <span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -982,16 +997,16 @@ signature_type view.</p>
       <pre class="lines">
 
 
-50
-51
-52
 53
 54
 55
-56</pre>
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:xml</span><span class='comma'>,</span>
@@ -1055,12 +1070,12 @@ signature_type view.</p>
       <pre class="lines">
 
 
-64
-65
-66</pre>
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid_name'>guid_name</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
@@ -1120,12 +1135,12 @@ signature_type view.</p>
       <pre class="lines">
 
 
-74
-75
-76</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span>
@@ -1207,12 +1222,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-34
-35
-36</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_find_all'>find_all</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1279,12 +1294,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-104
-105
-106</pre>
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 107</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_guid'>guid</span>
   <span class='ivar'>@attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_guid_name'>guid_name</span><span class='rbracket'>]</span>
@@ -1361,17 +1376,17 @@ them as an array.</p>
       <pre class="lines">
 
 
-112
-113
-114
 115
 116
 117
 118
-119</pre>
+119
+120
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_memo_cfg'>memo_cfg</span>    <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span>
@@ -1391,7 +1406,7 @@ them as an array.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Mar  1 13:20:58 2013 by
+  Generated on Fri Mar 22 17:31:48 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.3 (ruby-1.9.3).
 </div>

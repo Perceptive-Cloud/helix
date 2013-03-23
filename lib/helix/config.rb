@@ -93,7 +93,7 @@ module Helix
     # with the base_url to create RESTful URLs
     #
     # @param [String] url the base part of the URL to be used
-    # @param [Hash] opts a hash of options for building URL additions
+    # @param [Hash] original_opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
     def get_response(url, original_opts={})
       opts        = original_opts.clone
@@ -106,6 +106,7 @@ module Helix
     # Fetches the signature for a specific license key.
     #
     # @param [Symbol] sig_type The type of signature required for calls.
+    # @param [Hash] opts allows you to overide contributor and license_id
     # @return [String] The signature needed to pass around for calls.
     def signature(sig_type, opts={})
       prepare_signature_memoization
@@ -181,6 +182,7 @@ module Helix
 
     def url_for(sig_type, opts={})
       contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
+      contributor ||= credentials[:contributor]
       url  = "#{credentials[:site]}/api/#{sig_type}_key?licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
       url += "&contributor=#{contributor}"  if contributor
       url += "&library_id=#{library_id}"    if library_id
