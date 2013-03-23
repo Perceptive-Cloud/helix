@@ -34,6 +34,33 @@ module Helix
       rest_post(:slice, attrs)
     end
 
+    def self.upload(file_name)
+      RestClient.post(upload_server_name, 
+                      { file:       File.new(file_name.to_s, "rb") },
+                      { multipart:  true } )
+      http_close
+    end
+
+    def self.upload_server_name
+      upload_get(:http_open)
+    end
+
+    def self.http_open
+      upload_server_name
+    end
+
+    def self.upload_open
+      upload_server_name
+    end
+
+    def self.http_close
+      upload_get(:http_close)
+    end
+
+    def self.upload_close
+      http_close
+    end
+
     # Used to retrieve a stillframe for a video by using
     # the video guid.
     # API doc reference: /doc/api/video/still_frames
@@ -92,6 +119,14 @@ module Helix
     end
 
     private
+
+    def self.upload_get(action)
+      url = config.build_url( resource_label: "upload_sessions",
+                              guid:           config.signature(:ingest),
+                              action:         action,
+                              content_type:   "" )
+      RestClient.get(url)
+    end
 
     def self.stillframe_dimensions(opts)
       width   = opts[:width].to_s  + "w" unless opts[:width].nil?
