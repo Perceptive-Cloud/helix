@@ -25,6 +25,33 @@ module Helix
         rest_post(:create_many, attrs)
       end
 
+      def upload(file_name)
+        RestClient.post(upload_server_name,
+                        { file:       File.new(file_name.to_s, "rb") },
+                        { multipart:  true } )
+        http_close
+      end
+
+      def upload_server_name
+        upload_get(:http_open)
+      end
+
+      def http_open
+        upload_server_name
+      end
+
+      def upload_open
+        upload_server_name
+      end
+
+      def http_close
+        upload_get(:http_close)
+      end
+
+      def upload_close
+        http_close
+      end
+
       private
 
       # Gets the hash used in adding the signature to the API
@@ -68,6 +95,14 @@ module Helix
         RestClient.post(get_url_for(api_call, attrs),
                         get_xml(attrs),
                         get_params(attrs).merge(content_type_hash))
+      end
+
+      def upload_get(action)
+        url = config.build_url( resource_label: "upload_sessions",
+                                guid:           config.signature(:ingest),
+                                action:         action,
+                                content_type:   "" )
+        RestClient.get(url)
       end
 
       # Standard hash values used to generate the create_many
