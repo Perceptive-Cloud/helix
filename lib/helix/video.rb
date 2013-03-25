@@ -35,7 +35,7 @@ module Helix
     end
 
     def self.upload(file_name)
-      RestClient.post(upload_server_name, 
+      RestClient.post(upload_server_name,
                       { file:       File.new(file_name.to_s, "rb") },
                       { multipart:  true } )
       http_close
@@ -144,9 +144,9 @@ module Helix
 
     def generic_download(opts)
       content_type  = opts[:content_type] || ''
-      url           = config.build_url( action:         opts[:action], 
-                                        content_type:   content_type, 
-                                        guid:           guid, 
+      url           = config.build_url( action:         opts[:action],
+                                        content_type:   content_type,
+                                        guid:           guid,
                                         resource_label: plural_resource_label )
       RestClient.get(url, params: {signature: config.signature(:view)})
     end

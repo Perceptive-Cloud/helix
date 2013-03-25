@@ -113,7 +113,7 @@ describe Helix::Video do
     subject               { klass.method(meth) }
     its(:arity)           { should eq(1) }
     let(:file_hash)       { { file: :some_file  } }
-    let(:multipart_hash)  { { multipart: true } } 
+    let(:multipart_hash)  { { multipart: true } }
     it "should call upload_server_name and RestClient.post with params" do
       klass.should_receive(:upload_server_name) { :some_server_url }
       File.should_receive(:new).with(:some_file.to_s, "rb") { :some_file }
