@@ -1,6 +1,7 @@
 require 'helix/base'
 
 module Helix
+
   class Media < Base
     # Creates a new record via API and then returns an instance of that record.
     #
@@ -66,10 +67,45 @@ module Helix
       self
     end
 
+    def self.upload(file_name)
+      RestClient.post(upload_server_name,
+                      { file:       File.new(file_name.to_s, "rb") },
+                      { multipart:  true } )
+      http_close
+    end
+
+    def self.upload_server_name
+      upload_get(:http_open)
+    end
+
+    def self.http_open
+      upload_server_name
+    end
+
+    def self.upload_open
+      upload_server_name
+    end
+
+    def self.http_close
+      upload_get(:http_close)
+    end
+
+    def self.upload_close
+      http_close
+    end
+
     private
 
     def self.build_url_opts
       {content_type: :xml, resource_label: plural_resource_label}
+    end
+
+    def self.upload_get(action)
+      url = config.build_url( resource_label: "upload_sessions",
+                              guid:           config.signature(:ingest),
+                              action:         action,
+                              content_type:   "" )
+      RestClient.get(url)
     end
 
     def build_url_opts
