@@ -10,7 +10,8 @@ describe Helix::DurationedMedia do
   klasses = [ Helix::Video, Helix::Track ]
   klasses.each do |klass|
     subject         { klass }
-    its(:ancestors) { should include(Helix::Base) }
+    mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+    mods.each { |mod| its(:ancestors) { should include(mod) } }
 
     describe "Constants"
 
