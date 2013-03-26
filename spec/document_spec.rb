@@ -5,7 +5,8 @@ describe Helix::Document do
   let(:klass) { Helix::Document }
 
   subject { klass }
-  its(:ancestors) { should include(Helix::Base) }
+  mods = [ Helix::Base, Helix::Media ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name) { should eq('document_id') }
   its(:resource_label_sym)    { should be(:document)   }
   its(:plural_resource_label) { should eq('documents') }
