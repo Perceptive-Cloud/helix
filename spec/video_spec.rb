@@ -7,11 +7,13 @@ describe Helix::Video do
     { list: { entry: values[:url_params] || {} } }.to_xml(root: :add)
   end
 
-  let(:klass)             { Helix::Video }
-  subject                 { klass }
-  its(:guid_name)         { should eq('video_id') }
-  its(:resource_label_sym)    { should be(:video)   }
-  its(:plural_resource_label) { should eq('videos') }
+  let(:klass) { Helix::Video }
+  subject     { klass }
+  mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
+  its(:guid_name)             { should eq('video_id') }
+  its(:resource_label_sym)    { should be(:video)     }
+  its(:plural_resource_label) { should eq('videos')   }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end
