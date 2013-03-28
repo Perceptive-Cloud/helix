@@ -1,5 +1,7 @@
 module Helix
 
+  # Mixed-in to ORM classes to provide basic RESTful CRUD operations.
+
   module RESTful
 
     # Deletes the record of the Helix::Base instance.

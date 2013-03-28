@@ -1,5 +1,7 @@
 module Helix
 
+  # Mixed-in to ORM classes that are capable of being uploaded.
+
   module Uploadable
 
     module ClassMethods
