@@ -30,7 +30,7 @@ describe Helix::Media do
       before(:each) do
         klass.stub(:plural_resource_label) { :klasses }
         klass.stub(:resource_label_sym)    { klass_sym }
-        mock_config.stub(:build_url).with(action: :create_many, resource_label: :klasses) { :url }
+        mock_config.stub(:build_url).with(content_type: :xml, resource_label: :klasses) { :url }
         mock_config.stub(:signature).with(:update) { "some_sig" }
         Helix::Config.stub(:instance) { mock_config }
       end
