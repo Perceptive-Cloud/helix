@@ -5,8 +5,11 @@ describe Helix::Library do
 
   let(:klass) { Helix::Library }
   subject     { klass }
-  mods = [ Helix::Base, Helix::Media ]
+
+  mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
+  its(:ancestors) { should_not include(Helix::Media) }
+
   its(:guid_name)             { should eq('library_id') }
   its(:resource_label_sym)    { should be(:library)     }
   its(:plural_resource_label) { should eq('libraries')  }
