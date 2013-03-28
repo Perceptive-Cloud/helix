@@ -7,6 +7,9 @@ describe Helix::Media do
 
   subject { klass }
 
+  mods = [ Helix::RESTful ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
+
   describe ".create" do
     let(:meth)        { :create }
     let(:mock_config) { mock(Helix::Config) }
