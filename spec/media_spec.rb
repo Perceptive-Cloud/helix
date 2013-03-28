@@ -7,7 +7,7 @@ describe Helix::Media do
 
   subject { klass }
 
-  mods = [ Helix::RESTful ]
+  mods = [ Helix::RESTful, Helix::Uploadable ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
 
   describe ".create" do
