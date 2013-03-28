@@ -20,5 +20,5 @@ describe Helix::Tag do
     its(:resource_label_sym)  { should be(:tag) }
     it { should_not respond_to(:destroy) }
     it { should_not respond_to(:update) }
-  end  
+  end
 end

@@ -24,7 +24,7 @@ module Helix
 
     def self.known_attributes
       [:title, :description]
-    end 
+    end
 
   end
 
