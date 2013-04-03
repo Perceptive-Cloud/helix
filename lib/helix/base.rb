@@ -51,11 +51,11 @@ module Helix
     # @param [Hash] opts a hash of options for parameters passed into the HTTP GET
     # @return [Array] The array of attributes (for a model) in hash form.
     def self.get_data_sets(opts)
+      label        = self.plural_resource_label
       url          = config.build_url(content_type:   opts[:content_type] || :xml,
-                                      resource_label: self.plural_resource_label)
+                                      resource_label: label)
       # We allow opts[:sig_type] for internal negative testing only.
-      raw_response = config.get_response(url, {sig_type: :view}.merge(opts))
-      data_sets    = raw_response[plural_resource_label]
+      data_sets    = config.get_aggregated_data_sets(url, label, {sig_type: :view}.merge(opts))
     end
 
     # Creates a string that associates to the class id.

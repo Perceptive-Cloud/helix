@@ -302,6 +302,34 @@ describe Helix::Config do
     end
   end
 
+  describe "#get_aggregated_data_sets" do
+    let(:meth)  { :get_aggregated_data_sets }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(-3) }
+    context "when called" do
+      let(:opts)  { {opts_key1: :opts_val1} }
+      let(:label) { :videos }
+      before(:each) do
+        obj.stub(:signature) { :the_sig }
+      end
+      subject { obj.send(meth, :a_url, label, opts) }
+      it "should successively call RestClient.get with the opts arg merged with pagination info and return the parsed results" do
+        base_opts = {opts_key1: :opts_val1, per_page: 100, signature: :the_sig}
+        opts1 = {params: base_opts.merge(page: 1)}
+        opts2 = {params: base_opts.merge(page: 2)}
+        opts3 = {params: base_opts.merge(page: 3)}
+        non_final_response = mock(String, headers: {is_last_page: 'false'})
+        final_response     = mock(String, headers: {is_last_page: 'true'})
+        RestClient.should_receive(:get).with(:a_url, opts1) { non_final_response }
+        RestClient.should_receive(:get).with(:a_url, opts2) { non_final_response }
+        RestClient.should_receive(:get).with(:a_url, opts3) { final_response }
+        obj.stub(:parse_response_by_url_format).with(non_final_response, :a_url) { {label => [:non_final]} }
+        obj.stub(:parse_response_by_url_format).with(final_response, :a_url)     { {label => [:final]}     }
+        expect(obj.send(meth, :a_url, label, opts)).to eq([:non_final, :non_final, :final])
+      end
+    end
+  end
+
   describe "#get_response" do
     let(:meth)  { :get_response }
     subject     { obj.method(meth) }
@@ -358,6 +386,43 @@ describe Helix::Config do
         it "should raise an exception" do
           RestClient.should_receive(:get).with(url, params) { returned_csv }
           expect(lambda { obj.send(meth, url, opts) }).to raise_error
+        end
+      end
+    end
+  end
+
+  describe "#last_page?" do
+    let(:meth)  { :last_page? }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(0) }
+    context "when called" do
+      subject { obj.send(meth) }
+      context "when there is no @response" do
+        before(:each) { obj.instance_variable_set(:@response, nil) }
+        it { should be false }
+      end
+      context "when there is a @response" do
+        let(:mock_response) { mock(String) }
+        before(:each) { obj.instance_variable_set(:@response, mock_response) }
+        context "and there is no @response.headers" do
+          before(:each) { mock_response.stub(:headers) { nil } }
+          it { should be false }
+        end
+        context "and there is a @response.headers" do
+          context "and @response.headers does NOT have the key :is_last_page" do
+            before(:each) do mock_response.stub(:headers) { {} } end
+            it { should be false }
+          end
+          context "and @response.headers has the key :is_last_page" do
+            context "and @response.headers[:is_last_page] == 'truthy'" do
+              before(:each) do mock_response.stub(:headers) { {is_last_page: 'truthy'} } end
+              it { should be false }
+            end
+            context "and @response.headers[:is_last_page] == 'true'" do
+              before(:each) do mock_response.stub(:headers) { {is_last_page: 'true'} } end
+              it { should be true }
+            end
+          end
         end
       end
     end

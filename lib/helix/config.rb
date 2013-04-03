@@ -19,7 +19,7 @@ module Helix
     end
 
     attr_accessor :credentials
-    attr_reader   :signature_for, :signature_expiration_for
+    attr_reader   :response, :signature_for, :signature_expiration_for
 
     # Creates a singleton of itself, setting the config
     # to a specified YAML file. If no file is specified the default
@@ -72,6 +72,25 @@ module Helix
       @signature_expiration_for = {}
     end
 
+    # Makes aggregated calls to get_response with pagination
+    # folding/injecting/accumulating the results into a single output set.
+    #
+    # @param [String] url the base part of the URL to be used
+    # @param [String] plural_resource_label: "videos", "tracks", etc.
+    # @param [Hash] original_opts a hash of options for building URL additions
+    # @return [Array] The accumulated attribute Hashes for ORM instances
+    def get_aggregated_data_sets(url, plural_resource_label, original_opts={})
+      data_sets, page, per_page = [], 1, 100
+      until last_page?
+        aggregation_opts = original_opts.merge(page: page, per_page: per_page)
+        raw_response = get_response(url, {sig_type: :view}.merge(aggregation_opts))
+        data_set     = raw_response[plural_resource_label]
+        data_sets   += data_set if data_set
+        page        += 1
+      end
+      data_sets
+    end
+
     # Creates the base url with information collected from credentials.
     #
     # @param [Hash] opts a hash of options for building URL
@@ -99,8 +118,19 @@ module Helix
       opts        = original_opts.clone
       sig_type    = opts.delete(:sig_type)
       params      = opts.merge(signature: signature(sig_type, opts))
-      response    = RestClient.get(url, params: params)
-      parse_response_by_url_format(response, url)
+      @response   = RestClient.get(url, params: params)
+      parse_response_by_url_format(@response, url)
+    end
+
+    # Reports whether the most recent response's headers have a true :is_last_page value
+    #
+    # @return [Boolean] As above. Returns false if no such header is found,
+    # or if there is an explictly false value.
+    def last_page?
+      return false unless @response
+      return false unless @response.headers
+      @response.headers.has_key?(:is_last_page) and
+        @response.headers[:is_last_page] == "true"
     end
 
     # Fetches the signature for a specific license key.

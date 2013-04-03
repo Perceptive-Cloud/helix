@@ -3,14 +3,6 @@ require 'helix'
 
 describe Helix::Base do
 
-  def set_stubs(obj, even_sig=false)
-    obj.instance_variable_set(:@attributes, {})
-    obj.stub(:resource_label_sym)    { :video      }
-    obj.stub(:plural_resource_label) { 'videos'    }
-    obj.stub(:guid)                  { 'some_guid' }
-    obj.stub(:signature)             { 'some_sig'  } if even_sig
-  end
-
   let(:klass) { Helix::Base }
 
   subject { klass }
@@ -44,42 +36,27 @@ describe Helix::Base do
       end
     end
     context "when there is a config instance" do
-      let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      let(:mock_config) do
+        dss = (0..2).map { |x| :"attrs_#{x}" }
+        mock(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
+      end
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
-      context "and given an opts Hash" do
-        let(:opts)                  { {opts_key1: :opts_val1} }
+      context "and NOT given an opts Hash" do
         let(:plural_resource_label) { :videos }
         before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
-        it "should clone the opts arg" do
-          opts.should_receive(:clone) { opts }
+        it "should get_aggregated_data_sets(the_url, plural_resource_label, {sig_type: :view}" do
+          opts = {sig_type: :view}
+          mock_config.should_receive(:get_aggregated_data_sets).with(:built_url, plural_resource_label, opts) { [:expected] }
           klass.send(meth, opts)
         end
-        it "should build a XML URL -> the_url" do
-          mock_config.should_receive(:build_url).with(content_type:   :xml,
-                                                      resource_label: plural_resource_label)
-          klass.send(meth, opts)
-        end
-        it "should get_response(the_url, {sig_type: :view}.merge(opts) -> raw_response" do
-          mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view}.merge(opts))
-          klass.send(meth, opts)
-        end
-        it "should read raw_response[plural_resource_label] -> data_sets" do
-          mock_raw_response = mock(Object)
-          mock_config.stub(:get_response) { mock_raw_response }
-          mock_raw_response.should_receive(:[]).with(plural_resource_label)
-          klass.send(meth, opts)
-        end
-        context "when data_sets is nil" do
-          it "should return []" do expect(klass.send(meth, opts)).to eq([]) end
-        end
-        context "when data_sets is NOT nil" do
-          let(:data_set) { (0..2).to_a }
-          before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
-          it "should map instantiation with attributes: each data set element" do
-            klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
-            klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
-            klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
-            expect(klass.send(meth, opts)).to eq([:a, :b, :c])
+        [ Helix::Video ].each do |child|
+          it "should should instantiate #{child.to_s} from each data_set" do
+            opts = {sig_type: :view}
+            children = child.send(meth, opts)
+            children.each_with_index do |c,idx|
+              expect(c).to be_a(child)
+              expect(c.attributes).to be(:"attrs_#{idx}")
+            end
           end
         end
       end
@@ -89,37 +66,27 @@ describe Helix::Base do
   shared_examples_for "a search all without opts" do
     subject { klass.method(meth) }
     context "when there is a config instance" do
-      let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: {}) }
+      let(:mock_config) do
+        dss = (0..2).map { |x| :"attrs_#{x}" }
+        mock(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
+      end
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
         let(:plural_resource_label) { :videos }
         before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
-        it "should build a XML URL -> the_url" do
-          mock_config.should_receive(:build_url).with(content_type:   :xml,
-                                                      resource_label: plural_resource_label)
+        it "should get_aggregated_data_sets(the_url, plural_resource_label, {sig_type: :view}" do
+          opts = {sig_type: :view}
+          mock_config.should_receive(:get_aggregated_data_sets).with(:built_url, plural_resource_label, opts) { [:expected] }
           klass.send(meth)
         end
-        it "should get_response(the_url, {sig_type: :view} -> raw_response" do
-          mock_config.should_receive(:get_response).with(:built_url, {sig_type: :view})
-          klass.send(meth)
-        end
-        it "should read raw_response[plural_resource_label] -> data_sets" do
-          mock_raw_response = mock(Object)
-          mock_config.stub(:get_response) { mock_raw_response }
-          mock_raw_response.should_receive(:[]).with(plural_resource_label)
-          klass.send(meth)
-        end
-        context "when data_sets is nil" do
-          it "should return []" do expect(klass.send(meth)).to eq([]) end
-        end
-        context "when data_sets is NOT nil" do
-          let(:data_set) { (0..2).to_a }
-          before(:each) do mock_config.stub(:get_response) { {plural_resource_label => data_set } } end
-          it "should map instantiation with attributes: each data set element" do
-            klass.should_receive(:new).with(attributes: data_set[0], config: mock_config) { :a }
-            klass.should_receive(:new).with(attributes: data_set[1], config: mock_config) { :b }
-            klass.should_receive(:new).with(attributes: data_set[2], config: mock_config) { :c }
-            expect(klass.send(meth)).to eq([:a, :b, :c])
+        [ Helix::Video ].each do |child|
+          it "should should instantiate #{child.to_s} from each data_set" do
+            opts = {sig_type: :view}
+            children = child.send(meth)
+            children.each_with_index do |c,idx|
+              expect(c).to be_a(child)
+              expect(c.attributes).to be(:"attrs_#{idx}")
+            end
           end
         end
       end
