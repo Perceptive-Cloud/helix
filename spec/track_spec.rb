@@ -3,11 +3,13 @@ require 'helix'
 
 describe Helix::Track do
 
-  let(:klass)             { Helix::Track }
-  subject                 { klass }
-  its(:guid_name)         { should eq('track_id') }
-  its(:resource_label_sym)    { should be(:track)   }
-  its(:plural_resource_label) { should eq('tracks') }
+  let(:klass) { Helix::Track }
+  subject     { klass }
+  mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
+  its(:guid_name)             { should eq('track_id') }
+  its(:resource_label_sym)    { should be(:track)     }
+  its(:plural_resource_label) { should eq('tracks')   }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end

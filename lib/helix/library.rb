@@ -2,7 +2,9 @@ require 'helix/media'
 
 module Helix
 
-  class Library < Media
+  class Library < Base
+
+    include RESTful
 
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.

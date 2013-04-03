@@ -5,7 +5,8 @@ describe Helix::Image do
   let(:klass) { Helix::Image }
 
   subject { klass }
-  its(:ancestors) { should include(Helix::Base) }
+  mods = [ Helix::Base, Helix::Media ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name) { should eq('image_id') }
   its(:resource_label_sym)    { should be(:image)   }
   its(:plural_resource_label) { should eq('images') }

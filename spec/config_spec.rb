@@ -399,7 +399,7 @@ describe Helix::Config do
     end
     it "should return the proxy specified in the config" do
       obj.credentials[:proxy_uri] = 'http://test.proxy'
-      expect(obj.send(meth)).to eq 'http://test.proxy' 
+      expect(obj.send(meth)).to eq 'http://test.proxy'
     end
     it "should return just proxy uri if only pass exists" do
       obj.credentials[:proxy_password] = 'fake_pass'

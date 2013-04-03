@@ -5,7 +5,8 @@ describe Helix::Album do
   let(:klass) { Helix::Album }
 
   subject { klass }
-  its(:ancestors) { should include(Helix::Base) }
+  mods = [ Helix::Base, Helix::Media ]
+  mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name) { should eq('album_id') }
   its(:resource_label_sym)    { should be(:album)   }
   its(:plural_resource_label) { should eq('albums') }
