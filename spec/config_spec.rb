@@ -23,9 +23,25 @@ describe Helix::Config do
       subject { klass::DEFAULT_FILENAME }
       it { should eq('./helix.yml') }
     end
+    describe "ITEMS_PER_PAGE" do
+      subject { klass::ITEMS_PER_PAGE }
+      it { should eq(100) }
+    end
     describe "SCOPES" do
       subject { klass::SCOPES }
       it { should eq([:reseller, :company, :library]) }
+    end
+    describe "SIG_DURATION" do
+      subject { klass::SIG_DURATION }
+      it { should eq(1200) } # in minutes
+    end
+    describe "STARTING_PAGE" do
+      subject { klass::STARTING_PAGE }
+      it { should eq(1) }
+    end
+    describe "TIME_OFFSET" do
+      subject { klass::TIME_OFFSET }
+      it { should eq(1000 * 60) } # 1000 minutes
     end
     describe "VALID_SIG_TYPES" do
       subject { klass::VALID_SIG_TYPES }

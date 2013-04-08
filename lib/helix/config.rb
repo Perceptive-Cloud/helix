@@ -12,8 +12,10 @@ module Helix
 
     unless defined?(self::DEFAULT_FILENAME)
       DEFAULT_FILENAME = './helix.yml'
+      ITEMS_PER_PAGE   = 100
       SCOPES           = [:reseller, :company, :library]
       SIG_DURATION     = 1200 # in minutes
+      STARTING_PAGE    = 1
       TIME_OFFSET      = 1000 * 60 # 1000 minutes, lower to give some margin of error
       VALID_SIG_TYPES  = [ :ingest, :update, :view ]
     end
@@ -80,9 +82,9 @@ module Helix
     # @param [Hash] original_opts a hash of options for building URL additions
     # @return [Array] The accumulated attribute Hashes for ORM instances
     def get_aggregated_data_sets(url, plural_resource_label, original_opts={})
-      data_sets, page, per_page = [], 1, 100
+      data_sets, page, per_page = [], STARTING_PAGE
       until last_page?
-        aggregation_opts = original_opts.merge(page: page, per_page: per_page)
+        aggregation_opts = original_opts.merge(page: page, per_page: ITEMS_PER_PAGE)
         raw_response = get_response(url, {sig_type: :view}.merge(aggregation_opts))
         data_set     = raw_response[plural_resource_label]
         data_sets   += data_set if data_set
