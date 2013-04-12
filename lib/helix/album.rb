@@ -12,7 +12,7 @@ module Helix
     #   Helix::Album.resource_label_sym #=> :album
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :album; end
 
     # Currently update is unsupported for album.
     #

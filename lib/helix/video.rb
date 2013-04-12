@@ -15,7 +15,7 @@ module Helix
     #   Helix::Video.resource_label_sym #=> :video
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :video; end
 
     # Used to create a slice video from an existing video.
     # API doc reference: /doc/api/video/slice

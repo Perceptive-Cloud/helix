@@ -14,7 +14,7 @@ module Helix
     #   Helix::Library.resource_label_sym #=> :library
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :library; end
 
     # Creates a string associated with a class name pluralized
     #

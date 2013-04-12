@@ -12,7 +12,7 @@ module Helix
     #   Helix::Image.resource_label_sym #=> :image
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :image; end
 
   end
 

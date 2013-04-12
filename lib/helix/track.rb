@@ -14,7 +14,7 @@ module Helix
     #   Helix::Track.resource_label_sym #=> :track
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :track; end
 
   end
 

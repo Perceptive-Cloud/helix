@@ -13,6 +13,6 @@ module Helix
     #   Helix::Tag.resource_label_sym #=> :tag
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :tag; end
   end
 end
