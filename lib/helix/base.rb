@@ -65,7 +65,7 @@ module Helix
     #
     # @return [String] The guid name for a specific class.
     def self.guid_name
-      "#{self.resource_label_sym}_id"
+      "#{resource_label_sym}_id"
     end
 
     # Creates a string associated with a class name pluralized
@@ -75,7 +75,7 @@ module Helix
     #
     # @return [String] The class name pluralized
     def self.plural_resource_label
-      "#{self.resource_label_sym}s"
+      "#{resource_label_sym}s"
     end
 
     METHODS_DELEGATED_TO_CLASS.each do |meth|
@@ -171,10 +171,6 @@ module Helix
         end
       end
       attrs.merge({'custom_fields' => cfs})
-    end
-
-    def self.resource_label_sym
-      to_s.split('::').last.singularize.downcase.to_sym
     end
 
   end

@@ -16,5 +16,6 @@ spec = Gem::Specification.new do |s|
   s.add_dependency "json",        ">= 1.5.4"
   s.add_dependency "rest-client", "1.6.7"
   s.add_dependency "nori",        "1.1.3"
+  s.add_dependency "to_xml",      "0.1.1"
 end
 

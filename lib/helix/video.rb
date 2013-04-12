@@ -1,5 +1,4 @@
 require 'helix/media'
-require 'active_support/core_ext'
 
 module Helix
 
