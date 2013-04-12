@@ -9,10 +9,10 @@ module Helix
     #
     #
     # @example
-    #   Helix::Image.resource_label_sym #=> :image
+    #   Helix::Document.resource_label_sym #=> :document
     #
     # @return [Symbol] Name of the class.
-    def self.resource_label_sym; super; end
+    def self.resource_label_sym; :document; end
 
   end
 
