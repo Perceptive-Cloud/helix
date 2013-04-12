@@ -53,7 +53,8 @@ describe Helix::Config do
     let(:meth)      { :load }
     let(:mock_obj)  { mock(klass, proxy: :stubbed_proxy) }
     let(:mock_file) { mock(File)  }
-    let(:mock_cred) { mock(Hash, symbolize_keys: :symbolized_creds) }
+    let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
+    let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
     before(:each) do
       klass.stub(:instance) { mock_obj  }
       File.stub(:open)      { mock_file }
@@ -78,10 +79,10 @@ describe Helix::Config do
         YAML.should_receive(:load).with(mock_file) { mock_cred }
         klass.send(meth)
       end
-      it "should set @credentials to cred.symbolize_keys" do
+      it "should set @credentials to cred with symbol keys" do
         File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
         YAML.stub(:load).with(mock_file) { mock_cred }
-        mock_obj.should_receive(:instance_variable_set).with(:@credentials, mock_cred.symbolize_keys)
+        mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
         klass.send(meth)
       end
       it "should set the proxy" do
@@ -111,10 +112,10 @@ describe Helix::Config do
         YAML.should_receive(:load).with(mock_file) { mock_cred }
         klass.send(meth, yaml_arg)
       end
-      it "should set @credentials to cred.symbolize_keys" do
+      it "should set @credentials to cred with symbol keys" do
         File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
         YAML.stub(:load).with(mock_file) { mock_cred }
-        mock_obj.should_receive(:instance_variable_set).with(:@credentials, mock_cred.symbolize_keys)
+        mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
         klass.send(meth, yaml_arg)
       end
       it "should return the instance" do
