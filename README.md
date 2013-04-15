@@ -63,8 +63,13 @@ company: 'my_company'
 license_key: '141a86b5c4091'
 library_id: 'development'
 ```
+Boot up IRB in your console
+```shell
+irb
+```
 Load the YAML file as your config.
 ```ruby
+require 'helix'
 Helix::Config.load("path/to/yaml.yml")
 videos = Helix::Video.find_all
 ```
