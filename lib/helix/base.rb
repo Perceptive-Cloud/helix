@@ -122,6 +122,14 @@ module Helix
     end
     alias_method :reload, :load
 
+    def to_json
+      {resource_label_sym => @attributes}.to_json
+    end
+
+    def to_xml
+      modified_attributes.to_xml({root: resource_label_sym})
+    end
+
     # Raises an error for missing method calls.
     #
     # @param [Symbol] method_sym The method attempting to be called.
@@ -171,6 +179,20 @@ module Helix
         end
       end
       attrs.merge({'custom_fields' => cfs})
+    end
+
+    def modified_attributes
+      custom_fields = @attributes['custom_fields']
+      return @attributes if custom_fields.nil?
+      return @attributes if custom_fields.first['name'].nil?
+      new_cfs = custom_fields.inject({}) do |memo,cf|
+        memo.merge(cf['name'] => cf['value'])
+      end
+      @attributes.merge('custom_fields' => new_cfs)
+    end
+
+    def self.resource_label_sym
+      to_s.split('::').last.singularize.downcase.to_sym
     end
 
   end

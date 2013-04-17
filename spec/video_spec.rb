@@ -101,6 +101,79 @@ describe Helix::Video do
       end
     end
 
+    describe "serialization" do
+      let(:mock_attributes) {
+        {
+          "created_at"=>"2013-04-09 16:33:58 UTC",
+          "description"=>"description of updated via rest-client",
+          "hidden"=>false,
+          "publisher_name"=>"kbaird@twistage.com",
+          "title"=>"updated via rest-client",
+          "video_id"=>"ece0d3fd03bf0",
+          "status"=>"available",
+          "contributor"=>"kbaird@twistage.com",
+          "site_name"=>"11701",
+          "library_name"=>"11701",
+          "main_asset_url"=>"http://service-staging.twistage.com/videos/ece0d3fd03bf0/assets/438894/file.flv",
+          "source_asset_url"=>"http://service-staging.twistage.com/videos/ece0d3fd03bf0/assets/438893/file.mp4",
+          "hits_count"=>0,
+          "plays_count"=>0,
+          "duration"=>255.791,
+          "total_size"=>158410133,
+          "availability"=>"available",
+          "main_asset_id"=>438894,
+          "progress"=>100,
+          "artist"=>"",
+          "genre"=>"",
+          "assets"=>[
+            {"id"=>438893, "size"=>140035687, "status_code"=>30, "acodec"=>"er aac ld", "audio_bitrate"=>128, "container"=>"mp4",
+              "download_url"=>"http://service-staging.twistage.com/videos/ece0d3fd03bf0/assets/438893/file.mp4", "duration"=>255.84,
+              "frame_rate"=>25.0, "hresolution"=>1280, "is_main_asset"=>false, "vcodec"=>"avc1", "video_bitrate"=>4247,
+              "video_format_name"=>"source", "vresolution"=>720, "status"=>"complete", "detailed_status"=>nil},
+            {"id"=>438894, "size"=>18374446, "status_code"=>30, "acodec"=>"mp3", "audio_bitrate"=>67, "container"=>"flv",
+              "download_url"=>"http://service-staging.twistage.com/videos/ece0d3fd03bf0/assets/438894/file.flv", "duration"=>255.791,
+              "frame_rate"=>25.0039099155, "hresolution"=>480, "is_main_asset"=>true, "vcodec"=>"h263", "video_bitrate"=>487,
+              "video_format_name"=>"flash-low", "vresolution"=>270, "status"=>"complete", "detailed_status"=>nil}
+          ],
+          "screenshots"=>[
+            {"frame"=>141.4, "content_type"=>"image/jpeg", "width"=>1280, "height"=>720, "size"=>260548,
+              "url"=>"http://service-staging.twistage.com:80/videos/ece0d3fd03bf0/screenshots/original.jpg"}
+          ],
+          "tags"=>[],
+          "custom_fields"=>[{"name"=>"blaaagghhh", "value"=>""}, {"name"=>"videoCF", "value"=>""}]
+        }
+      }
+      before(:each) do obj.instance_variable_set(:@attributes, mock_attributes) end
+
+      describe "#to_json" do
+        let(:meth) { :to_json }
+        context "arity" do
+          subject     { obj.method(meth) }
+          its(:arity) { should eq(0) }
+        end
+        subject { obj.send(meth) }
+        it { should eq({video: mock_attributes}.to_json) }
+      end
+
+      describe "#to_xml" do
+        let(:meth) { :to_xml }
+        context "arity" do
+          subject     { obj.method(meth) }
+          its(:arity) { should eq(0) }
+        end
+        subject { obj.send(meth) }
+        let(:modified_attributes) {
+          custom_fields = mock_attributes['custom_fields']
+          new_cfs = custom_fields.inject({}) do |memo,cf|
+            memo.merge(cf['name'] => cf['value'])
+          end
+          mock_attributes.merge('custom_fields' => new_cfs)
+        }
+        it { should eq(modified_attributes.to_xml(root: :video)) }
+      end
+
+    end
+
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }
     end
