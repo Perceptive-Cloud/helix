@@ -97,6 +97,14 @@ module Helix
       @config ||= Helix::Config.instance
     end
 
+    def custom_field(k)
+      custom_fields[k]
+    end
+
+    def custom_fields
+      modified_attributes['custom_fields']
+    end
+
     # Creates a string that associates to the class id.
     #
     # @example
