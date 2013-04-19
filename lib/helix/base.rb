@@ -97,10 +97,22 @@ module Helix
       @config ||= Helix::Config.instance
     end
 
+    # Looks up the custom field value for a given name.
+    #
+    # @example
+    #   video.custom_field('stars_kevin_bacon') #=> "true"
+    #
+    # @return [String] The value whose key is the given custom field name.
     def custom_field(k)
       custom_fields[k]
     end
 
+    # Returns all custom fields.
+    #
+    # @example
+    #   video.custom_fields #=> { "stars_kevin_bacon" => "true" }
+    #
+    # @return [Hash] The custom fields in the form { name1 => value1, name2 => value2, ... }
     def custom_fields
       modified_attributes['custom_fields']
     end
