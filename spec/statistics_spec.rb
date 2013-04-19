@@ -24,6 +24,13 @@ describe Helix::Statistics do
     end
   end
 
+  shared_examples_for "standardizes raw stats" do
+    it "should return standardize_raw_stats(raw)" do
+      mod.should_receive(:standardize_raw_stats).with(:raw_response) { :response }
+      expect(mod.send(meth, opts)).to eq(:response)
+    end
+  end
+
   STATS_TYPES.each do |stats_type|
     STATS_MEDIA_TYPES.each do |resource_label|
 
@@ -31,8 +38,11 @@ describe Helix::Statistics do
 
       describe ".#{resource_label}_#{stats_type}" do
         let(:meth)  { "#{resource_label}_#{stats_type}" }
-        let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: :response) }
-        before(:each) do Helix::Config.stub(:instance) { mock_config } end
+        let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: :raw_response) }
+        before(:each) do
+          Helix::Config.stub(:instance) { mock_config }
+          mod.stub(:standardize_raw_stats).with(:raw_response) { :response }
+        end
 
         subject     { mod.method(meth) }
         its(:arity) { should eq(-1)    }
@@ -76,10 +86,11 @@ describe Helix::Statistics do
                   mod.send(meth, opts)
                 end
               end
-              it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
-                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
-                expect(mod.send(meth, opts)).to eq(:response)
+              it "should assign config.get_response(built_url, opts.merge(sig_type: :view) => raw" do
+                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :raw_response }
+                mod.send(meth, opts)
               end
+              it_behaves_like "standardizes raw stats"
             end
             context "when given opts NOT containing a :#{media_name}_id" do
               let(:opts) { {group: :daily} }
@@ -112,10 +123,11 @@ describe Helix::Statistics do
                   mod.send(meth, opts)
                 end
               end
-              it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
-                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
-                expect(mod.send(meth, opts)).to eq(:response)
+              it "should assign config.get_response(built_url, opts.merge(sig_type: :view) => raw" do
+                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :raw_response }
+                mod.send(meth, opts)
               end
+              it_behaves_like "standardizes raw stats"
             end
           when 'ingest'
             media_name   = MEDIA_NAME_OF[resource_label]  || resource_label
@@ -132,10 +144,11 @@ describe Helix::Statistics do
                   mock_config.should_receive(:build_url).with({resource_label: :statistics, action: "#{media_name}_#{publish_name}/breakdown".to_sym}) { :built_url }
                   mod.send(meth, opts)
                 end
-                it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
-                  mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
-                  expect(mod.send(meth, opts)).to eq(:response)
+                it "should assign config.get_response(built_url, opts.merge(sig_type: :view) => raw" do
+                  mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :raw_response }
+                  mod.send(meth, opts)
                 end
+                it_behaves_like "standardizes raw stats"
               end
               [ :encode, :source, :breakdown ].each do |act|
                 context "and opts has an :action value of :#{act}" do
@@ -149,10 +162,11 @@ describe Helix::Statistics do
                     mock_config.should_receive(:build_url).with({resource_label: :statistics, action: "#{media_name}_#{publish_name}/#{act}".to_sym}) { :built_url }
                     mod.send(meth, opts)
                   end
-                  it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
-                    mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
-                    expect(mod.send(meth, opts)).to eq(:response)
+                  it "should assign config.get_response(built_url, opts.merge(sig_type: :view) => raw" do
+                    mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :raw_response }
+                    mod.send(meth, opts)
                   end
+                  it_behaves_like "standardizes raw stats"
                 end
               end
             end
@@ -170,10 +184,11 @@ describe Helix::Statistics do
                 mock_config.should_receive(:build_url).with({resource_label: :statistics, action: "#{media_name}_#{publish_name}/disk_usage".to_sym}) { :built_url }
                 mod.send(meth, opts)
               end
-              it "should return config.get_response(built_url, opts.merge(sig_type: :view)" do
-                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :response }
-                expect(mod.send(meth, opts)).to eq(:response)
+              it "should assign config.get_response(built_url, opts.merge(sig_type: :view) => raw" do
+                mock_config.should_receive(:get_response).with(:built_url, {group: :daily, sig_type: :view}) { :raw_response }
+                mod.send(meth, opts)
               end
+              it_behaves_like "standardizes raw stats"
             end
           # nested in for case
         end
@@ -240,6 +255,26 @@ describe Helix::Statistics do
 
     end
 
+  end
+
+  describe "#standardize_raw_stats" do
+    let(:meth) { :standardize_raw_stats }
+    describe "arity" do
+      subject { mod.method(meth) }
+      its(:arity) { should eq(1) }
+    end
+    args = [ [], {}, { some_key: :some_value } ]
+    args.each do |arg|
+      context "when given #{arg.inspect}" do
+        it "should eq #{arg.inspect}" do
+          expect(mod.send(meth, arg)).to eq(arg)
+        end
+      end
+    end
+    context "when given {'statistics_reports' => :expected}" do
+      subject { mod.send(meth, {'statistics_reports' => :expected}) }
+      it { should eq(:expected) }
+    end
   end
 
 end

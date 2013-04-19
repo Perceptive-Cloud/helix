@@ -135,7 +135,8 @@ module Helix
       url_opts.merge!(content_type: content_type) if content_type
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
-      memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+      raw = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+      standardize_raw_stats(raw)
     end
 
     def self.ingest(resource_label, original_opts)
@@ -154,7 +155,8 @@ module Helix
       url_opts.merge!(content_type: content_type) if content_type
       url = memo_cfg.build_url(url_opts)
       # We allow opts[:sig_type] for internal negative testing only.
-      memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+      raw = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+      standardize_raw_stats(raw)
     end
 
     def self.ingest_action_prefix_for(resource_label)
@@ -163,6 +165,14 @@ module Helix
 
     def self.storage_action_for(resource_label)
       STORAGE_ACTION_FOR[resource_label].to_sym
+    end
+
+    private
+
+    def self.standardize_raw_stats(raw)
+      return raw unless raw.respond_to?(:has_key?)
+      return raw unless raw.has_key?('statistics_reports')
+      raw['statistics_reports']
     end
 
   end
