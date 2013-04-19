@@ -52,7 +52,7 @@ media_by_id.each do |guid_key,klass|
     stats = helix_stats.send("#{media_type}_#{stats_type}")
     puts "#{klass.to_s} #{stats_type} stats = #{stats.inspect}"
     item_stats = helix_stats.send("#{media_type}_#{stats_type}", guid_key => media_id)
-    puts "#{klass.to_s} #{media_id} #{stats_type} stats = #{stats.inspect}"
+    puts "#{klass.to_s} #{media_id} #{stats_type} stats = #{item_stats.inspect}"
   end
 
 end
