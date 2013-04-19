@@ -295,6 +295,95 @@ describe Helix::Base do
       end
     end
 
+    describe "modified_attributes" do
+      let(:meth) { :modified_attributes }
+
+      describe "arity" do
+        subject { obj.method(meth) }
+        its(:arity) { should eq(0) }
+      end
+
+      describe "access" do
+        subject { obj }
+        its(:private_methods) { should include(meth) }
+      end
+
+      subject { obj.send(meth) }
+      context "when @attributes is nil" do
+        before(:each) do obj.instance_variable_set(:@attributes, nil) end
+        it { should be(nil) }
+      end
+      context "when @attributes is {}" do
+        before(:each) do obj.instance_variable_set(:@attributes, {}) end
+        it { should eq({}) }
+      end
+      bases = [ {}, {'k1' => 'v1', 'k2' => 'v2'} ]
+      potential_additions = [
+        {'custom_fields' => nil},
+        {'custom_fields' => [{}]},
+        {'custom_fields' => [{'name' => nil}]},
+        {'custom_fields' => [{'name' => nil}, {'name' => nil}]}
+      ]
+      bases.each do |base|
+        potential_additions.each do |additions|
+          attrs = base.merge(additions)
+          context "when @attributes is #{attrs}" do
+            before(:each) do obj.instance_variable_set(:@attributes, attrs) end
+            it { should eq(attrs) }
+          end
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name'}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name'}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>nil})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name'}, {'name' => 'other name'}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name'}, {'name' => 'other name'}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>nil, "other name"=>nil})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name'}, {'name' => 'other name'}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name'}, {'name' => 'other name'}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>nil, "other name"=>nil})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name', 'value' => nil}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name', 'value' => nil}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>nil})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name', 'value' => nil}, {'name' => 'other name', 'value' => nil}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name', 'value' => nil}, {'name' => 'other name', 'value' => nil}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>nil, "other name"=>nil})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name', 'value' => 'some value'}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name', 'value' => 'some value'}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>"some value"})) }
+        end
+        context "when @attributes is #{base.merge({'custom_fields' => [{'name' => 'some name', 'value' => 'some value'}, {'name' => 'other name', 'value' => 'other value'}]})}" do
+          before(:each) do
+            attrs = base.merge({'custom_fields' => [{'name' => 'some name', 'value' => 'some value'}, {'name' => 'other name', 'value' => 'other value'}]})
+            obj.instance_variable_set(:@attributes, attrs)
+          end
+          it { should eq(base.merge("custom_fields" => {"some name"=>"some value", "other name"=>"other value"})) }
+        end
+      end
+    end
+
   end
 
 end

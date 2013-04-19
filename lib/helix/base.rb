@@ -190,8 +190,11 @@ module Helix
     end
 
     def modified_attributes
+      return if @attributes.nil?
       custom_fields = @attributes['custom_fields']
       return @attributes if custom_fields.nil?
+      return @attributes unless custom_fields.respond_to?(:first)
+      return @attributes unless custom_fields.first.respond_to?(:[])
       return @attributes if custom_fields.first['name'].nil?
       new_cfs = custom_fields.inject({}) do |memo,cf|
         memo.merge(cf['name'] => cf['value'])
