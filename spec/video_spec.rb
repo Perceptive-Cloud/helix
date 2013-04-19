@@ -27,32 +27,6 @@ describe Helix::Video do
     subject   { obj }
     its(:resource_label_sym) { should be(:video) }
 
-    describe "#custom_field" do
-      let(:meth) { :custom_field }
-      describe "arity" do
-        subject { obj.method(meth) }
-        its(:arity) { should eq(1) }
-      end
-      it "should be modified_attributes['custom_fields'][arg]" do
-        obj.stub(:modified_attributes) { {'custom_fields' => {key1: :value1}} }
-        expect(obj.send(meth, :key1)).to be(:value1)
-        expect(obj.send(meth, :key2)).to be(nil)
-      end
-    end
-
-    describe "#custom_fields" do
-      let(:meth) { :custom_fields }
-      describe "arity" do
-        subject { obj.method(meth) }
-        its(:arity) { should eq(0) }
-      end
-      it "should delegate to modified_attributes['custom_fields']" do
-        cfs = {key1: :value1}
-        obj.stub(:modified_attributes) { {'custom_fields' => cfs} }
-        expect(obj.send(meth)).to be(cfs)
-      end
-    end
-
     describe "#download" do
       let(:meth)        { :download }
       let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
