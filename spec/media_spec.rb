@@ -3,6 +3,20 @@ require 'helix'
 
 describe Helix::Media do
 
+  shared_examples_for "builds URL for update" do
+    it "should build_url(content_type: :xml, guid: guid, resource_label: plural_resource_label)" do
+      mock_config.should_receive(:build_url).with(content_type: :xml, guid: :the_guid, resource_label: :the_resource_label)
+      RestClient.stub(:put)
+      obj.send(meth)
+    end
+    it "should get an update signature" do
+      mock_config.stub(:build_url)
+      RestClient.stub(:put)
+      mock_config.should_receive(:signature).with(:update) { 'some_sig' }
+      obj.send(meth)
+    end
+  end
+
   klasses = [ Helix::Album, Helix::Image, Helix::Track, Helix::Video ]
   klasses.each do |klass|
 

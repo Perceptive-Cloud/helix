@@ -155,6 +155,18 @@ describe Helix::Base do
     end
   end
 
+  shared_examples_for "builds URL for load" do
+    it "should call #guid" do
+      obj.should_receive(:guid) { 'some_guid' }
+      obj.send(meth)
+    end
+    it "should build_url(content_type: :json, guid: the_guid, resource_label: 'videos')" do
+      mock_config.should_receive(:build_url).with(content_type: :json, guid: 'some_guid', resource_label: 'videos')
+      RestClient.stub(:put)
+      obj.send(meth)
+    end
+  end
+
   klasses = [ Helix::Album, Helix::Image, Helix::Track, Helix::Video ]
   klasses.each do |klass|
 
@@ -238,17 +250,6 @@ describe Helix::Base do
           mock_config.stub(:build_url)    { :expected_url   }
           mock_config.stub(:get_response) { :raw_attrs      }
           klass.stub(:resource_label_sym) { :video          }
-        end
-        shared_examples_for "builds URL for load" do
-          it "should call #guid" do
-            obj.should_receive(:guid) { 'some_guid' }
-            obj.send(meth)
-          end
-          it "should build_url(content_type: :json, guid: the_guid, resource_label: 'videos')" do
-            mock_config.should_receive(:build_url).with(content_type: :json, guid: 'some_guid', resource_label: 'videos')
-            RestClient.stub(:put)
-            obj.send(meth)
-          end
         end
         context "when given no argument" do
           it_behaves_like "builds URL for load"
