@@ -86,13 +86,13 @@ module Helix
     # @return [Array] The accumulated attribute Hashes for ORM instances
     def get_aggregated_data_sets(url, plural_resource_label, original_opts={})
       data_sets, page, per_page = [], STARTING_PAGE
-      until last_page?
+      begin
         aggregation_opts = original_opts.merge(page: page, per_page: ITEMS_PER_PAGE)
         raw_response = get_response(url, {sig_type: :view}.merge(aggregation_opts))
         data_set     = raw_response[plural_resource_label]
         data_sets   += data_set if data_set
         page        += 1
-      end
+      end until last_page?
       data_sets
     end
 
