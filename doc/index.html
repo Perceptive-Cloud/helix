@@ -105,7 +105,7 @@ rake reinstall_helix_rvm
 
 <p>Using gem in a Gemfile<br>
 <code>shell
-gem &#39;helix&#39;, :git =&gt; git@github.com:Twistage/helix.git
+gem &#39;helix&#39;, :git =&gt; &#39;git@github.com:Twistage/helix.git&#39;
 </code></p>
 
 <h2>Supported Ruby versions</h2>
@@ -123,8 +123,13 @@ license_key: '141a86b5c4091'
 library_id: 'development'
 </code></pre>
 
-<p>Load the YAML file as your config.
+<p>Boot up IRB in your console
+<code>shell
+irb
+</code>
+Load the YAML file as your config.
 <code>ruby
+require &#39;helix&#39;
 Helix::Config.load(&quot;path/to/yaml.yml&quot;)
 videos = Helix::Video.find_all
 </code></p>
@@ -156,9 +161,9 @@ videos = Helix::Video.find_all
 </div></div>
 
     <div id="footer">
-  Generated on Fri Mar 22 17:31:48 2013 by
+  Generated on Tue May  7 14:01:46 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.3 (ruby-1.9.3).
+  0.8.3 (ruby-1.9.2).
 </div>
 
   </body>

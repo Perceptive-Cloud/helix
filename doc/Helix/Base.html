@@ -101,7 +101,7 @@
 
 <div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="Media.html" title="Helix::Media (class)">Media</a></span>, <span class='object_link'><a href="Tag.html" title="Helix::Tag (class)">Tag</a></span></p>
+  <p class="children"><span class='object_link'><a href="Library.html" title="Helix::Library (class)">Library</a></span>, <span class='object_link'><a href="Media.html" title="Helix::Media (class)">Media</a></span>, <span class='object_link'><a href="Tag.html" title="Helix::Tag (class)">Tag</a></span></p>
 </div>
 
   <h2>Constant Summary</h2>
@@ -364,6 +364,52 @@ them as an array.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#custom_field-instance_method" title="#custom_field (instance method)">- (String) <strong>custom_field</strong>(k) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Looks up the custom field value for a given name.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_fields-instance_method" title="#custom_fields (instance method)">- (Hash) <strong>custom_fields</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns all custom fields.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#guid-instance_method" title="#guid (instance method)">- (String) <strong>guid</strong> </a>
     
 
@@ -453,6 +499,50 @@ them as an array.</p>
   
     <span class="summary_desc"><div class='inline'><p>Raises an error for missing method calls.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_json-instance_method" title="#to_json (instance method)">- (Object) <strong>to_json</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_xml-instance_method" title="#to_xml (instance method)">- (Object) <strong>to_xml</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -574,16 +664,16 @@ them as an array.</p>
       <pre class="lines">
 
 
-129
-130
-131
-132
-133
-134
-135</pre>
+157
+158
+159
+160
+161
+162
+163</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method_sym'>method_sym</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -922,7 +1012,7 @@ them as an array.</p>
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_all'>find_all</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>NoConfigurationLoaded</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>      
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Helix</span><span class='op'>::</span><span class='const'>NoConfigurationLoaded</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
   <span class='id identifier rubyid_opts'>opts</span>           <span class='op'>=</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
   <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>helix.log</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span> <span class='op'>=</span> <span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
@@ -1009,11 +1099,11 @@ signature_type view.</p>
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_data_sets'>get_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_label'>label</span>        <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span>
   <span class='id identifier rubyid_url'>url</span>          <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='label'>content_type:</span>   <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:xml</span><span class='comma'>,</span>
-                                  <span class='label'>resource_label:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rparen'>)</span>
+                                  <span class='label'>resource_label:</span> <span class='id identifier rubyid_label'>label</span><span class='rparen'>)</span>
   <span class='comment'># We allow opts[:sig_type] for internal negative testing only.
-</span>  <span class='id identifier rubyid_raw_response'>raw_response</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_data_sets'>data_sets</span>    <span class='op'>=</span> <span class='id identifier rubyid_raw_response'>raw_response</span><span class='lbracket'>[</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rbracket'>]</span>
+</span>  <span class='id identifier rubyid_data_sets'>data_sets</span>    <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_get_aggregated_data_sets'>get_aggregated_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_label'>label</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1078,7 +1168,7 @@ signature_type view.</p>
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid_name'>guid_name</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1143,7 +1233,7 @@ signature_type view.</p>
       <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1244,7 +1334,137 @@ them as an array.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="guid-instance_method">
+  <h3 class="signature first" id="custom_field-instance_method">
+  
+    - (<tt>String</tt>) <strong>custom_field</strong>(k) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Looks up the custom field value for a given name.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><span class='id identifier rubyid_video'>video</span><span class='period'>.</span><span class='id identifier rubyid_custom_field'>custom_field</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>stars_kevin_bacon</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;true&quot;</span></pre>
+    
+  </div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The value whose key is the given custom field name.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_custom_field'>custom_field</span><span class='lparen'>(</span><span class='id identifier rubyid_k'>k</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_custom_fields'>custom_fields</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="custom_fields-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>custom_fields</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns all custom fields.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><span class='id identifier rubyid_video'>video</span><span class='period'>.</span><span class='id identifier rubyid_custom_fields'>custom_fields</span> <span class='comment'>#=&gt; { &quot;stars_kevin_bacon&quot; =&gt; &quot;true&quot; }</span></pre>
+    
+  </div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The custom fields in the form { name1 =&gt; value1, name2 =&gt; value2, ... }</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 116</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_custom_fields'>custom_fields</span>
+  <span class='id identifier rubyid_modified_attributes'>modified_attributes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>custom_fields</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="guid-instance_method">
   
     - (<tt>String</tt>) <strong>guid</strong> 
   
@@ -1294,12 +1514,12 @@ them as an array.</p>
       <pre class="lines">
 
 
-107
-108
-109</pre>
+127
+128
+129</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 107</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_guid'>guid</span>
   <span class='ivar'>@attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_guid_name'>guid_name</span><span class='rbracket'>]</span>
@@ -1376,17 +1596,17 @@ them as an array.</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119
-120
-121
-122</pre>
+135
+136
+137
+138
+139
+140
+141
+142</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_memo_cfg'>memo_cfg</span>    <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span>
@@ -1401,14 +1621,74 @@ them as an array.</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="to_json-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_json</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+145
+146
+147</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 145</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='lbrace'>{</span><span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span> <span class='op'>=&gt;</span> <span class='ivar'>@attributes</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_xml-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_xml</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+149
+150
+151</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 149</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_xml'>to_xml</span>
+  <span class='id identifier rubyid_modified_attributes'>modified_attributes</span><span class='period'>.</span><span class='id identifier rubyid_to_xml'>to_xml</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>root:</span> <span class='id identifier rubyid_resource_label_sym'>resource_label_sym</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Fri Mar 22 17:31:48 2013 by
+  Generated on Tue May  7 14:01:47 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.3 (ruby-1.9.3).
+  0.8.3 (ruby-1.9.2).
 </div>
 
   </body>
