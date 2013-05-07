@@ -214,9 +214,5 @@ module Helix
       @attributes.merge('custom_fields' => new_cfs)
     end
 
-    def self.resource_label_sym
-      to_s.split('::').last.singularize.downcase.to_sym
-    end
-
   end
 end
