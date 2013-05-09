@@ -56,8 +56,8 @@ module Helix
       # @param [Hash] attrs The attributes for creating xml.
       # @return [String] Returns xml either from a raw entry or generated from attributes.
       def get_xml(attrs={})
-        return attrs[:use_raw_xml] if attrs[:use_raw_xml] && attrs[:use_raw_xml] != ''
-        xml_opts = {root: :add }
+        return attrs[:use_raw_xml] if attrs[:use_raw_xml].present?
+        xml_opts = {root: :add}
         { list: { entry: attrs[:url_params] || {} } }.to_xml(xml_opts)
       end
 

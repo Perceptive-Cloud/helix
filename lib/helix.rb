@@ -9,7 +9,7 @@ require 'helix/image'
 require 'helix/config'
 require 'helix/statistics'
 require 'helix/library'
-require 'to_xml'
+require 'active_support/core_ext'
 
 module Helix
 end

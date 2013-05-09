@@ -36,10 +36,7 @@ module Helix
     def self.load(yaml_file_location = DEFAULT_FILENAME)
       config = self.instance
       config.instance_variable_set(:@filename, yaml_file_location)
-      creds = YAML.load(File.open(yaml_file_location)).inject({}) do |memo,pair|
-        k, v = *pair
-        memo.merge(k.to_sym => v)
-      end
+      creds = YAML.load(File.open(yaml_file_location)).symbolize_keys
       config.instance_variable_set(:@credentials, creds)
       RestClient.proxy = config.proxy
       config
