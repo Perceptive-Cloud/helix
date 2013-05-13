@@ -13,10 +13,10 @@ spec = Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.license     = "3-Clause BSD"
   s.homepage    = 'https://github.com/Twistage/helix/'
-  s.add_dependency "json",           ">= 1.5.4"
-  s.add_dependency "rest-client",    "1.6.7"
-  s.add_dependency "nori",           "1.1.3"
-  s.add_dependency "i18n",           "0.5.0"
-  s.add_dependency "active_support", "3.0.0"
+  s.add_dependency "json",          ">= 1.5.4"
+  s.add_dependency "rest-client",   "1.6.7"
+  s.add_dependency "nori",          "1.1.3"
+  s.add_dependency "i18n",          "0.5.0"
+  s.add_dependency "activesupport", "3.0.19"
 end
 
