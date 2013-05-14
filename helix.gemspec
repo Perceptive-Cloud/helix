@@ -2,11 +2,11 @@ require "rake"
 
 spec = Gem::Specification.new do |s|
   s.name        = "helix"
-  s.version     = "0.0.3.1.pre"
+  s.version     = "0.0.3.2.pre"
   s.summary     = "Wrapper library for the video API"
   s.description = "Provides helper libraries for Ruby access to the Twistage API"
   s.authors     = ["Twistage, Inc"]
-  s.email       = "kbaird@twistage.com"
+  s.email       = "kevin.baird@perceptivesoftware.com, michael.wood@perceptivesoftware.com"
   s.files       = FileList["lib/helix.rb", "lib/helix/*.rb", "spec/**.rb", "LICENSE", "README.md"]
   s.has_rdoc    = 'yard'
   s.date        = Time.now.strftime('%Y-%m-%d')
