@@ -14,6 +14,7 @@ end
 task :push do
   `rm helix-*.pre.gem`
   `gem build helix.gemspec`
+  `sudo gem i helix-*.gem`
   `gem push helix-*.pre.gem`
   `gem owner helix -a mykewould@gmail.com`
   #`sudo gem i helix-0.0.0.pre.gem --pre`
