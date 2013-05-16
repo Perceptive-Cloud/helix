@@ -428,7 +428,7 @@ describe Helix::Config do
         context "and there is a @response.headers" do
           context "and @response.headers does NOT have the key :is_last_page" do
             before(:each) do mock_response.stub(:headers) { {} } end
-            it { should be false }
+            it { should be true }
           end
           context "and @response.headers has the key :is_last_page" do
             context "and @response.headers[:is_last_page] == 'truthy'" do

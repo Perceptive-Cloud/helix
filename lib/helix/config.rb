@@ -131,8 +131,8 @@ module Helix
     def last_page?
       return false unless @response
       return false unless @response.headers
-      @response.headers.has_key?(:is_last_page) and
-        @response.headers[:is_last_page] == "true"
+      return true  unless @response.headers.has_key?(:is_last_page)
+      @response.headers[:is_last_page] == "true"
     end
 
     # Fetches the signature for a specific license key.
