@@ -3,10 +3,11 @@ require 'helix'
 config = Helix::Config.load('./helix.yml')
 
 media_by_id = {
-  album_id: Helix::Album,
-  image_id: Helix::Image,
-  track_id: Helix::Track,
-  video_id: Helix::Video
+  album_id:    Helix::Album,
+  document_id: Helix::Document,
+  image_id:    Helix::Image,
+  track_id:    Helix::Track,
+  video_id:    Helix::Video
 }
 media_by_id.each do |guid_key,klass|
 
@@ -43,6 +44,8 @@ media_by_id.each do |guid_key,klass|
     puts "#{klass.to_s} #{media_id} title is '#{item.title}'"
     puts "#{klass.to_s} #{media_id} description is '#{item.description}'"
   end
+
+  next if guid_key == :document_id # no Document stats yet
 
   media_type  = guid_key.to_s.split(/_/).first
   helix_stats = Helix::Statistics
