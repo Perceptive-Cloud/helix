@@ -21,50 +21,74 @@ describe Helix::Media do
   klasses.each do |klass|
 
     subject { klass }
+    klass_sym = {
+      Helix::Album    => :album,
+      Helix::Document => :document,
+      Helix::Image    => :image,
+      Helix::Library  => :library,
+      Helix::Track    => :track,
+      Helix::Video    => :video,
+    }
 
     mods = [ Helix::RESTful, Helix::Uploadable ]
     mods.each { |mod| its(:ancestors) { should include(mod) } }
 
     describe ".create" do
-      let(:meth)        { :create }
-      let(:mock_config) { mock(Helix::Config) }
-      subject           { klass.method(meth) }
-      its(:arity)       { should eq(-1) }
-      let(:klass_sym)   { :klass }
-      let(:resp_value)  { { klass_sym.to_s => { attribute: :value } } }
-      let(:resp_json)   { "JSON" }
-      let(:params)      { { signature: "some_sig" } }
-      let(:expected)    { { attributes: { attribute: :value }, config: mock_config } }
-      context "when a Helix:Config instance is absent" do
+      let(:meth)          { :create }
+      let(:mock_config)   { mock(Helix::Config) }
+      subject             { klass.method(meth) }
+      its(:arity)         { should eq(-1) }
+      let(:hash_from_xml) { { klass_sym.to_s => { attribute: :value } } }
+      let(:resp_xml)      { "Fake XML" }
+      let(:params)        { { signature: "some_sig" } }
+      let(:expected)      { { attributes: { attribute: :value }, config: mock_config } }
+      context "when a Helix:Config instance is nil" do
         before(:each) do Helix::Config.stub(:instance) { nil } end
         it "should raise a NoConfigurationLoaded exception" do
           lambda { klass.send(meth) }.should raise_error(Helix::NoConfigurationLoaded)
         end
       end
-      context "when a Helix:Config instance is present" do
+      context "when a Helix:Config instance is NOT nil" do
         before(:each) do
           klass.stub(:plural_resource_label) { :klasses }
           klass.stub(:resource_label_sym)    { klass_sym }
           mock_config.stub(:build_url).with(content_type: :xml, resource_label: :klasses) { :url }
           mock_config.stub(:signature).with(:update) { "some_sig" }
           Helix::Config.stub(:instance) { mock_config }
+          RestClient.stub(:post) { resp_xml }
+          Hash.stub(:from_xml).with(resp_xml) { hash_from_xml }
         end
-        it "should get an ingest signature" do
-          mock_config.should_receive(:build_url).with(resource_label: :klasses,
-                                                      content_type:   :xml)
-          RestClient.stub(:post).with(:url, params) { resp_json }
-          Hash.should_receive(:from_xml).with(resp_json) { resp_value }
-          klass.stub(:new).with(expected)
-          mock_config.should_receive(:signature).with(:update) { "some_sig" }
+        it "should build a POST url" do
+          build_url_opts = {resource_label: :klasses, content_type: :xml}
+          mock_config.should_receive(:build_url).with(build_url_opts)
           klass.send(meth)
         end
-        it "should do an HTTP post call, parse response and call new" do
-          mock_config.should_receive(:build_url).with(resource_label: :klasses,
-                                                      content_type:   :xml)
-          RestClient.should_receive(:post).with(:url, params) { resp_json }
-          Hash.should_receive(:from_xml).with(resp_json)      { resp_value }
-          klass.should_receive(:new).with(expected)
+        it "should POST to the created URL" do
+          RestClient.should_receive(:post).with(:url, params) { resp_xml }
           klass.send(meth)
+        end
+        context "when the POST response is ''" do
+          before(:each) do RestClient.stub(:post) { '' } end
+          it "should return nil"
+          it "should NOT create a Hash from XML" do
+            Hash.should_not_receive(:from_xml)
+            klass.send(meth)
+          end
+          it "should NOT instantiate an instance based on that Hash" do
+            klass.should_not_receive(:new)
+            klass.send(meth)
+          end
+        end
+        context "when the POST response is NOT ''" do
+          before(:each) do RestClient.stub(:post) { resp_xml } end
+          it "should create a Hash from XML" do
+            Hash.should_receive(:from_xml).with(resp_xml) { hash_from_xml }
+            klass.send(meth)
+          end
+          it "should instantiate an instance based on that Hash" do
+            klass.should_receive(:new).with(expected)
+            klass.send(meth)
+          end
         end
       end
     end

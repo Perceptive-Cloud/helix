@@ -56,6 +56,7 @@ module Helix
         raise Helix::NoConfigurationLoaded.new if config.nil?
         url       = config.build_url(build_url_opts)
         response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
+        return if response == ''
         attrs     = Hash.from_xml(response)
         self.new(attributes: attrs[resource_label_sym.to_s], config: config)
       end
