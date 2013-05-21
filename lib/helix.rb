@@ -13,4 +13,9 @@ require 'helix/library'
 require 'active_support/core_ext'
 
 module Helix
+
+  def self.scope_to_library(lib_id)
+    Helix::Config.instance.credentials[:library_id] = lib_id
+  end
+
 end
