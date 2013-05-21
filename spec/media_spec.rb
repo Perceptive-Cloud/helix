@@ -17,7 +17,7 @@ describe Helix::Media do
     end
   end
 
-  klasses = [ Helix::Album, Helix::Image, Helix::Track, Helix::Video ]
+  klasses = [ Helix::Album, Helix::Document, Helix::Image, Helix::Track, Helix::User, Helix::Video ]
   klasses.each do |klass|
 
     subject { klass }
@@ -27,6 +27,7 @@ describe Helix::Media do
       Helix::Image    => :image,
       Helix::Library  => :library,
       Helix::Track    => :track,
+      Helix::User     => :user,
       Helix::Video    => :video,
     }
 

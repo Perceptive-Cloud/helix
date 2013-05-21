@@ -10,6 +10,7 @@ require 'helix/document'
 require 'helix/config'
 require 'helix/statistics'
 require 'helix/library'
+require 'helix/user'
 require 'active_support/core_ext'
 
 module Helix
