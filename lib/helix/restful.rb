@@ -57,8 +57,12 @@ module Helix
         url       = config.build_url(build_url_opts)
         response  = RestClient.post(url, attributes.merge(signature: config.signature(:update)))
         return if response == ''
-        attrs     = Hash.from_xml(response)
-        self.new(attributes: attrs[resource_label_sym.to_s], config: config)
+        begin
+          attrs   = Hash.from_xml(response)
+          self.new(attributes: attrs[resource_label_sym.to_s], config: config)
+        rescue REXML::ParseException
+          response
+        end
       end
 
       # Finds and returns a record in instance form for a class, through

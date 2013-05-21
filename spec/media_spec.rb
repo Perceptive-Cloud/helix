@@ -90,6 +90,16 @@ describe Helix::Media do
             klass.should_receive(:new).with(expected)
             klass.send(meth)
           end
+          context "and the response is not parseable as XML" do
+            before(:each) do Hash.should_receive(:from_xml).with(resp_xml) { raise(REXML::ParseException.new(:some_arg)) } end
+            it "should NOT instantiate an instance based on that Hash" do
+              klass.should_not_receive(:new)
+              klass.send(meth)
+            end
+            it "should return the unparseable response" do
+              expect(klass.send(meth)).to be(resp_xml)
+            end
+          end
         end
       end
     end
