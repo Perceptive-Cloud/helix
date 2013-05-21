@@ -15,8 +15,14 @@ require 'active_support/core_ext'
 
 module Helix
 
+  # @param [String] The name of the Library to scope to.
   def self.scope_to_library(lib_id)
     Helix::Config.instance.credentials[:library_id] = lib_id
+  end
+
+  # @param [String] The license key to use.
+  def self.set_license_key(license_key)
+    Helix::Config.instance.credentials[:license_key] = license_key
   end
 
 end

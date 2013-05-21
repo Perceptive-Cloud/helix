@@ -19,4 +19,17 @@ describe Helix do
     end
   end
 
+  describe "set_license_key" do
+    let(:meth) { :set_license_key }
+    let(:the_key) { :alicense_key }
+    describe "arity" do
+      subject { klass.method(meth) }
+      its(:arity) { should eq(1) }
+    end
+    it "should add the license_key arg to credentials" do
+      klass.send(meth, the_key)
+      Helix::Config.instance.credentials.should include(license_key: the_key)
+    end
+  end
+
 end
