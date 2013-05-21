@@ -17,13 +17,13 @@ module Helix
 
   # @param [String] The name of the Company to scope to.
   def self.scope_to_company(co_id)
-    Helix::Config.instance.credentials.delete(:library_id)
-    Helix::Config.instance.credentials[:company_id] = co_id
+    Helix::Config.instance.credentials.delete(:library)
+    Helix::Config.instance.credentials[:company] = co_id
   end
 
   # @param [String] The name of the Library to scope to.
   def self.scope_to_library(lib_id)
-    Helix::Config.instance.credentials[:library_id] = lib_id
+    Helix::Config.instance.credentials[:library] = lib_id
   end
 
   # @param [String] The license key to use.

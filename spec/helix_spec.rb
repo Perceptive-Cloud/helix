@@ -13,28 +13,28 @@ describe Helix do
       subject { klass.method(meth) }
       its(:arity) { should eq(1) }
     end
-    it "should add the company_id arg to credentials" do
+    it "should add the company arg to credentials" do
       klass.send(meth, the_co_id)
-      expect(Helix::Config.instance.credentials).to include(company_id: the_co_id)
+      expect(Helix::Config.instance.credentials).to include(company: the_co_id)
     end
-    it "should clear any pre-exisiting library_id from credentials" do
-      klass.send(:scope_to_library, :the_lib_id)
-      expect(Helix::Config.instance.credentials).to include(library_id: :the_lib_id)
+    it "should clear any pre-exisiting library from credentials" do
+      klass.send(:scope_to_library, :the_lib_name)
+      expect(Helix::Config.instance.credentials).to include(library: :the_lib_name)
       klass.send(meth, the_co_id)
-      expect(Helix::Config.instance.credentials.keys).not_to include(:library_id)
+      expect(Helix::Config.instance.credentials.keys).not_to include(:library)
     end
   end
 
   describe "scope_to_library" do
     let(:meth) { :scope_to_library }
-    let(:the_lib_id) { :the_lib_id }
+    let(:the_lib_name) { :the_lib_name }
     describe "arity" do
       subject { klass.method(meth) }
       its(:arity) { should eq(1) }
     end
-    it "should add the library_id arg to credentials" do
-      klass.send(meth, the_lib_id)
-      expect(Helix::Config.instance.credentials).to include(library_id: the_lib_id)
+    it "should add the library arg to credentials" do
+      klass.send(meth, the_lib_name)
+      expect(Helix::Config.instance.credentials).to include(library: the_lib_name)
     end
   end
 
