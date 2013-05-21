@@ -6,6 +6,9 @@ module Helix
 
     include RESTful
 
+    # @return [String] the license_key associated with newly-created API User
+    def self.create(attrs={}); super; end
+
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
     #
