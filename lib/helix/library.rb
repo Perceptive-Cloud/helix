@@ -6,6 +6,9 @@ module Helix
 
     include RESTful
 
+    # @return [String] A blank String
+    def self.create(attrs={}); super; end
+
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
     #
