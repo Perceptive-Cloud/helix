@@ -167,8 +167,7 @@ describe Helix::Media do
       end
     end
 
-    child_classes = [ Helix::Album, Helix::Image, Helix::Track, Helix::Video ]
-    child_classes.each do |child_class|
+    klasses.each do |child_class|
       describe "an instance of #{child_class.to_s}" do
         let(:obj) { child_class.new({}) }
 
