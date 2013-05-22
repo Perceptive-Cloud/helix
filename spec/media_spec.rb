@@ -70,7 +70,9 @@ describe Helix::Media do
         end
         context "when the POST response is ''" do
           before(:each) do RestClient.stub(:post) { '' } end
-          it "should return nil"
+          it "should return nil" do
+            expect(klass.send(meth)).to be(nil)
+          end
           it "should NOT create a Hash from XML" do
             Hash.should_not_receive(:from_xml)
             klass.send(meth)
@@ -209,19 +211,6 @@ describe Helix::Media do
             obj.stub(:plural_resource_label) { :the_resource_label }
             mock_config.stub(:signature).with(:update) { 'some_sig' }
             mock_config.stub(:build_url) { :expected_url }
-          end
-          shared_examples_for "builds URL for update" do
-            it "should build_url(content_type: :xml, guid: guid, resource_label: plural_resource_label)" do
-              mock_config.should_receive(:build_url).with(content_type: :xml, guid: :the_guid, resource_label: :the_resource_label)
-              RestClient.stub(:put)
-              obj.send(meth)
-            end
-            it "should get an update signature" do
-              mock_config.stub(:build_url)
-              RestClient.stub(:put)
-              mock_config.should_receive(:signature).with(:update) { 'some_sig' }
-              obj.send(meth)
-            end
           end
           context "when given no argument" do
             it_behaves_like "builds URL for update"
