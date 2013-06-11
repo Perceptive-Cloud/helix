@@ -11,7 +11,11 @@ require 'helix/config'
 require 'helix/statistics'
 require 'helix/library'
 require 'helix/user'
-require 'active_support/core_ext'
+
+# Pulled from active_support
+# This solves the active_support collision discussed in issue 19 on GitHub.
+require 'active_support_ext/object_ext'
+require 'active_support_ext/hash_ext'
 
 module Helix
 
