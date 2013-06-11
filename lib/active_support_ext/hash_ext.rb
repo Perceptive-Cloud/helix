@@ -1,5 +1,6 @@
 require 'time'
 require 'base64'
+require 'builder'
 
 #Pulled from ActiveSupport
 class Hash
@@ -92,8 +93,7 @@ class Hash
   # configure your own builder with the <tt>:builder</tt> option. The method also accepts
   # options like <tt>:dasherize</tt> and friends, they are forwarded to the builder.
   def to_xml(options = {})
-    require 'active_support/builder' unless defined?(Builder)
-
+    
     options = options.dup
     options[:indent]  ||= 2
     options[:root]    ||= 'hash'
