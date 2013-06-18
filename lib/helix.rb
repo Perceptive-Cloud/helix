@@ -14,8 +14,8 @@ require 'helix/user'
 
 # Pulled from active_support
 # This solves the active_support collision discussed in issue 19 on GitHub.
-require 'active_support_ext/object_ext'
-require 'active_support_ext/hash_ext'
+require 'helix/object_ext'
+require 'helix/hash_ext'
 
 module Helix
 
