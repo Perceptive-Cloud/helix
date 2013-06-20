@@ -117,10 +117,14 @@ module Helix
     # @param [Hash] original_opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
     def get_response(url, original_opts={})
-      opts        = original_opts.clone
+      opts        = massage_custom_fields_in(original_opts)
       sig_type    = opts.delete(:sig_type)
       params      = opts.merge(signature: signature(sig_type, opts))
-      @response   = RestClient.get(url, params: params)
+      begin
+        @response = RestClient.get(url, params: params)
+      rescue RestClient::InternalServerError => e
+        raise NetworkError, "Unable to access url #{url} with params #{params}"
+      end
       parse_response_by_url_format(@response, url)
     end
 
@@ -180,6 +184,15 @@ module Helix
 
     def license_key
       @credentials[:license_key]
+    end
+
+    def massage_custom_fields_in(opts)
+      return opts.clone unless opts.has_key?(:custom_fields)
+      cf_opts = opts.delete(:custom_fields)
+      cf_opts.inject(opts.clone) do |memo,pair|
+        k,v = pair
+        memo.merge("custom_fields[#{k}]" => v)
+      end
     end
 
     def parse_response_by_url_format(response, url)

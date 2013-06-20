@@ -351,6 +351,26 @@ describe Helix::Config do
     let(:meth)  { :get_response }
     subject     { obj.method(meth) }
     its(:arity) { should eq(-2) }
+    shared_examples_for "raises NetworkError" do
+      context "and RestClient.get raises a RestClient::InternalServerError exception" do
+        it "should raise a NetworkError" do
+          RestClient.should_receive(:get).and_raise(RestClient::InternalServerError)
+          expect(
+            lambda { obj.send(meth, url, opts) }
+          ).to raise_error(Helix::NetworkError, %r[Unable to access url #{url} with params {])
+        end
+      end
+    end
+    shared_examples_for "clones and massages opts" do
+      it "should clone the options arg" do
+        opts.should_receive(:clone) { opts }
+        obj.send(meth, url, opts)
+      end
+      it "should massage_custom_fields_in(opts)" do
+        obj.should_receive(:massage_custom_fields_in).with(opts) { opts }
+        obj.send(meth, url, opts)
+      end
+    end
     context "when given a url and options" do
       let(:opts)          { {sig_type: :the_sig_type, some_key: :some_value} }
       let(:params)        { { params: { signature: 'mock_sig', some_key: :some_value } } }
@@ -365,38 +385,32 @@ describe Helix::Config do
       context "and the URL matches /json/" do
         let(:url) { 'blah.json' }
         before(:each) do RestClient.stub(:get).with(url, params) { returned_json } end
-        it "should clone the options arg" do
-          opts.should_receive(:clone) { opts }
-          obj.send(meth, url, opts)
-        end
+        it_behaves_like "clones and massages opts"
         it "should call RestClient.get and return a hash from parsed JSON" do
           RestClient.should_receive(:get).with(url, params) { returned_json }
           expect(obj.send(meth, url, opts)).to eq(json_parsed)
         end
+        it_behaves_like "raises NetworkError"
       end
       context "and the URL matches /xml/" do
         let(:url) { 'blah.xml' }
         before(:each) do RestClient.stub(:get).with(url, params) { returned_xml } end
-        it "should clone the options arg" do
-          opts.should_receive(:clone) { opts }
-          obj.send(meth, url, opts)
-        end
+        it_behaves_like "clones and massages opts"
         it "should call RestClient.get and return a hash from parsed XML" do
           RestClient.should_receive(:get).with(url, params) { returned_xml }
           expect(obj.send(meth, url, opts)).to eq(xml_parsed)
         end
+        it_behaves_like "raises NetworkError"
       end
       context "and the URL matches /csv/" do
         let(:url) { 'blah.csv' }
         before(:each) do RestClient.stub(:get).with(url, params) { returned_csv } end
-        it "should clone the options arg" do
-          opts.should_receive(:clone) { opts }
-          obj.send(meth, url, opts)
-        end
+        it_behaves_like "clones and massages opts"
         it "should call RestClient.get and return the raw CSV response" do
           RestClient.should_receive(:get).with(url, params) { returned_csv }
           expect(obj.send(meth, url, opts)).to eq(returned_csv)
         end
+        it_behaves_like "raises NetworkError"
       end
       context "and the URL matches none of /json/, /xml/, or /csv/" do
         let(:url) { 'blah.yml' }
@@ -452,6 +466,17 @@ describe Helix::Config do
     it "should return @credentials[:license_key]" do
       obj.instance_variable_set(:@credentials, {license_key: :lk})
       expect(obj.send(meth)).to be(:lk)
+    end
+  end
+
+  describe "#massage_custom_fields_in" do
+    let(:meth)  { :massage_custom_fields_in }
+    subject     { obj.method(meth) }
+    its(:arity) { should eq(1) }
+    opts = { k1: :v1, k2: :v2, custom_fields: {cfk1: :cfv1, cfk2: :cfv2} }
+    context "when given #{opts}" do
+      subject { obj.send(meth, opts) }
+      it { should eq({k1: :v1, k2: :v2, "custom_fields[cfk1]" => :cfv1, "custom_fields[cfk2]" => :cfv2}) }
     end
   end
 
