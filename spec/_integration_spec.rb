@@ -20,8 +20,6 @@ media_by_id.each do |guid_key,klass|
 
   describe "Integration Specs for #{klass.to_s}" do
 
-    #raise Helix::Config.instance.inspect
-
     describe ".all" do
       subject { klass.all }
       it { should_not be_empty }
@@ -50,48 +48,44 @@ media_by_id.each do |guid_key,klass|
     end
 
     describe ".find(media_id)" do
-      subject { klass.find(media_id) }
+      let(:item) { klass.find(media_id) }
+      subject { item }
       it { should_not be_empty }
       its(guid_key) { should eq(media_id) }
+      if guid_key == :video_id
+        describe "screenshots" do
+          expected_ss = {
+            "frame"        => 141.4,
+            "content_type" => "image/jpeg",
+            "width"        => 1280,
+            "height"       => 720,
+            "size"         => 260548,
+            "url"          => "http://edited-yet-again-staging.twistage.com:80/videos/ece0d3fd03bf0/screenshots/original.jpg"
+          }
+          subject { item.screenshots.first }
+          it { should eq(expected_ss) }
+        end
+      end
+
     end
 
-=begin
-    if guid_key == :video_id
-      h = {
-        # these keys are only available on the oobox branch
-        #comments:    item.comments,
-        #ratings:     item.ratings,
-        screenshots: item.screenshots,
-      }
-      puts "#{klass.to_s} #{media_id} has #{h}"
-      #puts item.download_url
-      #puts item.play
+    unless guid_key == :document_id # no Document stats yet
+      describe "Stats" do
+        media_type  = guid_key.to_s.split(/_/).first
+        helix_stats = Helix::Statistics
+        %w(delivery ingest storage).each do |stats_type|
+          next if [:album_id, :image_id].include?(guid_key) and stats_type == 'ingest'
+          next if [:image_id].include?(guid_key) and stats_type == 'delivery'
+          it "should call stats" do
+            stats = helix_stats.send("#{media_type}_#{stats_type}")
+            puts "#{klass.to_s} #{stats_type} stats = #{stats.inspect}"
+            item_stats = helix_stats.send("#{media_type}_#{stats_type}", guid_key => media_id)
+            puts "#{klass.to_s} #{media_id} #{stats_type} stats = #{item_stats.inspect}"
+          end
+        end
+      end
     end
 
-    next if guid_key == :album_id # No Update API yet
-
-    ['before rest-client', 'updated via rest-client' ].each do |desired_title|
-      item.update(title: desired_title, description: "description of #{desired_title}")
-      item.reload
-      puts "#{klass.to_s} #{media_id} title is '#{item.title}'"
-      puts "#{klass.to_s} #{media_id} description is '#{item.description}'"
-    end
-
-    next if guid_key == :document_id # no Document stats yet
-
-    media_type  = guid_key.to_s.split(/_/).first
-    helix_stats = Helix::Statistics
-    %w(delivery ingest storage).each do |stats_type|
-      next if [:album_id, :image_id].include?(guid_key) and stats_type == 'ingest'
-      next if [:image_id].include?(guid_key) and stats_type == 'delivery'
-      stats = helix_stats.send("#{media_type}_#{stats_type}")
-      puts "#{klass.to_s} #{stats_type} stats = #{stats.inspect}"
-      item_stats = helix_stats.send("#{media_type}_#{stats_type}", guid_key => media_id)
-      puts "#{klass.to_s} #{media_id} #{stats_type} stats = #{item_stats.inspect}"
-    end
-
-  end
-=end
   end
 
 end
