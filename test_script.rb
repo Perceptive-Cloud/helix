@@ -1,5 +1,8 @@
 require 'helix'
 
+# TODO: Convert this into an integration spec in the spec/ directory, so
+# it will automatically run with a 'rake' command along with the others.
+
 config = Helix::Config.load('./helix.yml')
 
 media_by_id = {
@@ -14,8 +17,13 @@ media_by_id.each do |guid_key,klass|
   items = klass.all
   puts "#{klass.to_s}.all returns #{items.size} items"
 
-  items = klass.find_all(query: 'rest-client')
+  items = klass.where(query: 'rest-client')
   puts "Searching #{klass.to_s} on query => 'rest-client' returns #{items}"
+
+  unless guid_key == :album_id
+    items = klass.where({custom_fields: {boole: 'true'}})
+    puts "Searching #{klass.to_s} on custom_fields: {boole: 'true'} returns #{items}"
+  end
 
   media_id = config.credentials[guid_key]
   next if media_id.nil?
