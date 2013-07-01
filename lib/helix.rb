@@ -11,6 +11,7 @@ require 'helix/config'
 require 'helix/statistics'
 require 'helix/library'
 require 'helix/user'
+require 'helix/playlist'
 
 # Pulled from active_support
 # This solves the active_support collision discussed in issue 19 on GitHub.

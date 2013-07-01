@@ -2,7 +2,7 @@ require 'helix/media'
 
 module Helix
 
-  class Playlist
+  class Playlist < Base
   end
 
 end

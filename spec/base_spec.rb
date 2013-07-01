@@ -167,7 +167,7 @@ describe Helix::Base do
     end
   end
 
-  klasses = [ Helix::Album, Helix::Image, Helix::Track, Helix::Video ]
+  klasses = [ Helix::Album, Helix::Image, Helix::Playlist, Helix::Track, Helix::Video ]
   klasses.each do |klass|
 
     describe "an instance of class #{klass.to_s}" do
