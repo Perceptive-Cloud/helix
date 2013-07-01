@@ -5,9 +5,9 @@ config_filename = File.expand_path('../../config/staging.yml', __FILE__)
 config = File.exists?(config_filename) ? Helix::Config.load(config_filename) : nil
 
 if config.nil?
-
   puts "No config, skipping integration specs"
-
+elsif %w(1 t true).include?(ENV['SKIP_INTEGRATION'])
+  puts "Skipping integration specs due to user request"
 else
 
   media_by_id = {
