@@ -5,7 +5,7 @@ describe Helix::Track do
 
   let(:klass) { Helix::Track }
   subject     { klass }
-  mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+  mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name)             { should eq('track_id') }
   its(:resource_label_sym)    { should be(:track)     }

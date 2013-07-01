@@ -1,7 +1,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
-describe Helix::DurationedMedia do
+describe Helix::Durationed do
 
   def import_xml(values={})
     { list: { entry: values[:url_params] || {} } }.to_xml(root: :add)
@@ -10,7 +10,7 @@ describe Helix::DurationedMedia do
   klasses = [ Helix::Video, Helix::Track ]
   klasses.each do |klass|
     subject         { klass }
-    mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+    mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
     mods.each { |mod| its(:ancestors) { should include(mod) } }
 
     describe "Constants"

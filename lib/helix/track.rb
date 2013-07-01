@@ -4,7 +4,7 @@ module Helix
 
   class Track < Media
 
-    include DurationedMedia
+    include Durationed
 
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.

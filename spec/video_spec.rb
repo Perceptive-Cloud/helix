@@ -9,7 +9,7 @@ describe Helix::Video do
 
   let(:klass) { Helix::Video }
   subject     { klass }
-  mods = [ Helix::Base, Helix::DurationedMedia, Helix::Media ]
+  mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name)             { should eq('video_id') }
   its(:resource_label_sym)    { should be(:video)     }

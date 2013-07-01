@@ -1,6 +1,6 @@
 module Helix
 
-  module DurationedMedia
+  module Durationed
 
     module ClassMethods
 
