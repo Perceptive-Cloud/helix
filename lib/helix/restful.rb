@@ -74,11 +74,11 @@ module Helix
       #
       # @param [String] guid an id in guid form.
       # @return [Base] An instance of Helix::Base
-      def find(guid)
+      def find(guid, opts={})
         raise ArgumentError.new("find requires a non-nil guid argument - received a nil argument.") if guid.nil?
         raise Helix::NoConfigurationLoaded.new if config.nil?
         item   = self.new(attributes: { guid_name => guid }, config: config)
-        item.load
+        item.load(opts)
       end
 
       def build_url_opts

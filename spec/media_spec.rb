@@ -111,7 +111,7 @@ describe Helix::Media do
       let(:mock_config) { mock(Helix::Config) }
       let(:mock_obj)    { mock(klass, :load => :output_of_load) }
       subject     { klass.method(meth) }
-      its(:arity) { should eq(1) }
+      its(:arity) { should eq(-2) }
       context "when a Helix:Config instance is absent" do
         before(:each) do Helix::Config.stub(:instance) { nil } end
         context "and given a guid" do
