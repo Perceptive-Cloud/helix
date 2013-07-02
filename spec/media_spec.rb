@@ -120,7 +120,7 @@ describe Helix::Media do
           before(:each) do
             klass.stub(:attributes) { mock_attrs }
             klass.stub(:guid_name)  { guid_name  }
-            klass.stub(:new)        { mock_obj }
+            klass.stub(:new)        { mock_obj   }
           end
           context "and the guid is nil" do
             it "should raise an ArgumentError complaining about a nil guid" do
@@ -161,6 +161,18 @@ describe Helix::Media do
             it "should load" do
               mock_obj.should_receive(:load)
               klass.send(meth, guid)
+            end
+            [ :json, :xml ].each do |content_type|
+              context "and also given an optional content_type of :#{content_type}" do
+                it "should instantiate with {attributes: guid_name => the_guid, config: config}" do
+                  klass.should_receive(:new).with({attributes: {guid_name => guid}, config: mock_config})
+                  klass.send(meth, guid, content_type: content_type)
+                end
+                it "should load(content_type: #{content_type}" do
+                  mock_obj.should_receive(:load).with(content_type: content_type)
+                  klass.send(meth, guid, content_type: content_type)
+                end
+              end
             end
           end
         end
