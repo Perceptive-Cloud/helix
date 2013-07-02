@@ -14,6 +14,7 @@ else
     album_id:    Helix::Album,
     document_id: Helix::Document,
     image_id:    Helix::Image,
+    playlist_id: Helix::Playlist,
     track_id:    Helix::Track,
     video_id:    Helix::Video
   }
@@ -49,11 +50,14 @@ else
         it { should_not be_empty }
       end
 
-      describe ".find(media_id)" do
-        let(:item) { klass.find(media_id) }
-        subject { item }
+      shared_examples_for "found #{klass}" do
         it { should_not be_empty }
-        its(guid_key) { should eq(media_id) }
+        if klass == Helix::Playlist
+          # Playlist Metadata is just a wrapper for an Array of media items: no guid
+          its(guid_key) { should eq(nil) }
+        else
+          its(guid_key) { should eq(media_id) }
+        end
         if guid_key == :video_id
           describe "screenshots" do
             expected_ss = {
@@ -68,7 +72,19 @@ else
             it { should eq(expected_ss) }
           end
         end
+      end
 
+      describe ".find(media_id)" do
+        let(:item) { klass.find(media_id) }
+        subject { item }
+        it_behaves_like "found #{klass}"
+      end
+      [ :json, :xml ].each do |content_type|
+        describe ".find(media_id, content_type: #{content_type})" do
+          let(:item) { klass.find(media_id, content_type: content_type) }
+          subject { item }
+          it_behaves_like "found #{klass}"
+        end
       end
 
       unless guid_key == :document_id # no Document stats yet
