@@ -6,7 +6,7 @@ require 'rspec/core/rake_task'
 
 task :reinstall_helix do
   `rm helix-*.pre.gem`
-  `sudo gem uni -a helix`
+  #`sudo gem uni -a helix`
   `gem build helix.gemspec`
   `sudo gem i helix-*.gem`
 end
@@ -17,7 +17,6 @@ task :push do
   `sudo gem i helix-*.gem`
   `gem push helix-*.pre.gem`
   `gem owner helix -a mykewould@gmail.com`
-  #`sudo gem i helix-0.0.0.pre.gem --pre`
 end
 
 task :reinstall_helix_rvm do
@@ -27,7 +26,7 @@ task :reinstall_helix_rvm do
 end
 
 RSpec::Core::RakeTask.new(:spec)
-task :default => :spec
+task default: :spec
 
 Rake::RDocTask.new do |rd|
   rd.rdoc_dir = "rdoc_html"
