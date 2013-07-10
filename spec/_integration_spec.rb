@@ -10,16 +10,20 @@ elsif %w(1 t true).include?(ENV['SKIP_INTEGRATION'])
   puts "Skipping integration specs due to user request"
 else
 
-  media_by_id = {
+  default_query_proc = lambda { |h,k| h[k] = 'rest-client' }
+  query_by_guid_key  = Hash.new(&default_query_proc).merge(tag_id: '8143')
+
+  resource_by_id = {
     album_id:    Helix::Album,
     document_id: Helix::Document,
     image_id:    Helix::Image,
     playlist_id: Helix::Playlist,
+    tag_id:      Helix::Tag,
     track_id:    Helix::Track,
     video_id:    Helix::Video
   }
 
-  media_by_id.each do |guid_key,klass|
+  resource_by_id.each do |guid_key,klass|
 
     describe "Integration Specs for #{klass.to_s}" do
 
@@ -28,9 +32,18 @@ else
         it { should_not be_empty }
       end
 
-      describe ".where(query: 'rest-client')" do
+      query = query_by_guid_key[guid_key]
+      describe ".where(query: '#{query}')" do
         it "should not raise an exception" do
-          lambda { klass.where(query: 'rest-client') }.should_not raise_error
+          lambda { klass.where(query: query) }.should_not raise_error
+        end
+        if guid_key == :tag_id
+          subject { klass.where(query: query).first }
+          it { should be_a Helix::Tag }
+          its(:name)  { should be_a String  }
+          its(:name)  { should eq '8143'    }
+          its(:count) { should be_a Integer }
+          its(:count) { should eq 2         }
         end
       end
 
@@ -51,7 +64,7 @@ else
       end
 
       shared_examples_for "found #{klass}" do
-        it { should_not be_empty }
+        it { should_not be_nil }
         if klass == Helix::Playlist
           # Playlist Metadata is just a wrapper for an Array of media items: no guid
           its(guid_key) { should eq(nil) }
@@ -87,7 +100,7 @@ else
         end
       end
 
-      unless guid_key == :document_id # no Document stats yet
+      unless [:document_id, :playlist_id, :tag_id].include?(guid_key) # no stats for these yet
         describe "Stats" do
           media_type  = guid_key.to_s.split(/_/).first
           helix_stats = Helix::Statistics
