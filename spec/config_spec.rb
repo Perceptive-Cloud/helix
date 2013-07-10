@@ -51,8 +51,8 @@ describe Helix::Config do
 
   describe ".load" do
     let(:meth)      { :load }
-    let(:mock_obj)  { mock(klass, proxy: :stubbed_proxy) }
-    let(:mock_file) { mock(File)  }
+    let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
+    let(:mock_file) { double(File)  }
     let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
     let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
     before(:each) do
@@ -335,8 +335,8 @@ describe Helix::Config do
         opts1 = {params: base_opts.merge(page: 1)}
         opts2 = {params: base_opts.merge(page: 2)}
         opts3 = {params: base_opts.merge(page: 3)}
-        non_final_response = mock(String, headers: {is_last_page: 'false'})
-        final_response     = mock(String, headers: {is_last_page: 'true'})
+        non_final_response = double(String, headers: {is_last_page: 'false'})
+        final_response     = double(String, headers: {is_last_page: 'true'})
         RestClient.should_receive(:get).with(:a_url, opts1) { non_final_response }
         RestClient.should_receive(:get).with(:a_url, opts2) { non_final_response }
         RestClient.should_receive(:get).with(:a_url, opts3) { final_response }
@@ -433,7 +433,7 @@ describe Helix::Config do
         it { should be false }
       end
       context "when there is a @response" do
-        let(:mock_response) { mock(String) }
+        let(:mock_response) { double(String) }
         before(:each) { obj.instance_variable_set(:@response, mock_response) }
         context "and there is no @response.headers" do
           before(:each) { mock_response.stub(:headers) { nil } }
@@ -532,7 +532,7 @@ describe Helix::Config do
       obj.stub(:prepare_signature_memoization)
     end
 
-    let(:mock_response) { mock(Object) }
+    let(:mock_response) { double(Object) }
     context "when given :some_invalid_sig_type" do
       let(:sig_type) { :some_invalid_sig_type }
       it "should raise an ArgumentError" do
@@ -556,7 +556,7 @@ describe Helix::Config do
         expect(obj.send(meth, sig_type)).to be(:fresh_sig)
       end
       it "sets a new sig expiration time" do
-        mock_time = mock(Time)
+        mock_time = double(Time)
         Time.should_receive(:now) { mock_time }
         mock_time.should_receive(:+).with(klass::TIME_OFFSET) { :new_time }
         obj.send(meth, sig_type)
@@ -596,8 +596,8 @@ describe Helix::Config do
 
     context "when given a sig_type" do
       let(:sig_type) { :a_sig_type }
-      let(:mock_expired) { mock(Time) }
-      let(:mock_now)     { mock(Time) }
+      let(:mock_expired) { double(Time) }
+      let(:mock_now)     { double(Time) }
       subject { obj.send(meth, sig_type) }
       context "when @signature_expiration_for[license_key][sig_type] is nil" do
         before(:each) do obj.instance_variable_set(:@signature_expiration_for, {license_key => {sig_type => nil}}) end

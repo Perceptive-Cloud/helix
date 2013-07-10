@@ -24,7 +24,7 @@ describe Helix::Durationed do
 
     describe ".import" do
       let(:meth)        { :import }
-      let(:mock_config) { mock(Helix::Config) }
+      let(:mock_config) { double(Helix::Config) }
       subject           { klass.method(meth) }
       its(:arity)       { should eq(-1) }
       let(:params)      { { params:       { signature: :some_sig },

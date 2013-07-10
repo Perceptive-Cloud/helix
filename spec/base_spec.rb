@@ -38,7 +38,7 @@ describe Helix::Base do
     context "when there is a config instance" do
       let(:mock_config) do
         dss = (0..2).map { |x| :"attrs_#{x}" }
-        mock(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
+        double(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
       end
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
@@ -68,7 +68,7 @@ describe Helix::Base do
     context "when there is a config instance" do
       let(:mock_config) do
         dss = (0..2).map { |x| :"attrs_#{x}" }
-        mock(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
+        double(Helix::Config, build_url: :built_url, get_aggregated_data_sets: dss)
       end
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
@@ -221,7 +221,7 @@ describe Helix::Base do
       describe "#guid" do
         let(:meth) { :guid }
         it "should return @attributes[guid_name]" do
-          mock_attributes = mock(Object)
+          mock_attributes = double(Object)
           obj.instance_variable_set(:@attributes, mock_attributes)
           obj.should_receive(:guid_name) { :the_guid_name }
           mock_attributes.should_receive(:[]).with(:the_guid_name) { :expected }
@@ -239,7 +239,7 @@ describe Helix::Base do
 
       describe "#load" do
         let(:meth)  { :load }
-        let(:mock_config) { mock(Helix::Config) }
+        let(:mock_config) { double(Helix::Config) }
         subject     { obj.method(meth) }
         its(:arity) { should eq(-1) }
         before(:each) do
@@ -307,7 +307,7 @@ describe Helix::Base do
         its(:arity) { should eq(1) }
         context "when given method_sym" do
           let(:method_sym) { :method_sym }
-          let(:mock_attributes) { mock(Object) }
+          let(:mock_attributes) { double(Object) }
           before(:each) do obj.instance_variable_set(:@attributes, mock_attributes) end
           context "and @attributes[method_sym.to_s] raises an exception" do
             before(:each) do mock_attributes.should_receive(:[]).with(method_sym.to_s).and_raise("some exception") end

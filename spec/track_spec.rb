@@ -31,7 +31,7 @@ describe Helix::Track do
 
   describe ".upload" do
     let(:meth)            { :upload }
-    let(:mock_config)     { mock(Helix::Config) }
+    let(:mock_config)     { double(Helix::Config) }
     subject               { klass.method(meth) }
     its(:arity)           { should eq(1) }
     let(:file_hash)       { { file: :some_file  } }
@@ -49,7 +49,7 @@ describe Helix::Track do
 
   describe ".upload_server_name" do
     let(:meth)        { :upload_server_name }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -67,7 +67,7 @@ describe Helix::Track do
 
   describe ".http_close" do
     let(:meth)        { :http_close }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -85,7 +85,7 @@ describe Helix::Track do
 
   describe ".upload_get" do
     let(:meth)        { :upload_get }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(1) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -103,7 +103,7 @@ describe Helix::Track do
 
   describe ".http_open" do
     let(:meth)        { :http_open }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do
@@ -114,7 +114,7 @@ describe Helix::Track do
 
   describe ".upload_open" do
     let(:meth)        { :upload_open }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do
@@ -125,7 +125,7 @@ describe Helix::Track do
 
   describe ".upload_close" do
     let(:meth)        { :upload_close }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do

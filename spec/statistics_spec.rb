@@ -38,7 +38,7 @@ describe Helix::Statistics do
 
       describe ".#{resource_label}_#{stats_type}" do
         let(:meth)  { "#{resource_label}_#{stats_type}" }
-        let(:mock_config) { mock(Helix::Config, build_url: :built_url, get_response: :raw_response) }
+        let(:mock_config) { double(Helix::Config, build_url: :built_url, get_response: :raw_response) }
         before(:each) do
           Helix::Config.stub(:instance) { mock_config }
           mod.stub(:standardize_raw_stats).with(:raw_response) { :response }

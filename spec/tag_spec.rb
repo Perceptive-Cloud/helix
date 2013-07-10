@@ -16,7 +16,7 @@ describe Helix::Tag do
   describe ".get_data_sets" do
     let(:meth)         { :get_data_sets }
     let(:raw_response) { {"tags" => :expected} }
-    let(:mock_config)  { mock(Helix::Config, build_url: :the_url, get_response: raw_response) }
+    let(:mock_config)  { double(Helix::Config, build_url: :the_url, get_response: raw_response) }
     let(:opts)         { {} }
     before(:each)      { klass.stub(:config) { mock_config }}
     bu_opts          = {content_type: :xml, resource_label: "tags"}

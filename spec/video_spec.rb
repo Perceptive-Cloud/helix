@@ -29,7 +29,7 @@ describe Helix::Video do
 
     describe "#download" do
       let(:meth)        { :download }
-      let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
+      let(:mock_config) { double(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
       subject      { obj.method(meth) }
       let(:params) { { params: {signature: :some_sig } } }
       before do
@@ -60,7 +60,7 @@ describe Helix::Video do
 
     describe "#play" do
       let(:meth)        { :play }
-      let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
+      let(:mock_config) { double(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
       subject      { obj.method(meth) }
       let(:params) { { params: {signature: :some_sig } } }
       before do
@@ -91,7 +91,7 @@ describe Helix::Video do
 
     describe "#stillframe" do
       let(:meth)        { :stillframe }
-      let(:mock_config) { mock(Helix::Config) }
+      let(:mock_config) { double(Helix::Config) }
       subject           { obj.method(meth) }
       its(:arity)       { should eq(-1) }
       it "should call self.class.get_stillframe" do
@@ -184,7 +184,7 @@ describe Helix::Video do
 
   describe ".upload" do
     let(:meth)            { :upload }
-    let(:mock_config)     { mock(Helix::Config) }
+    let(:mock_config)     { double(Helix::Config) }
     subject               { klass.method(meth) }
     its(:arity)           { should eq(1) }
     let(:file_hash)       { { file: :some_file  } }
@@ -202,7 +202,7 @@ describe Helix::Video do
 
   describe ".upload_server_name" do
     let(:meth)        { :upload_server_name }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -220,7 +220,7 @@ describe Helix::Video do
 
   describe ".http_close" do
     let(:meth)        { :http_close }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -238,7 +238,7 @@ describe Helix::Video do
 
   describe ".upload_get" do
     let(:meth)        { :upload_get }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(1) }
     let(:url_opts)    { { resource_label: "upload_sessions",
@@ -256,7 +256,7 @@ describe Helix::Video do
 
   describe ".http_open" do
     let(:meth)        { :http_open }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do
@@ -267,7 +267,7 @@ describe Helix::Video do
 
   describe ".upload_open" do
     let(:meth)        { :upload_open }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do
@@ -278,7 +278,7 @@ describe Helix::Video do
 
   describe ".upload_close" do
     let(:meth)        { :upload_close }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
     it "should call upload_server_name" do
@@ -289,7 +289,7 @@ describe Helix::Video do
 
   describe ".slice" do
     let(:meth)        { :slice }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-1) }
     let(:params)      { { params:       { signature: :some_sig },
@@ -313,7 +313,7 @@ describe Helix::Video do
 
   describe ".stillframe_for" do
     let(:meth)        { :stillframe_for }
-    let(:mock_config) { mock(Helix::Config) }
+    let(:mock_config) { double(Helix::Config) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(-2) }
     let(:image_data)  { :some_image_data }

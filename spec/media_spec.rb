@@ -36,7 +36,7 @@ describe Helix::Media do
 
     describe ".create" do
       let(:meth)          { :create }
-      let(:mock_config)   { mock(Helix::Config) }
+      let(:mock_config)   { double(Helix::Config) }
       subject             { klass.method(meth) }
       its(:arity)         { should eq(-1) }
       let(:hash_from_xml) { { klass_sym.to_s => { attribute: :value } } }
@@ -108,15 +108,15 @@ describe Helix::Media do
 
     describe ".find" do
       let(:meth)        { :find }
-      let(:mock_config) { mock(Helix::Config) }
-      let(:mock_obj)    { mock(klass, :load => :output_of_load) }
+      let(:mock_config) { double(Helix::Config) }
+      let(:mock_obj)    { double(klass, :load => :output_of_load) }
       subject     { klass.method(meth) }
       its(:arity) { should eq(-2) }
       context "when a Helix:Config instance is absent" do
         before(:each) do Helix::Config.stub(:instance) { nil } end
         context "and given a guid" do
           let(:guid_name)  { :the_guid_name }
-          let(:mock_attrs) { mock(Object, :[]= => :output_of_setting_val) }
+          let(:mock_attrs) { double(Object, :[]= => :output_of_setting_val) }
           before(:each) do
             klass.stub(:attributes) { mock_attrs }
             klass.stub(:guid_name)  { guid_name  }
@@ -140,7 +140,7 @@ describe Helix::Media do
         before(:each) do Helix::Config.stub(:instance) { mock_config } end
         context "and given a guid" do
           let(:guid_name)  { :the_guid_name }
-          let(:mock_attrs) { mock(Object, :[]= => :output_of_setting_val) }
+          let(:mock_attrs) { double(Object, :[]= => :output_of_setting_val) }
           before(:each) do
             klass.stub(:attributes) { mock_attrs }
             klass.stub(:guid_name)  { guid_name  }
@@ -185,7 +185,7 @@ describe Helix::Media do
 
         describe "#destroy" do
           let(:meth)   { :destroy }
-          let(:mock_config) { mock(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
+          let(:mock_config) { double(Helix::Config, build_url: :the_built_url, signature: :some_sig) }
           subject      { obj.method(meth) }
           let(:params) { { params: {signature: :some_sig } } }
           before do
@@ -212,7 +212,7 @@ describe Helix::Media do
         describe "#update" do
           next if child_class == Helix::Album
           let(:meth)  { :update }
-          let(:mock_config) { mock(Helix::Config) }
+          let(:mock_config) { double(Helix::Config) }
           subject     { obj.method(meth) }
           its(:arity) { should eq(-1) }
           before(:each) do
