@@ -551,7 +551,8 @@ describe Helix::Config do
       end
       it "should call RestClient.get(#{url})" do
         set_stubs(obj)
-        url = "#{obj.credentials[:site]}/api/#{sig_type}_key?licenseKey=#{license_key}&duration=1200"
+        url  = "#{obj.credentials[:site]}/api/#{sig_type}_key?licenseKey=#{license_key}&duration=1200"
+        url += "&contributor=helix_default_contributor" if sig_type == :ingest
         RestClient.should_receive(:get).with(url) { :fresh_sig }
         expect(obj.send(meth, sig_type)).to be(:fresh_sig)
       end

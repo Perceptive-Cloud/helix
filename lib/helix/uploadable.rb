@@ -7,9 +7,10 @@ module Helix
     module ClassMethods
 
       def upload(file_name)
-        RestClient.post(upload_server_name,
-                        { file:       File.new(file_name.to_s, "rb") },
-                        { multipart:  true } )
+        url     = upload_server_name
+        payload = { file: File.new(file_name.to_s, "rb") }
+        headers = { multipart:  true }
+        RestClient.post(url, payload, headers)
         http_close
       end
 
@@ -36,8 +37,9 @@ module Helix
       private
 
       def upload_get(action)
-        url = config.build_url( resource_label: "upload_sessions",
-                                guid:           config.signature(:ingest),
+        guid = config.signature(:ingest)
+        url  = config.build_url(resource_label: "upload_sessions",
+                                guid:           guid,
                                 action:         action,
                                 content_type:   "" )
         RestClient.get(url)

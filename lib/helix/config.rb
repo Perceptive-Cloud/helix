@@ -154,7 +154,8 @@ module Helix
 
       lk = license_key
       @signature_expiration_for[lk][sig_type] = Time.now + TIME_OFFSET
-      @signature_for[lk][sig_type] = RestClient.get(url_for(sig_type, opts))
+      new_sig_url                  = url_for(sig_type, opts)
+      @signature_for[lk][sig_type] = RestClient.get(new_sig_url)
     end
 
     def proxy
@@ -227,10 +228,10 @@ module Helix
 
     def url_for(sig_type, opts={})
       contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
-      contributor ||= credentials[:contributor]
+      contributor ||= (credentials[:contributor] || 'helix_default_contributor')
       url  = "#{credentials[:site]}/api/#{sig_type}_key?licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
-      url += "&contributor=#{contributor}"  if contributor
-      url += "&library_id=#{library_id}"    if library_id
+      url += "&contributor=#{contributor}" if sig_type == :ingest
+      url += "&library_id=#{library_id}"   if library_id
       url
     end
 
