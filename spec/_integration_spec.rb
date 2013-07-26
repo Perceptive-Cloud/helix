@@ -79,7 +79,7 @@ else
               "width"        => 1280,
               "height"       => 720,
               "size"         => 260548,
-              "url"          => "http://edited-yet-again-staging.twistage.com:80/videos/ece0d3fd03bf0/screenshots/original.jpg"
+              "url"          => "http://service-staging.twistage.com:80/videos/ece0d3fd03bf0/screenshots/original.jpg"
             }
             subject { item.screenshots.first }
             it { should eq(expected_ss) }

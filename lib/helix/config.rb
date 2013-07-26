@@ -227,11 +227,12 @@ module Helix
     end
 
     def url_for(sig_type, opts={})
-      contributor, library_id = [:contributor, :library_id].map { |key| opts[key] }
+      contributor, library_id, company_id = [:contributor, :library_id, :company_id].map { |key| opts[key] }
       contributor ||= (credentials[:contributor] || 'helix_default_contributor')
       url  = "#{credentials[:site]}/api/#{sig_type}_key?licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
       url += "&contributor=#{contributor}" if sig_type == :ingest
       url += "&library_id=#{library_id}"   if library_id
+      url += "&company_id=#{company_id}"   if company_id
       url
     end
 
