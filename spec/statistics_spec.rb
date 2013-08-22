@@ -57,16 +57,6 @@ describe Helix::Statistics do
                 Helix::Config.should_receive(:instance) { mock_config }
                 mod.send(meth, opts)
               end
-              it "should delete :content_type from opts" do
-                opts.stub(:delete).with(:"#{media_name}_id")     { :"the_#{media_name}_id" }
-                opts.should_receive(:delete).with(:content_type) { :"the_#{media_name}_id" }
-                mod.send(meth, opts)
-              end
-              it "should delete :#{media_name}_id from opts" do
-                opts.stub(:delete).with(:content_type)                 { :"the_#{media_name}_id" }
-                opts.should_receive(:delete).with(:"#{media_name}_id") { :"the_#{media_name}_id" }
-                mod.send(meth, opts)
-              end
               context "when opts contains a :content_type" do
                 before(:each) do opts.merge!(content_type: :the_format) end
                 it "should call config.build_url(guid: the_#{media_name}_id, resource_label: :#{media_name}s, action: :statistics, content_type: :the_format)" do
@@ -82,7 +72,8 @@ describe Helix::Statistics do
               end
               context "when opts did NOT contain a :content_type" do
                 it "should call config.build_url(guid: the_#{media_name}_id, resource_label: :#{media_name}s, action: :statistics)" do
-                  mock_config.should_receive(:build_url).with({guid: :"the_#{media_name}_id", resource_label: :"#{media_name}s", action: :statistics}) { :built_url }
+                  build_url_opts = {guid: :"the_#{media_name}_id", resource_label: :"#{media_name}s", action: :statistics}
+                  mock_config.should_receive(:build_url).with(build_url_opts) { :built_url }
                   mod.send(meth, opts)
                 end
               end
@@ -97,16 +88,6 @@ describe Helix::Statistics do
               it_behaves_like "clones the stats opts arg"
               it "should refer to the Helix::Config instance" do
                 Helix::Config.should_receive(:instance) { mock_config }
-                mod.send(meth, opts)
-              end
-              it "should delete :content_type from opts" do
-                opts.stub(:delete).with(:"#{media_name}_id")     { :"the_#{media_name}_id" }
-                opts.should_receive(:delete).with(:content_type) { nil }
-                mod.send(meth, opts)
-              end
-              it "should (fail to) delete :#{media_name}_id from opts" do
-                opts.stub(:delete).with(:content_type)                 { :the_content_type }
-                opts.should_receive(:delete).with(:"#{media_name}_id") { nil }
                 mod.send(meth, opts)
               end
               context "when opts contains a :content_type" do
