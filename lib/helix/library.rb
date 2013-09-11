@@ -9,6 +9,10 @@ module Helix
     # @return [String] A blank String
     def self.create(attrs={}); super; end
 
+    def self.find(nickname, opts={})
+      Helix::RESTful.find(nickname, opts.merge(content_type: :xml))
+    end
+
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
     #
