@@ -176,7 +176,7 @@ module Helix
 
     def sub_url_scoping(base_url, opts)
       resource_label = opts[:resource_label]
-      if resource_label == 'libraries'
+      if resource_label == 'libraries' and base_url !~ /companies/
         co_id = opts[:company] || credentials[:company]
         raise "No company to scope to: #{credentials}" if co_id.nil?
         resource_label = "companies/#{co_id}/libraries"

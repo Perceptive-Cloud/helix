@@ -235,7 +235,7 @@ describe Helix::Config do
         before(:each) do obj.credentials.merge!(company: :the_co_id) end
         context "when given opts[:resource_label] of '#{resource_label}'" do
           subject { obj.send(meth, resource_label: resource_label) }
-          it { should eq("http://example.com/companies/the_co_id/companies/the_co_id/libraries.xml") }
+          it { should eq("http://example.com/companies/the_co_id/libraries.xml") }
         end
       end
     end

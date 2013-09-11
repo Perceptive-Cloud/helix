@@ -10,7 +10,7 @@ module Helix
     def self.create(attrs={}); super; end
 
     def self.find(nickname, opts={})
-      Helix::RESTful.find(nickname, opts.merge(content_type: :xml))
+      super(nickname, opts.merge(content_type: :xml))
     end
 
     # The class name, to be used by supporting classes. Such as Config which uses
