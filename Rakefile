@@ -12,6 +12,7 @@ task :reinstall_helix do
 end
 
 task :push do
+  `yard doc`
   `rm helix-*.pre.gem`
   `gem build helix.gemspec`
   `sudo gem i helix-*.gem`
