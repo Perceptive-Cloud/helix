@@ -341,14 +341,14 @@ describe Helix::Config do
     subject     { obj.method(meth) }
     its(:arity) { should eq(-3) }
     context "when called" do
-      let(:opts)  { {opts_key1: :opts_val1} }
+      let(:opts)  { {opts_key1: :opts_val1, per_page: 99} }
       let(:label) { :videos }
       before(:each) do
         obj.stub(:signature) { :the_sig }
       end
       subject { obj.send(meth, :a_url, label, opts) }
       it "should successively call RestClient.get with the opts arg merged with pagination info and return the parsed results" do
-        base_opts = {opts_key1: :opts_val1, per_page: 100, signature: :the_sig}
+        base_opts = {opts_key1: :opts_val1, per_page: 99, signature: :the_sig}
         opts1 = {params: base_opts.merge(page: 1)}
         opts2 = {params: base_opts.merge(page: 2)}
         opts3 = {params: base_opts.merge(page: 3)}
