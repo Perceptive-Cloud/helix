@@ -193,6 +193,14 @@ module Helix
       @signature_for[license_key][sig_type]
     end
 
+    def get_contributor_library_company(opts)
+      sig_param_labels = [:contributor, :library, :company]
+      scoping_proc     = lambda { |key| opts[key] || credentials[key] }
+      contributor, library, company = sig_param_labels.map(&scoping_proc)
+      contributor    ||= 'helix_default_contributor'
+      [contributor, library, company]
+    end
+
     def license_key
       @credentials[:license_key]
     end
@@ -237,10 +245,9 @@ module Helix
     end
 
     def url_for(sig_type, opts={})
-      contributor, library, company = [:contributor, :library, :company].map { |key| opts[key] }
-      contributor ||= (credentials[:contributor] || 'helix_default_contributor')
-      library     ||= credentials[:library]
-      url  = "#{credentials[:site]}/api/#{sig_type}_key?licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
+      contributor, library, company = get_contributor_library_company(opts)
+      url  = "#{credentials[:site]}/api/#{sig_type}_key?"
+      url += "licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
       url += "&contributor=#{contributor}" if sig_type == :ingest
       url += "&library_id=#{library}"   if library
       url += "&company_id=#{company}"   if company
