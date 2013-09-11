@@ -50,7 +50,7 @@ module Helix
     # @return [String] The full RESTful URL string object
     def add_sub_urls(base_url, opts)
       guid, action, format = [:guid, :action, :formats].map { |sub| opts[sub] }
-      url   = "#{base_url}/#{opts[:resource_label]}"
+      url   = sub_url_scoping(base_url, opts)
       url  += "/#{guid}"            if guid
       url  += "/formats/#{format}"  if format
       url  += "/#{action}"          if action
@@ -173,6 +173,16 @@ module Helix
     end
 
     private
+
+    def sub_url_scoping(base_url, opts)
+      resource_label = opts[:resource_label]
+      if resource_label == 'libraries'
+        co_id = opts[:company] || credentials[:company]
+        raise "No company to scope to: #{credentials}" if co_id.nil?
+        resource_label = "companies/#{co_id}/libraries"
+      end
+      "#{base_url}/#{resource_label}"
+    end
 
     def error_message_for(sig_type)
       "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."

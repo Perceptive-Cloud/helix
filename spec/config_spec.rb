@@ -204,8 +204,8 @@ describe Helix::Config do
       subject { obj.send(meth, {guid: :the_guid, action: :the_action}) }
       it_behaves_like "reads scope from credentials for build_url", :videos, :xml, {guid: :the_guid, action: :the_action}
     end
-    [ :videos, :tracks ].each do |resource_label|
-      context "when given opts[:resource_label] of :#{resource_label}" do
+    %w[ videos tracks ].each do |resource_label|
+      context "when given opts[:resource_label] of '#{resource_label}'" do
         subject { obj.send(meth, resource_label: resource_label) }
         it_behaves_like "reads scope from credentials for build_url", resource_label, :xml
       end
@@ -220,6 +220,23 @@ describe Helix::Config do
       context "when given opts[:resource_label] of :#{resource_label}, opts[:guid] of :the_guid, opts[:action] of :the_action" do
         subject { obj.send(meth, resource_label: resource_label, guid: :the_guid, action: :the_action) }
         it_behaves_like "reads scope from credentials for build_url", resource_label, :xml, {guid: :the_guid, action: :the_action}
+      end
+    end
+    %w[ libraries ].each do |resource_label|
+      context "when there is no company in credentials" do
+        context "when given opts[:resource_label] of '#{resource_label}'" do
+          it "should raise a no company error" do
+            the_proc = lambda { obj.send(meth, resource_label: resource_label) }
+            expect(the_proc).to raise_error
+          end
+        end
+      end
+      context "when there is a company in credentials" do
+        before(:each) do obj.credentials.merge!(company: :the_co_id) end
+        context "when given opts[:resource_label] of '#{resource_label}'" do
+          subject { obj.send(meth, resource_label: resource_label) }
+          it { should eq("http://example.com/companies/the_co_id/companies/the_co_id/libraries.xml") }
+        end
       end
     end
     [ :json, :xml ].each do |content_type|
