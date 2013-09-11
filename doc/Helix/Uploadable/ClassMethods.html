@@ -10,9 +10,9 @@
   
 </title>
 
-  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   hasFrames = window.top.frames.main ? true : false;
@@ -243,7 +243,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="http_close-instance_method">
   
-    - (<tt>Object</tt>) <strong>http_close</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>http_close</strong> 
   
 
   
@@ -255,12 +255,12 @@
       <pre class="lines">
 
 
-28
 29
-30</pre>
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_http_close'>http_close</span>
   <span class='id identifier rubyid_upload_get'>upload_get</span><span class='lparen'>(</span><span class='symbol'>:http_close</span><span class='rparen'>)</span>
@@ -273,7 +273,7 @@
       <div class="method_details ">
   <h3 class="signature " id="http_open-instance_method">
   
-    - (<tt>Object</tt>) <strong>http_open</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>http_open</strong> 
   
 
   
@@ -285,12 +285,12 @@
       <pre class="lines">
 
 
-20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_http_open'>http_open</span>
   <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
@@ -303,7 +303,7 @@
       <div class="method_details ">
   <h3 class="signature " id="upload-instance_method">
   
-    - (<tt>Object</tt>) <strong>upload</strong>(file_name) 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>upload</strong>(file_name) 
   
 
   
@@ -320,15 +320,17 @@
 11
 12
 13
-14</pre>
+14
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_file_name'>file_name</span><span class='rparen'>)</span>
-  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_upload_server_name'>upload_server_name</span><span class='comma'>,</span>
-                  <span class='lbrace'>{</span> <span class='label'>file:</span>       <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_file_name'>file_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='comma'>,</span>
-                  <span class='lbrace'>{</span> <span class='label'>multipart:</span>  <span class='kw'>true</span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_url'>url</span>     <span class='op'>=</span> <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
+  <span class='id identifier rubyid_payload'>payload</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>file:</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_file_name'>file_name</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_headers'>headers</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>multipart:</span>  <span class='kw'>true</span> <span class='rbrace'>}</span>
+  <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_payload'>payload</span><span class='comma'>,</span> <span class='id identifier rubyid_headers'>headers</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_http_close'>http_close</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -339,7 +341,7 @@
       <div class="method_details ">
   <h3 class="signature " id="upload_close-instance_method">
   
-    - (<tt>Object</tt>) <strong>upload_close</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>upload_close</strong> 
   
 
   
@@ -351,12 +353,12 @@
       <pre class="lines">
 
 
-32
 33
-34</pre>
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload_close'>upload_close</span>
   <span class='id identifier rubyid_http_close'>http_close</span>
@@ -369,7 +371,7 @@
       <div class="method_details ">
   <h3 class="signature " id="upload_open-instance_method">
   
-    - (<tt>Object</tt>) <strong>upload_open</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>upload_open</strong> 
   
 
   
@@ -381,12 +383,12 @@
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload_open'>upload_open</span>
   <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
@@ -399,7 +401,7 @@
       <div class="method_details ">
   <h3 class="signature " id="upload_server_name-instance_method">
   
-    - (<tt>Object</tt>) <strong>upload_server_name</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>upload_server_name</strong> 
   
 
   
@@ -411,15 +413,15 @@
       <pre class="lines">
 
 
-16
 17
-18</pre>
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/uploadable.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload_server_name'>upload_server_name</span>
-  <span class='id identifier rubyid_upload_get'>upload_get</span><span class='lparen'>(</span><span class='symbol'>:http_open</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_upload_get'>upload_get</span><span class='lparen'>(</span><span class='symbol'>:http_open</span><span class='comma'>,</span> <span class='id identifier rubyid_ingest_opts'>ingest_opts</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -431,9 +433,9 @@
 </div>
 
     <div id="footer">
-  Generated on Tue May  7 14:01:46 2013 by
+  Generated on Wed Sep 11 14:33:09 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.3 (ruby-1.9.2).
+  0.8.7 (ruby-1.9.3).
 </div>
 
   </body>
