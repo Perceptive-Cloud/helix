@@ -20,6 +20,14 @@ task :push do
   `gem owner helix -a mykewould@gmail.com`
 end
 
+task :push_rvm do 
+  `yard doc`
+  `rm helix-*.pre.gem`
+  `gem build helix.gemspec`
+  `sudo gem i helix-*.gem`
+  `gem push helix-*.pre.gem`
+end
+
 task :reinstall_helix_rvm do
   `gem uni helix`
   `gem build helix.gemspec`
