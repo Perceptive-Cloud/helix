@@ -549,10 +549,12 @@ describe Helix::Config do
         obj.instance_variable_set(:@signature_expiration_for, sig_exp_for)
         RestClient.stub(:get) { :fresh_sig }
       end
+      before { Helix::Config.instance.credentials[:library_id] = "default" }
       it "should call RestClient.get(#{url})" do
         set_stubs(obj)
         url  = "#{obj.credentials[:site]}/api/#{sig_type}_key?licenseKey=#{license_key}&duration=1200"
         url += "&contributor=helix_default_contributor" if sig_type == :ingest
+        url += "&library_id=default"
         RestClient.should_receive(:get).with(url) { :fresh_sig }
         expect(obj.send(meth, sig_type)).to be(:fresh_sig)
       end
