@@ -34,9 +34,21 @@ module Helix
 
     private
 
+    def error_message_for(sig_type)
+      "I don't understand '#{sig_type}'. Please give me one of :ingest, :update, or :view."
+    end
+
     def existing_sig_for(sig_type)
       return if sig_expired_for?(sig_type)
       @signature_for[license_key][sig_type]
+    end
+
+    def get_contributor_library_company(opts)
+      sig_param_labels = [:contributor, :library, :company]
+      scoping_proc     = lambda { |key| opts[key] || credentials[key] }
+      contributor, library, company = sig_param_labels.map(&scoping_proc)
+      contributor    ||= 'helix_default_contributor'
+      [contributor, library, company]
     end
 
     def license_key
