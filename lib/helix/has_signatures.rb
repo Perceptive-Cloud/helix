@@ -1,6 +1,6 @@
 module Helix
 
-  module SignatureHandler
+  module HasSignatures
 
     unless defined?(self::VALID_SIG_TYPES)
       SIG_DURATION     = 1200 # in minutes

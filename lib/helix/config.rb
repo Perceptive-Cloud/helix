@@ -2,14 +2,14 @@ require 'helix/video'
 require 'helix/track'
 require 'helix/album'
 require 'helix/image'
-require 'helix/signature_handler'
+require 'helix/has_signatures'
 require 'singleton'
 
 module Helix
 
   class Config
 
-    include SignatureHandler
+    include HasSignatures
     include Singleton
 
     unless defined?(self::DEFAULT_FILENAME)
