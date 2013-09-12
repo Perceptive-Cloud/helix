@@ -43,6 +43,7 @@ module Helix
       "libraries"
     end
 
+    #TODO: Revisit and document.
     def self.known_attributes
       [:player_profile, :ingest_profile, :secure_stream_callback_url, :hooks_attributes]
     end

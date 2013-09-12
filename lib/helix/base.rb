@@ -137,8 +137,8 @@ module Helix
       base_url_opts = {content_type: (opts[:content_type] || :json)}
       url           = memo_cfg.build_url(base_url_opts.merge(guid: self.guid, resource_label: plural_resource_label))
       # We allow opts[:sig_type] for internal negative testing only.
-      raw_attrs   = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
-      @attributes = massage_raw_attrs(raw_attrs)
+      raw_attrs     = memo_cfg.get_response(url, {sig_type: :view}.merge(opts))
+      @attributes   = massage_raw_attrs(raw_attrs)
       self
     end
     alias_method :reload, :load

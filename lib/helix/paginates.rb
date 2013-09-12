@@ -22,8 +22,12 @@ module Helix
         data_set     = raw_response[plural_resource_label]
         data_sets   += data_set if data_set
         page        += 1
-      end until last_page?
+      end until last_page? || specific_page_requested?(original_opts)
       data_sets
+    end
+
+    def specific_page_requested?(original_opts)
+      original_opts.has_key?(:page)
     end
 
     # Creates additional URL stubbing that can be used in conjuction
@@ -33,9 +37,9 @@ module Helix
     # @param [Hash] original_opts a hash of options for building URL additions
     # @return [String] The full RESTful URL string object
     def get_response(url, original_opts={})
-      opts        = massage_custom_fields_in(original_opts)
-      sig_type    = opts.delete(:sig_type)
-      params      = opts.merge(signature: signature(sig_type, opts))
+      opts     = massage_custom_fields_in(original_opts)
+      sig_type = opts.delete(:sig_type)
+      params   = opts.merge(signature: signature(sig_type, opts))
       begin
         @response = RestClient.get(url, params: params)
       rescue RestClient::InternalServerError => e
