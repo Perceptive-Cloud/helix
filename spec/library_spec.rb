@@ -10,7 +10,7 @@ describe Helix::Library do
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:ancestors) { should_not include(Helix::Media) }
 
-  its(:guid_name)             { should eq('library_id') }
+  its(:guid_name)             { should eq('name')       }
   its(:resource_label_sym)    { should be(:library)     }
   its(:plural_resource_label) { should eq('libraries')  }
   [:find, :create, :all, :find_all, :where].each do |crud_call|

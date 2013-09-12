@@ -13,6 +13,16 @@ module Helix
       super(nickname, opts.merge(content_type: :xml))
     end
 
+    # Creates a string that associates to the class id.
+    #
+    # @example
+    #   Helix::Library.guid_name #=> "name"
+    #
+    # @return [String] The guid name for a specific class.
+    def self.guid_name
+      "name"
+    end
+
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
     #
