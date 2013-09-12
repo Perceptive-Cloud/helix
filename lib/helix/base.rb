@@ -166,6 +166,7 @@ module Helix
     private
 
     def massage_raw_attrs(raw_attrs)
+      return raw_attrs['site'] if raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?('site')
       # FIXME: Albums JSON output is embedded as the only member of an Array.
       proper_hash = raw_attrs.respond_to?(:has_key?) && raw_attrs.has_key?(guid_name)
       proper_hash ? raw_attrs : raw_attrs.first
