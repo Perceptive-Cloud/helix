@@ -154,7 +154,7 @@ module Helix
 
       lk = license_key
       @signature_expiration_for[lk][sig_type] = Time.now + TIME_OFFSET
-      new_sig_url                  = url_for(sig_type, opts)
+      new_sig_url                  = signature_url_for(sig_type, opts)
       @signature_for[lk][sig_type] = RestClient.get(new_sig_url)
     end
 
@@ -244,7 +244,7 @@ module Helix
       expires_at <= Time.now
     end
 
-    def url_for(sig_type, opts={})
+    def signature_url_for(sig_type, opts={})
       contributor, library, company = get_contributor_library_company(opts)
       url  = "#{credentials[:site]}/api/#{sig_type}_key?"
       url += "licenseKey=#{credentials[:license_key]}&duration=#{SIG_DURATION}"
