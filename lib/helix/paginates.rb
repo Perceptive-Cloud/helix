@@ -26,10 +26,6 @@ module Helix
       data_sets
     end
 
-    def specific_page_requested?(original_opts)
-      original_opts.has_key?(:page)
-    end
-
     # Creates additional URL stubbing that can be used in conjuction
     # with the base_url to create RESTful URLs
     #
@@ -68,6 +64,10 @@ module Helix
         k,v = pair
         memo.merge("custom_fields[#{k}]" => v)
       end
+    end
+
+    def specific_page_requested?(original_opts)
+      original_opts.has_key?(:page)
     end
 
     def parse_response_by_url_format(response, url)
