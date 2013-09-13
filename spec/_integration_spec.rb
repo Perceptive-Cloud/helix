@@ -6,7 +6,7 @@ config = File.exists?(config_filename) ? Helix::Config.load(config_filename) : n
 
 if config.nil?
   puts "No config, skipping integration specs"
-elsif %w(1 t true).include?(ENV['SKIP_INTEGRATION'])
+elsif %w(1 t true).include?(ENV['SKIP_INTEGRATION']) or not %w(1 t true).include?(ENV['INTEGRATION'])
   puts "Skipping integration specs due to user request"
 else
 
