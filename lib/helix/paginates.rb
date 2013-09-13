@@ -16,6 +16,7 @@ module Helix
     # @return [Array] The accumulated attribute Hashes for ORM instances
     def get_aggregated_data_sets(url, plural_resource_label, original_opts={})
       data_sets, page, per_page = [], STARTING_PAGE
+      ### OPTIMIZE: memoize specific_page_requested? into a local var outside the loop
       begin
         aggregation_opts = {page: page, per_page: ITEMS_PER_PAGE}.merge(original_opts)
         raw_response = get_response(url, {sig_type: :view}.merge(aggregation_opts))
