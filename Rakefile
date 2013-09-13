@@ -20,7 +20,7 @@ task :push do
   `gem owner helix -a mykewould@gmail.com`
 end
 
-task :push_rvm do 
+task :push_rvm do
   `yard doc`
   `rm helix-*.pre.gem`
   `gem build helix.gemspec`
