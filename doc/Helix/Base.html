@@ -1610,8 +1610,8 @@ them as an array.</p>
   <span class='id identifier rubyid_base_url_opts'>base_url_opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>content_type:</span> <span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_url'>url</span>           <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='id identifier rubyid_base_url_opts'>base_url_opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>guid:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='label'>resource_label:</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='comment'># We allow opts[:sig_type] for internal negative testing only.
-</span>  <span class='id identifier rubyid_raw_attrs'>raw_attrs</span>   <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='ivar'>@attributes</span> <span class='op'>=</span> <span class='id identifier rubyid_massage_raw_attrs'>massage_raw_attrs</span><span class='lparen'>(</span><span class='id identifier rubyid_raw_attrs'>raw_attrs</span><span class='rparen'>)</span>
+</span>  <span class='id identifier rubyid_raw_attrs'>raw_attrs</span>     <span class='op'>=</span> <span class='id identifier rubyid_memo_cfg'>memo_cfg</span><span class='period'>.</span><span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@attributes</span>   <span class='op'>=</span> <span class='id identifier rubyid_massage_raw_attrs'>massage_raw_attrs</span><span class='lparen'>(</span><span class='id identifier rubyid_raw_attrs'>raw_attrs</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1684,7 +1684,7 @@ them as an array.</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Sep 11 16:31:57 2013 by
+  Generated on Thu Sep 12 17:21:39 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7 (ruby-1.9.3).
 </div>

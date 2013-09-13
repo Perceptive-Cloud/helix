@@ -91,7 +91,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2">Singleton</dd>
+      <dd class="r2"><span class='object_link'><a href="BuildsUrls.html" title="Helix::BuildsUrls (module)">BuildsUrls</a></span>, <span class='object_link'><a href="HasSignatures.html" title="Helix::HasSignatures (module)">HasSignatures</a></span>, <span class='object_link'><a href="Paginates.html" title="Helix::Paginates (module)">Paginates</a></span>, Singleton</dd>
       
     
   
@@ -113,60 +113,28 @@
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>./helix.yml</span><span class='tstring_end'>'</span></span></pre></dd>
       
-        <dt id="ITEMS_PER_PAGE-constant" class="">ITEMS_PER_PAGE =
-          
-        </dt>
-        <dd><pre class="code"><span class='int'>100</span></pre></dd>
-      
-        <dt id="SCOPES-constant" class="">SCOPES =
-          
-        </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:reseller</span><span class='comma'>,</span> <span class='symbol'>:company</span><span class='comma'>,</span> <span class='symbol'>:library</span><span class='rbracket'>]</span></pre></dd>
-      
-        <dt id="SIG_DURATION-constant" class="">SIG_DURATION =
-          <div class="docstring">
-  <div class="discussion">
-    <p>in minutes</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='int'>1200</span></pre></dd>
-      
-        <dt id="STARTING_PAGE-constant" class="">STARTING_PAGE =
-          
-        </dt>
-        <dd><pre class="code"><span class='int'>1</span></pre></dd>
-      
-        <dt id="TIME_OFFSET-constant" class="">TIME_OFFSET =
-          <div class="docstring">
-  <div class="discussion">
-    <p>1000 minutes, lower to give some margin of error</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='int'>1000</span> <span class='op'>*</span> <span class='int'>60</span></pre></dd>
-      
-        <dt id="VALID_SIG_TYPES-constant" class="">VALID_SIG_TYPES =
-          
-        </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span> <span class='symbol'>:ingest</span><span class='comma'>,</span> <span class='symbol'>:update</span><span class='comma'>,</span> <span class='symbol'>:view</span> <span class='rbracket'>]</span></pre></dd>
-      
     </dl>
   
 
 
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="Paginates.html" title="Helix::Paginates (module)">Paginates</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Paginates.html#ITEMS_PER_PAGE-constant" title="Helix::Paginates::ITEMS_PER_PAGE (constant)">Paginates::ITEMS_PER_PAGE</a></span>, <span class='object_link'><a href="Paginates.html#STARTING_PAGE-constant" title="Helix::Paginates::STARTING_PAGE (constant)">Paginates::STARTING_PAGE</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="HasSignatures.html" title="Helix::HasSignatures (module)">HasSignatures</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HasSignatures.html#SIG_DURATION-constant" title="Helix::HasSignatures::SIG_DURATION (constant)">HasSignatures::SIG_DURATION</a></span>, <span class='object_link'><a href="HasSignatures.html#TIME_OFFSET-constant" title="Helix::HasSignatures::TIME_OFFSET (constant)">HasSignatures::TIME_OFFSET</a></span>, <span class='object_link'><a href="HasSignatures.html#VALID_SIG_TYPES-constant" title="Helix::HasSignatures::VALID_SIG_TYPES (constant)">HasSignatures::VALID_SIG_TYPES</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="BuildsUrls.html" title="Helix::BuildsUrls (module)">BuildsUrls</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="BuildsUrls.html#SCOPES-constant" title="Helix::BuildsUrls::SCOPES (constant)">BuildsUrls::SCOPES</a></span></p>
 
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
@@ -248,7 +216,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute signature_expiration_for.</p>
+    <span class="summary_desc"><div class='inline'><p>local in Paginates in HasSignatures.</p>
 </div></span>
   
 </li>
@@ -276,7 +244,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute signature_for.</p>
+    <span class="summary_desc"><div class='inline'><p>local in Paginates in HasSignatures.</p>
 </div></span>
   
 </li>
@@ -330,166 +298,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#add_sub_urls-instance_method" title="#add_sub_urls (instance method)">- (String) <strong>add_sub_urls</strong>(base_url, opts) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Creates additional URL stubbing that can be used in conjuction with the base_url to create RESTful URLs.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#build_url-instance_method" title="#build_url (instance method)">- (String) <strong>build_url</strong>(opts = {}) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Creates a full RESTful URL to be used for HTTP requests.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#clear_signatures%21-instance_method" title="#clear_signatures! (instance method)">- (Object) <strong>clear_signatures!</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#get_aggregated_data_sets-instance_method" title="#get_aggregated_data_sets (instance method)">- (Array) <strong>get_aggregated_data_sets</strong>(url, plural_resource_label, original_opts = {}) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Makes aggregated calls to get_response with pagination folding/injecting/accumulating the results into a single output set.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#get_base_url-instance_method" title="#get_base_url (instance method)">- (String) <strong>get_base_url</strong>(opts) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Creates the base url with information collected from credentials.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#get_response-instance_method" title="#get_response (instance method)">- (String) <strong>get_response</strong>(url, original_opts = {}) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Creates additional URL stubbing that can be used in conjuction with the base_url to create RESTful URLs.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#last_page%3F-instance_method" title="#last_page? (instance method)">- (Boolean) <strong>last_page?</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Reports whether the most recent response&#39;s headers have a true :is_last_page value.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#proxy-instance_method" title="#proxy (instance method)">- (Object) <strong>proxy</strong> </a>
     
 
@@ -509,34 +317,44 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#signature-instance_method" title="#signature (instance method)">- (String) <strong>signature</strong>(sig_type, opts = {}) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>Fetches the signature for a specific license key.</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
 
 
   
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Paginates.html" title="Helix::Paginates (module)">Paginates</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Paginates.html#get_aggregated_data_sets-instance_method" title="Helix::Paginates#get_aggregated_data_sets (method)">#get_aggregated_data_sets</a></span>, <span class='object_link'><a href="Paginates.html#get_response-instance_method" title="Helix::Paginates#get_response (method)">#get_response</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HasSignatures.html" title="Helix::HasSignatures (module)">HasSignatures</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HasSignatures.html#clear_signatures%21-instance_method" title="Helix::HasSignatures#clear_signatures! (method)">#clear_signatures!</a></span>, <span class='object_link'><a href="HasSignatures.html#signature-instance_method" title="Helix::HasSignatures#signature (method)">#signature</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="BuildsUrls.html" title="Helix::BuildsUrls (module)">BuildsUrls</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="BuildsUrls.html#add_sub_urls-instance_method" title="Helix::BuildsUrls#add_sub_urls (method)">#add_sub_urls</a></span>, <span class='object_link'><a href="BuildsUrls.html#build_url-instance_method" title="Helix::BuildsUrls#build_url (method)">#build_url</a></span>, <span class='object_link'><a href="BuildsUrls.html#get_base_url-instance_method" title="Helix::BuildsUrls#get_base_url (method)">#get_base_url</a></span></p>
+
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -637,7 +455,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute signature_expiration_for</p>
+    <p>local
+in Paginates
+in HasSignatures</p>
 
 
   </div>
@@ -651,12 +471,12 @@
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_signature_expiration_for'>signature_expiration_for</span>
   <span class='ivar'>@signature_expiration_for</span>
@@ -679,7 +499,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute signature_for</p>
+    <p>local
+in Paginates
+in HasSignatures</p>
 
 
   </div>
@@ -693,12 +515,12 @@
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_signature_for'>signature_for</span>
   <span class='ivar'>@signature_for</span>
@@ -789,17 +611,17 @@ helix.yml file is used.</p>
       <pre class="lines">
 
 
-36
 37
 38
 39
 40
 41
 42
-43</pre>
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_yaml_file_location'>yaml_file_location</span> <span class='op'>=</span> <span class='const'>DEFAULT_FILENAME</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_config'>config</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
@@ -821,621 +643,7 @@ helix.yml file is used.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="add_sub_urls-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>add_sub_urls</strong>(base_url, opts) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Creates additional URL stubbing that can be used in conjuction
-with the base_url to create RESTful URLs</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>base_url</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the base part of the URL to be used</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>a hash of options for building URL additions</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The full RESTful URL string object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-51
-52
-53
-54
-55
-56
-57
-58
-59</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 51</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_sub_urls'>add_sub_urls</span><span class='lparen'>(</span><span class='id identifier rubyid_base_url'>base_url</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_guid'>guid</span><span class='comma'>,</span> <span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='id identifier rubyid_format'>format</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:guid</span><span class='comma'>,</span> <span class='symbol'>:action</span><span class='comma'>,</span> <span class='symbol'>:formats</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_sub'>sub</span><span class='op'>|</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='id identifier rubyid_sub'>sub</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_url'>url</span>   <span class='op'>=</span> <span class='id identifier rubyid_sub_url_scoping'>sub_url_scoping</span><span class='lparen'>(</span><span class='id identifier rubyid_base_url'>base_url</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>  <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_guid'>guid</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>            <span class='kw'>if</span> <span class='id identifier rubyid_guid'>guid</span>
-  <span class='id identifier rubyid_url'>url</span>  <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/formats/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_format'>format</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>  <span class='kw'>if</span> <span class='id identifier rubyid_format'>format</span>
-  <span class='id identifier rubyid_url'>url</span>  <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_action'>action</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>          <span class='kw'>if</span> <span class='id identifier rubyid_action'>action</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_url'>url</span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_blank?'>blank?</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_url'>url</span><span class='rbrace'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="build_url-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>build_url</strong>(opts = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Creates a full RESTful URL to be used for HTTP requests.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>a hash of options for building URL</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The full RESTful URL string object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-65
-66
-67
-68
-69
-70</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 65</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_build_url'>build_url</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:content_type</span><span class='rbracket'>]</span>   <span class='op'>||=</span> <span class='symbol'>:xml</span>
-  <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:resource_label</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='symbol'>:videos</span>
-  <span class='id identifier rubyid_base_url'>base_url</span>                <span class='op'>=</span> <span class='id identifier rubyid_get_base_url'>get_base_url</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_url'>url</span>                     <span class='op'>=</span> <span class='id identifier rubyid_add_sub_urls'>add_sub_urls</span><span class='lparen'>(</span><span class='id identifier rubyid_base_url'>base_url</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="clear_signatures!-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>clear_signatures!</strong> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-72
-73
-74
-75</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 72</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_clear_signatures!'>clear_signatures!</span>
-  <span class='ivar'>@signature_for</span>            <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-  <span class='ivar'>@signature_expiration_for</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="get_aggregated_data_sets-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span></tt>) <strong>get_aggregated_data_sets</strong>(url, plural_resource_label, original_opts = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Makes aggregated calls to get_response with pagination
-folding/injecting/accumulating the results into a single output set.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the base part of the URL to be used</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>plural_resource_label:</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>&quot;videos&quot;, &quot;tracks&quot;, etc.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>original_opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>a hash of options for building URL additions</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The accumulated attribute Hashes for ORM instances</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 84</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_get_aggregated_data_sets'>get_aggregated_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='comma'>,</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_data_sets'>data_sets</span><span class='comma'>,</span> <span class='id identifier rubyid_page'>page</span><span class='comma'>,</span> <span class='id identifier rubyid_per_page'>per_page</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>STARTING_PAGE</span>
-  <span class='kw'>begin</span>
-    <span class='id identifier rubyid_aggregation_opts'>aggregation_opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>page:</span> <span class='id identifier rubyid_page'>page</span><span class='comma'>,</span> <span class='label'>per_page:</span> <span class='const'>ITEMS_PER_PAGE</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_raw_response'>raw_response</span> <span class='op'>=</span> <span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_aggregation_opts'>aggregation_opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_data_set'>data_set</span>     <span class='op'>=</span> <span class='id identifier rubyid_raw_response'>raw_response</span><span class='lbracket'>[</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rbracket'>]</span>
-    <span class='id identifier rubyid_data_sets'>data_sets</span>   <span class='op'>+=</span> <span class='id identifier rubyid_data_set'>data_set</span> <span class='kw'>if</span> <span class='id identifier rubyid_data_set'>data_set</span>
-    <span class='id identifier rubyid_page'>page</span>        <span class='op'>+=</span> <span class='int'>1</span>
-  <span class='kw'>end</span> <span class='kw'>until</span> <span class='id identifier rubyid_last_page?'>last_page?</span>
-  <span class='id identifier rubyid_data_sets'>data_sets</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="get_base_url-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>get_base_url</strong>(opts) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Creates the base url with information collected from credentials.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>a hash of options for building URL</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The base RESTful URL string object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 100</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_get_base_url'>get_base_url</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_creds'>creds</span>     <span class='op'>=</span> <span class='id identifier rubyid_credentials'>credentials</span>
-  <span class='id identifier rubyid_base_url'>base_url</span>  <span class='op'>=</span> <span class='id identifier rubyid_creds'>creds</span><span class='lbracket'>[</span><span class='symbol'>:site</span><span class='rbracket'>]</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_base_url'>base_url</span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:guid</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:action</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='symbol'>:create_many</span>
-  <span class='id identifier rubyid_reseller'>reseller</span><span class='comma'>,</span> <span class='id identifier rubyid_company'>company</span><span class='comma'>,</span> <span class='id identifier rubyid_library'>library</span> <span class='op'>=</span> <span class='const'>SCOPES</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_scope'>scope</span><span class='op'>|</span> <span class='id identifier rubyid_creds'>creds</span><span class='lbracket'>[</span><span class='id identifier rubyid_scope'>scope</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_base_url'>base_url</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/resellers/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_reseller'>reseller</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_reseller'>reseller</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_company'>company</span>
-    <span class='id identifier rubyid_base_url'>base_url</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/companies/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_company'>company</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_base_url'>base_url</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/libraries/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_library'>library</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_library'>library</span>
-  <span class='kw'>end</span>
-  <span class='id identifier rubyid_base_url'>base_url</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="get_response-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>get_response</strong>(url, original_opts = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Creates additional URL stubbing that can be used in conjuction
-with the base_url to create RESTful URLs</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>the base part of the URL to be used</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>original_opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>a hash of options for building URL additions</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The full RESTful URL string object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 119</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_opts'>opts</span>        <span class='op'>=</span> <span class='id identifier rubyid_massage_custom_fields_in'>massage_custom_fields_in</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_sig_type'>sig_type</span>    <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:sig_type</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_params'>params</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='label'>signature:</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='kw'>begin</span>
-    <span class='ivar'>@response</span> <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='label'>params:</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='kw'>rescue</span> <span class='const'>RestClient</span><span class='op'>::</span><span class='const'>InternalServerError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NetworkError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to access url </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_url'>url</span><span class='rbrace'>}</span><span class='tstring_content'> with params </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_params'>params</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-  <span class='id identifier rubyid_parse_response_by_url_format'>parse_response_by_url_format</span><span class='lparen'>(</span><span class='ivar'>@response</span><span class='comma'>,</span> <span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="last_page?-instance_method">
-  
-    - (<tt>Boolean</tt>) <strong>last_page?</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Reports whether the most recent response&#39;s headers have a true :is_last_page value</p>
-
-<p>or if there is an explictly false value.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>As above. Returns false if no such header is found,</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-135
-136
-137
-138
-139
-140</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 135</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_last_page?'>last_page?</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='ivar'>@response</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span>
-  <span class='kw'>return</span> <span class='kw'>true</span>  <span class='kw'>unless</span> <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='symbol'>:is_last_page</span><span class='rparen'>)</span>
-  <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='symbol'>:is_last_page</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>true</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="proxy-instance_method">
+  <h3 class="signature first" id="proxy-instance_method">
   
     - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>proxy</strong> 
   
@@ -1449,22 +657,22 @@ with the base_url to create RESTful URLs</p>
       <pre class="lines">
 
 
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173</pre>
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 161</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_proxy'>proxy</span>
   <span class='kw'>if</span> <span class='ivar'>@credentials</span><span class='lbracket'>[</span><span class='symbol'>:proxy_uri</span><span class='rbracket'>]</span>
@@ -1484,125 +692,12 @@ with the base_url to create RESTful URLs</p>
 </table>
 </div>
     
-      <div class="method_details ">
-  <h3 class="signature " id="signature-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>signature</strong>(sig_type, opts = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p>Fetches the signature for a specific license key.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>sig_type</span>
-      
-      
-        <span class='type'>(<tt>Symbol</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The type of signature required for calls.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>opts</span>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>allows you to overide contributor and license_id</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>The signature needed to pass around for calls.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/config.rb', line 147</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_prepare_signature_memoization'>prepare_signature_memoization</span>
-  <span class='id identifier rubyid_memo_sig'>memo_sig</span> <span class='op'>=</span> <span class='id identifier rubyid_existing_sig_for'>existing_sig_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_memo_sig'>memo_sig</span> <span class='kw'>if</span> <span class='id identifier rubyid_memo_sig'>memo_sig</span>
-  <span class='kw'>unless</span> <span class='const'>VALID_SIG_TYPES</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id identifier rubyid_error_message_for'>error_message_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_lk'>lk</span> <span class='op'>=</span> <span class='id identifier rubyid_license_key'>license_key</span>
-  <span class='ivar'>@signature_expiration_for</span><span class='lbracket'>[</span><span class='id identifier rubyid_lk'>lk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>+</span> <span class='const'>TIME_OFFSET</span>
-  <span class='id identifier rubyid_new_sig_url'>new_sig_url</span>                  <span class='op'>=</span> <span class='id identifier rubyid_url_for'>url_for</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='ivar'>@signature_for</span><span class='lbracket'>[</span><span class='id identifier rubyid_lk'>lk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>RestClient</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_new_sig_url'>new_sig_url</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Wed Sep 11 16:31:58 2013 by
+  Generated on Thu Sep 12 17:21:39 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7 (ruby-1.9.3).
 </div>
