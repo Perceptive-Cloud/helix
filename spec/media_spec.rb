@@ -17,7 +17,7 @@ describe Helix::Media do
     end
   end
 
-  klasses = [ Helix::Album, Helix::Document, Helix::Image, Helix::Track, Helix::User, Helix::Video ]
+  klasses = [ Helix::Album, Helix::Document, Helix::Image, Helix::Library, Helix::Track, Helix::User, Helix::Video ]
   klasses.each do |klass|
 
     subject { klass }
@@ -168,8 +168,9 @@ describe Helix::Media do
                   klass.should_receive(:new).with({attributes: {guid_name => guid}, config: mock_config})
                   klass.send(meth, guid, content_type: content_type)
                 end
-                it "should load(content_type: #{content_type}" do
-                  mock_obj.should_receive(:load).with(content_type: content_type)
+                internal_content_type = (klass == Helix::Library) ? :xml : content_type
+                it "should load(content_type: #{internal_content_type}" do
+                  mock_obj.should_receive(:load).with(content_type: internal_content_type)
                   klass.send(meth, guid, content_type: content_type)
                 end
               end

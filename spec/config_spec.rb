@@ -624,4 +624,15 @@ describe Helix::Config do
     end
   end
 
+  describe "#sub_url_scoping" do
+    context "when given 'base_url_with_companies', {resource_label: 'libraries'})" do
+      subject { obj.send(:sub_url_scoping, 'base_url_with_companies', {resource_label: 'libraries'}) }
+      it { should eq('base_url_with_companies/libraries') }
+    end
+    context "when given 'base_url_without', {resource_label: 'libraries'})" do
+      subject { obj.send(:sub_url_scoping, 'base_url_without', {resource_label: 'libraries'}) }
+      it { should eq('base_url_without/companies/the_co/libraries') }
+    end
+  end
+
 end
