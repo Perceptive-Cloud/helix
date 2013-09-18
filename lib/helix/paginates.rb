@@ -72,19 +72,17 @@ module Helix
     end
 
     def parse_response_by_url_format(response, url)
-      ### FIXME: This is ugly. Clean it up.
-      if url =~ /json/
-        JSON.parse(response)
-      elsif url =~ /xml/
-        #TODO: Cleanup Nori and response gsub.
-        Nori.parser = :nokogiri
-        xml = response.gsub(/<custom-fields type='array'>/, '<custom-fields type=\'hash\'>')
-        Nori.parse(xml)
-      elsif url =~ /csv/
-        response
-      else
-        raise "Could not parse #{url}"
-      end
+      return JSON.parse(response)              if url =~ /json/
+      return response                          if url =~ /csv/
+      return parse_xml_response(response, url) if url =~ /xml/
+      raise "Could not parse #{url}"
+    end
+
+    def parse_xml_response(response, url)
+      #TODO: Cleanup Nori and response gsub.
+      Nori.parser = :nokogiri
+      xml = response.gsub(/<custom-fields type='array'>/, "<custom-fields type='hash'>")
+      Nori.parse(xml)
     end
 
   end
