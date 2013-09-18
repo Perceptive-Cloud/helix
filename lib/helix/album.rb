@@ -22,10 +22,6 @@ module Helix
       raise "Albums Update is not currently supported."
     end
 
-    def self.known_attributes
-      [:title, :description]
-    end
-
   end
 
 end

@@ -17,10 +17,6 @@ describe Helix::User do
     it { should respond_to(crud_call) }
   end
 
-  describe ".known_attributes" do
-    its(:known_attributes) { should eq([]) }
-  end
-
   describe "Constants"
 
   describe "an instance" do

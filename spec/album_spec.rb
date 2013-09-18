@@ -14,14 +14,6 @@ describe Helix::Album do
     it { should respond_to(crud_call) }
   end
 
-  describe ".known_attributes" do
-    let(:meth)            { :known_attributes }
-    let(:expected_attrs)  { [:title, :description] }
-    it "should equal expected_attrs" do
-      expect(klass.send(meth)).to eq(expected_attrs)
-    end
-  end
-
   describe "Constants"
 
   describe "an instance" do

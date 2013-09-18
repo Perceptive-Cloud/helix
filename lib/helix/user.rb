@@ -29,10 +29,6 @@ module Helix
       "users"
     end
 
-    def self.known_attributes
-      []
-    end
-
   end
 
 end
