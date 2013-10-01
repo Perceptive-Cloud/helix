@@ -182,8 +182,8 @@ describe Helix::Video do
 
   ### CLASS METHODS
 
-  describe ".ingest_opts" do
-    let(:meth)        { :ingest_opts }
+  describe ".ingest_sig_opts" do
+    let(:meth)        { :ingest_sig_opts }
     let(:mock_config) { double(Helix::Config, credentials: {}) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
@@ -215,94 +215,6 @@ describe Helix::Video do
   end
 
   it_behaves_like "uploads", Helix::Video
-
-  describe ".upload_server_name" do
-    let(:meth)        { :upload_server_name }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
-    let(:url_opts)    { { resource_label: "upload_sessions",
-                          guid:           :some_sig,
-                          action:         :http_open,
-                          content_type:   ""  } }
-    before            { Helix::Config.stub(:instance) { mock_config } }
-    it "should call RestClient.get with correct url building" do
-      klass.should_receive(:ingest_opts) { :ingest_opts }
-      mock_config.should_receive(:build_url).with(url_opts) { :url }
-      mock_config.should_receive(:signature).with(:ingest, :ingest_opts) { :some_sig }
-      RestClient.should_receive(:get).with(:url)
-      klass.send(meth)
-    end
-  end
-
-  describe ".http_close" do
-    let(:meth)        { :http_close }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
-    let(:url_opts)    { { resource_label: "upload_sessions",
-                          guid:           :some_sig,
-                          action:         :http_close,
-                          content_type:   ""  } }
-    before            { Helix::Config.stub(:instance) { mock_config } }
-    it "should call RestClient.get with correct url building" do
-      mock_config.should_receive(:build_url).with(url_opts) { :url }
-      mock_config.should_receive(:signature).with(:ingest, {}) { :some_sig }
-      RestClient.should_receive(:get).with(:url)
-      klass.send(meth)
-    end
-  end
-
-  describe ".upload_get" do
-    let(:meth)        { :upload_get }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(-2) }
-    let(:url_opts)    { { resource_label: "upload_sessions",
-                          guid:           :some_sig,
-                          action:         :upload_get,
-                          content_type:   ""  } }
-    before            { Helix::Config.stub(:instance) { mock_config } }
-    it "should call RestClient.get with correct url building" do
-      mock_config.should_receive(:build_url).with(url_opts) { :url }
-      mock_config.should_receive(:signature).with(:ingest, {}) { :some_sig }
-      RestClient.should_receive(:get).with(:url)
-      klass.send(meth, :upload_get)
-    end
-  end
-
-  describe ".http_open" do
-    let(:meth)        { :http_open }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
-    it "should call upload_server_name" do
-      klass.should_receive(:upload_server_name)
-      klass.send(meth)
-    end
-  end
-
-  describe ".upload_open" do
-    let(:meth)        { :upload_open }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
-    it "should call upload_server_name" do
-      klass.should_receive(:upload_server_name)
-      klass.send(meth)
-    end
-  end
-
-  describe ".upload_close" do
-    let(:meth)        { :upload_close }
-    let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
-    its(:arity)       { should eq(0) }
-    it "should call upload_server_name" do
-      klass.should_receive(:http_close)
-      klass.send(meth)
-    end
-  end
 
   describe ".slice" do
     let(:meth)        { :slice }

@@ -7,23 +7,23 @@ module Helix
     module ClassMethods
 
       def upload(file_name, opts={})
-        url     = upload_server_name
+        url     = upload_server_name(opts)
         payload = { file: File.new(file_name.to_s, "rb") }
-        headers = { multipart:  true }
+        headers = { multipart: true }
         RestClient.post(url, payload, headers)
         http_close
       end
 
-      def upload_server_name
-        upload_get(:http_open, ingest_opts)
+      def upload_server_name(http_open_opts={})
+        upload_get(:http_open, ingest_sig_opts, http_open_opts)
       end
 
-      def http_open
-        upload_server_name
+      def http_open(opts={})
+        upload_server_name(opts)
       end
 
-      def upload_open
-        upload_server_name
+      def upload_open(opts={})
+        upload_server_name(opts)
       end
 
       def http_close
@@ -36,21 +36,25 @@ module Helix
 
       private
 
-      def ingest_opts
+      def ingest_sig_opts
         cc = config.credentials
-        ingest_opts = {
+        ingest_sig_opts = {
           contributor: cc[:contributor],
           company_id:  cc[:company],
           library_id:  cc[:library],
         }
       end
 
-      def upload_get(action, opts={})
-        guid = config.signature(:ingest, opts)
-        url  = config.build_url(resource_label: "upload_sessions",
-                                guid:           guid,
-                                action:         action,
-                                content_type:   "" )
+      def upload_get(action, ingest_sig_opts={}, http_open_opts={})
+        guid = config.signature(:ingest, ingest_sig_opts)
+        default_http_open_opts = {
+          resource_label: "upload_sessions",
+          guid:           guid,
+          action:         action,
+          content_type:   ""
+        }
+        url_opts = default_http_open_opts.merge(http_open_opts)
+        url      = config.build_url(url_opts)
         RestClient.get(url)
       end
 
