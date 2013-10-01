@@ -61,6 +61,7 @@ describe Helix::Document do
     end
   end
 
-  it_behaves_like "uploads", Helix::Document
+  it_behaves_like "ingest_sig_opts", Helix::Document
+  it_behaves_like "uploads",         Helix::Document
 
 end
