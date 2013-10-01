@@ -6,7 +6,7 @@ module Helix
 
     module ClassMethods
 
-      def upload(file_name)
+      def upload(file_name, opts={})
         url     = upload_server_name
         payload = { file: File.new(file_name.to_s, "rb") }
         headers = { multipart:  true }
