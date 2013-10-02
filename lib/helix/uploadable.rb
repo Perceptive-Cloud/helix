@@ -36,6 +36,17 @@ module Helix
 
       private
 
+      # OPTIMIZE: This only accepts a flat Hash for http_open_opts, and
+      # doesn't encode. Neither is a big problem for the expected use
+      # cases, but should still be noted.
+      def add_params_to_url(url, http_open_opts)
+        return url if http_open_opts == {}
+        http_open_opts.inject("#{url}?") do |memo,pair|
+          k,v   = *pair
+          memo += "#{k}=#{v}"
+        end
+      end
+
       def ingest_sig_opts
         cc = config.credentials
         ingest_sig_opts = {
@@ -46,15 +57,15 @@ module Helix
       end
 
       def upload_get(action, ingest_sig_opts={}, http_open_opts={})
-        guid = config.signature(:ingest, ingest_sig_opts)
-        default_http_open_opts = {
+        guid     = config.signature(:ingest, ingest_sig_opts)
+        url_opts = {
           resource_label: "upload_sessions",
           guid:           guid,
           action:         action,
           content_type:   ""
         }
-        url_opts = default_http_open_opts.merge(http_open_opts)
         url      = config.build_url(url_opts)
+        url      = add_params_to_url(url, http_open_opts)
         RestClient.get(url)
       end
 

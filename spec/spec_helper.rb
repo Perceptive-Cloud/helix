@@ -81,17 +81,17 @@ shared_examples_for "uploads" do |klass|
     before            { Helix::Config.stub(:instance) { mock_config } }
     it "should call RestClient.get with correct url building" do
       klass.should_receive(:ingest_sig_opts) { ingest_opts }
-      mock_config.should_receive(:build_url).with(url_opts) { :url }
+      mock_config.should_receive(:build_url).with(url_opts)             { :url }
       mock_config.should_receive(:signature).with(:ingest, ingest_opts) { :some_sig }
       RestClient.should_receive(:get).with(:url)
       klass.send(meth)
     end
-    it "should pass http_open_opts on to upload_get" do
+    it "should append http_open_opts to upload_get's URL arg" do
       opts = {k: :v}
       klass.stub(:ingest_sig_opts) { ingest_opts }
-      mock_config.stub(:build_url).with(url_opts.merge(opts)) { :url }
+      mock_config.stub(:build_url).with(url_opts)             { :url }
       mock_config.stub(:signature).with(:ingest, ingest_opts) { :some_sig }
-      RestClient.should_receive(:get).with(:url)
+      RestClient.should_receive(:get).with("url?k=v")
       klass.send(meth, opts)
     end
   end
