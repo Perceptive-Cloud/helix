@@ -41,10 +41,11 @@ module Helix
       # cases, but should still be noted.
       def add_params_to_url(url, http_open_opts)
         return url if http_open_opts == {}
-        http_open_opts.inject("#{url}?") do |memo,pair|
+        query_string = http_open_opts.inject([]) do |memo,pair|
           k,v   = *pair
-          memo += "#{k}=#{v}"
-        end
+          memo << "#{k}=#{v}"
+        end.join('&')
+        "#{url}?#{query_string}"
       end
 
       def ingest_sig_opts

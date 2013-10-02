@@ -86,12 +86,20 @@ shared_examples_for "uploads" do |klass|
       RestClient.should_receive(:get).with(:url)
       klass.send(meth)
     end
-    it "should append http_open_opts to upload_get's URL arg" do
+    it "should append a single-pair http_open_opts to upload_get's URL arg" do
       opts = {k: :v}
       klass.stub(:ingest_sig_opts) { ingest_opts }
       mock_config.stub(:build_url).with(url_opts)             { :url }
       mock_config.stub(:signature).with(:ingest, ingest_opts) { :some_sig }
       RestClient.should_receive(:get).with("url?k=v")
+      klass.send(meth, opts)
+    end
+    it "should append a fuller http_open_opts to upload_get's URL arg" do
+      opts = {k1: :v1, k2: :v2}
+      klass.stub(:ingest_sig_opts) { ingest_opts }
+      mock_config.stub(:build_url).with(url_opts)             { :url }
+      mock_config.stub(:signature).with(:ingest, ingest_opts) { :some_sig }
+      RestClient.should_receive(:get).with("url?k1=v1&k2=v2")
       klass.send(meth, opts)
     end
   end
