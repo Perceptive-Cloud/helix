@@ -279,20 +279,22 @@ folding/injecting/accumulating the results into a single output set.</p>
 24
 25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/helix/paginates.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_aggregated_data_sets'>get_aggregated_data_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='comma'>,</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span><span class='comma'>,</span> <span class='id identifier rubyid_page'>page</span><span class='comma'>,</span> <span class='id identifier rubyid_per_page'>per_page</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>STARTING_PAGE</span>
+  <span class='id identifier rubyid_specific_page_requested'>specific_page_requested</span>   <span class='op'>=</span> <span class='id identifier rubyid_specific_page_requested?'>specific_page_requested?</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
     <span class='id identifier rubyid_aggregation_opts'>aggregation_opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>page:</span> <span class='id identifier rubyid_page'>page</span><span class='comma'>,</span> <span class='label'>per_page:</span> <span class='const'>ITEMS_PER_PAGE</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_raw_response'>raw_response</span> <span class='op'>=</span> <span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>sig_type:</span> <span class='symbol'>:view</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_aggregation_opts'>aggregation_opts</span><span class='rparen'>)</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_data_set'>data_set</span>     <span class='op'>=</span> <span class='id identifier rubyid_raw_response'>raw_response</span><span class='lbracket'>[</span><span class='id identifier rubyid_plural_resource_label'>plural_resource_label</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_data_sets'>data_sets</span>   <span class='op'>+=</span> <span class='id identifier rubyid_data_set'>data_set</span> <span class='kw'>if</span> <span class='id identifier rubyid_data_set'>data_set</span>
     <span class='id identifier rubyid_page'>page</span>        <span class='op'>+=</span> <span class='int'>1</span>
-  <span class='kw'>end</span> <span class='kw'>until</span> <span class='id identifier rubyid_last_page?'>last_page?</span> <span class='op'>||</span> <span class='id identifier rubyid_specific_page_requested?'>specific_page_requested?</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
+  <span class='kw'>end</span> <span class='kw'>until</span> <span class='id identifier rubyid_specific_page_requested'>specific_page_requested</span> <span class='op'>||</span> <span class='id identifier rubyid_last_page?'>last_page?</span>
   <span class='id identifier rubyid_data_sets'>data_sets</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -379,7 +381,6 @@ with the base_url to create RESTful URLs</p>
       <pre class="lines">
 
 
-35
 36
 37
 38
@@ -389,10 +390,11 @@ with the base_url to create RESTful URLs</p>
 42
 43
 44
-45</pre>
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/paginates.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/paginates.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_response'>get_response</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_original_opts'>original_opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_opts'>opts</span>     <span class='op'>=</span> <span class='id identifier rubyid_massage_custom_fields_in'>massage_custom_fields_in</span><span class='lparen'>(</span><span class='id identifier rubyid_original_opts'>original_opts</span><span class='rparen'>)</span>
@@ -415,7 +417,7 @@ with the base_url to create RESTful URLs</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Sep 12 17:21:39 2013 by
+  Generated on Fri Oct  4 14:15:44 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7 (ruby-1.9.3).
 </div>
