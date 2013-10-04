@@ -605,12 +605,19 @@ describe Helix::Config do
           Time.stub(:now) { mock_now }
         end
         context "when @signature_expiration_for[license_key][sig_type] <= Time.now is false" do
-          before(:each) do mock_expired.should_receive(:<=).with(mock_now) { false } end
+          before do mock_expired.should_receive(:<=).with(mock_now) { false } end
           it { should be false }
         end
         context "when @signature_expiration_for[license_key][sig_type] <= Time.now is true" do
           before(:each) do mock_expired.should_receive(:<=).with(mock_now) { true } end
           it { should be true }
+        end
+      end
+      context "when the sig_type passed in is :ingest and the sig is not ready to expire" do
+        let(:not_expired_time) { Time.now + 10 }
+        before do obj.instance_variable_set(:@signature_expiration_for, {license_key => {:ingest => not_expired_time}}) end
+        it "should return true" do
+          expect(obj.send(meth, :ingest)).to be_true
         end
       end
     end

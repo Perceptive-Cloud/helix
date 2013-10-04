@@ -64,6 +64,7 @@ module Helix
     end
 
     def sig_expired_for?(sig_type)
+      return true if sig_type == :ingest
       expires_at = @signature_expiration_for[license_key][sig_type]
       return true if expires_at.nil?
       expires_at <= Time.now
