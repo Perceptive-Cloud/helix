@@ -613,6 +613,13 @@ describe Helix::Config do
           it { should be true }
         end
       end
+      context "when the sig_type passed in is :ingest and the sig is not ready to expire" do
+        let(:not_expired_time) { Time.now + 10 }
+        before do obj.instance_variable_set(:@signature_expiration_for, {license_key => {:ingest => not_expired_time}}) end
+        it "should return true" do
+          expect(obj.send(meth, :ingest)).to be_true
+        end
+      end
     end
   end
 
