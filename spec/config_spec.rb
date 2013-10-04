@@ -605,7 +605,7 @@ describe Helix::Config do
           Time.stub(:now) { mock_now }
         end
         context "when @signature_expiration_for[license_key][sig_type] <= Time.now is false" do
-          before do mock_expired.should_receive(:<=).with(mock_now) { false } end
+          before(:each) do mock_expired.should_receive(:<=).with(mock_now) { false } end
           it { should be false }
         end
         context "when @signature_expiration_for[license_key][sig_type] <= Time.now is true" do
