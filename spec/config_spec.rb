@@ -49,8 +49,8 @@ describe Helix::Config do
     end
   end
 
-  describe ".load" do
-    let(:meth)      { :load }
+  describe ".load_yaml_file" do
+    let(:meth)      { :load_yaml_file }
     let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
     let(:mock_file) { double(File)  }
     let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
