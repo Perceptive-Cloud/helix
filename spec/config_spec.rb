@@ -49,6 +49,27 @@ describe Helix::Config do
     end
   end
 
+  describe ".load_from_hash & from_hash alias" do
+    meths = [ :load_from_hash, :from_hash ]
+    let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
+    let(:mock_file) { double(File)  }
+    let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
+    let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
+    before(:each) do
+      klass.stub(:instance) { mock_obj  }
+      File.stub(:open)      { mock_file }
+      YAML.stub(:load)      { mock_cred }
+    end
+    meths.each do |meth|
+      context "when given a Hash" do
+        it "should set the instance's credentials to that Hash arg" do
+          mock_obj.should_receive(:instance_variable_set).with(:@credentials, :the_hash_arg)
+          klass.send(meth, :the_hash_arg)
+        end
+      end
+    end
+  end
+
   describe ".load_yaml_file & load alias" do
     meths = [ :load_yaml_file, :load ]
     let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }

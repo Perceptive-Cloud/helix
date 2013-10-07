@@ -24,6 +24,29 @@ module Helix
     attr_reader   :response                                 # in Paginates
     attr_reader   :signature_for, :signature_expiration_for # in HasSignatures
 
+    # Creates a singleton of itself, setting the config based on the
+    # provided Hash argument.
+    #
+    # @example
+    #   Helix::Config.load_from_hash(
+    #     company: 'my-co-nickname',
+    #     site:    'http://service-staging.twistage.com'
+    #   )
+    #   video = Helix::Video.find("8e0701c142ab1") #Uses my_yaml.yml
+    #
+    # @param [Hash] desired_credentials the k/v pairs used for config
+    # @return [Helix::Config] config returns singleton of Helix::Config
+    def self.load_from_hash(desired_credentials)
+      config = self.instance
+      config.instance_variable_set(:@credentials, desired_credentials)
+      RestClient.proxy = config.proxy
+      config
+    end
+
+    def self.from_hash(desired_credentials)
+      load_from_hash(desired_credentials)
+    end
+
     # Creates a singleton of itself, setting the config
     # to a specified YAML file. If no file is specified the default
     # helix.yml file is used.
@@ -35,11 +58,9 @@ module Helix
     # @param [String] yaml_file_location the yaml file used for config
     # @return [Helix::Config] config returns singleton of Helix::Config
     def self.load_yaml_file(yaml_file_location = DEFAULT_FILENAME)
-      config = self.instance
+      creds  = YAML.load(File.open(yaml_file_location)).symbolize_keys
+      config = load_from_hash(creds)
       config.instance_variable_set(:@filename, yaml_file_location)
-      creds = YAML.load(File.open(yaml_file_location)).symbolize_keys
-      config.instance_variable_set(:@credentials, creds)
-      RestClient.proxy = config.proxy
       config
     end
 
