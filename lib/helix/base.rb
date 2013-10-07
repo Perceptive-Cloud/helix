@@ -163,6 +163,13 @@ module Helix
       end
     end
 
+    # Raw response should return the response from the config.
+    #
+    # @return [String] A response from the server in form of JSON or XML
+    def raw_response
+      self.config.response
+    end
+
     private
 
     def massage_raw_attrs(raw_attrs)
