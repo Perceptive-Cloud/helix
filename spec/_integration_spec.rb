@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
 config_filename = File.expand_path('../../config/staging.yml', __FILE__)
-config = File.exists?(config_filename) ? Helix::Config.load_yaml_file(config_filename) : nil
+config = File.exists?(config_filename) ? Helix::Config.load(config_filename) : nil
 
 if config.nil?
   puts "No config, skipping integration specs"

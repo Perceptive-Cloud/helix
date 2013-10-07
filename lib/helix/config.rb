@@ -43,6 +43,10 @@ module Helix
       config
     end
 
+    def self.load(yaml_file_location = DEFAULT_FILENAME)
+      load_yaml_file(yaml_file_location)
+    end
+
     def proxy
       if @credentials[:proxy_uri]
         protocol, uri = @credentials[:proxy_uri].split "://"
