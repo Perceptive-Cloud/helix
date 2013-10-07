@@ -49,8 +49,29 @@ describe Helix::Config do
     end
   end
 
-  describe ".load" do
-    let(:meth)      { :load }
+  describe ".load_from_hash & from_hash alias" do
+    meths = [ :load_from_hash, :from_hash ]
+    let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
+    let(:mock_file) { double(File)  }
+    let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
+    let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
+    before(:each) do
+      klass.stub(:instance) { mock_obj  }
+      File.stub(:open)      { mock_file }
+      YAML.stub(:load)      { mock_cred }
+    end
+    meths.each do |meth|
+      context "when given a Hash" do
+        it "should set the instance's credentials to that Hash arg" do
+          mock_obj.should_receive(:instance_variable_set).with(:@credentials, :the_hash_arg)
+          klass.send(meth, :the_hash_arg)
+        end
+      end
+    end
+  end
+
+  describe ".load_yaml_file & load alias" do
+    meths = [ :load_yaml_file, :load ]
     let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
     let(:mock_file) { double(File)  }
     let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
@@ -61,65 +82,67 @@ describe Helix::Config do
       YAML.stub(:load)      { mock_cred }
       mock_obj.stub(:instance_variable_set).with(:@credentials, anything)
     end
-    context "when given no arg" do
-      before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME) end
-      it "should get the instance" do
-        klass.should_receive(:instance) { mock_obj }
-        klass.send(meth)
+    meths.each do |meth|
+      context "when given no arg" do
+        before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME) end
+        it "should get the instance" do
+          klass.should_receive(:instance) { mock_obj }
+          klass.send(meth)
+        end
+        it "should set @filename to DEFAULT_FILENAME" do
+          mock_obj.should_receive(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME)
+          klass.send(meth)
+        end
+        it "should File.open(@filename) -> f" do
+          File.should_receive(:open).with(klass::DEFAULT_FILENAME) { mock_file }
+          klass.send(meth)
+        end
+        it "should YAML.load(f) -> cred" do
+          YAML.should_receive(:load).with(mock_file) { mock_cred }
+          klass.send(meth)
+        end
+        it "should set @credentials to cred with symbol keys" do
+          File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
+          YAML.stub(:load).with(mock_file) { mock_cred }
+          mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
+          klass.send(meth)
+        end
+        it "should set the proxy" do
+          mock_obj.should_receive(:proxy) { :mock_proxy }
+          klass.send(meth)
+        end
+        it "should return the instance" do
+          expect(klass.send(meth)).to be(mock_obj)
+        end
       end
-      it "should set @filename to DEFAULT_FILENAME" do
-        mock_obj.should_receive(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME)
-        klass.send(meth)
-      end
-      it "should File.open(@filename) -> f" do
-        File.should_receive(:open).with(klass::DEFAULT_FILENAME) { mock_file }
-        klass.send(meth)
-      end
-      it "should YAML.load(f) -> cred" do
-        YAML.should_receive(:load).with(mock_file) { mock_cred }
-        klass.send(meth)
-      end
-      it "should set @credentials to cred with symbol keys" do
-        File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
-        YAML.stub(:load).with(mock_file) { mock_cred }
-        mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
-        klass.send(meth)
-      end
-      it "should set the proxy" do
-        mock_obj.should_receive(:proxy) { :mock_proxy }
-        klass.send(meth)
-      end
-      it "should return the instance" do
-        expect(klass.send(meth)).to be(mock_obj)
-      end
-    end
-    context "when given the arg 'some_file.yml'" do
-      let(:yaml_arg) { 'some_file.yml' }
-      before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, yaml_arg) end
-      it "should get the instance" do
-        klass.should_receive(:instance) { mock_obj }
-        klass.send(meth, yaml_arg)
-      end
-      it "should set @filename to DEFAULT_FILENAME" do
-        mock_obj.should_receive(:instance_variable_set).with(:@filename, yaml_arg)
-        klass.send(meth, yaml_arg)
-      end
-      it "should File.open(@filename) -> f" do
-        File.should_receive(:open).with(yaml_arg) { mock_file }
-        klass.send(meth, yaml_arg)
-      end
-      it "should YAML.load(f) -> cred" do
-        YAML.should_receive(:load).with(mock_file) { mock_cred }
-        klass.send(meth, yaml_arg)
-      end
-      it "should set @credentials to cred with symbol keys" do
-        File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
-        YAML.stub(:load).with(mock_file) { mock_cred }
-        mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
-        klass.send(meth, yaml_arg)
-      end
-      it "should return the instance" do
-        expect(klass.send(meth, yaml_arg)).to be(mock_obj)
+      context "when given the arg 'some_file.yml'" do
+        let(:yaml_arg) { 'some_file.yml' }
+        before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, yaml_arg) end
+        it "should get the instance" do
+          klass.should_receive(:instance) { mock_obj }
+          klass.send(meth, yaml_arg)
+        end
+        it "should set @filename to DEFAULT_FILENAME" do
+          mock_obj.should_receive(:instance_variable_set).with(:@filename, yaml_arg)
+          klass.send(meth, yaml_arg)
+        end
+        it "should File.open(@filename) -> f" do
+          File.should_receive(:open).with(yaml_arg) { mock_file }
+          klass.send(meth, yaml_arg)
+        end
+        it "should YAML.load(f) -> cred" do
+          YAML.should_receive(:load).with(mock_file) { mock_cred }
+          klass.send(meth, yaml_arg)
+        end
+        it "should set @credentials to cred with symbol keys" do
+          File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
+          YAML.stub(:load).with(mock_file) { mock_cred }
+          mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
+          klass.send(meth, yaml_arg)
+        end
+        it "should return the instance" do
+          expect(klass.send(meth, yaml_arg)).to be(mock_obj)
+        end
       end
     end
   end
