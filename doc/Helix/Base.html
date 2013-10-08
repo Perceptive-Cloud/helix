@@ -502,6 +502,29 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#raw_response-instance_method" title="#raw_response (instance method)">- (String) <strong>raw_response</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Raw response should return the response from the config.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#to_json-instance_method" title="#to_json (instance method)">- (Object) <strong>to_json</strong> </a>
     
 
@@ -1620,6 +1643,63 @@ them as an array.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="raw_response-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>raw_response</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Raw response should return the response from the config.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>A response from the server in form of JSON or XML</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+169
+170
+171</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/helix/base.rb', line 169</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_raw_response'>raw_response</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_response'>response</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="to_json-instance_method">
   
     - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>to_json</strong> 
@@ -1684,7 +1764,7 @@ them as an array.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Oct  4 14:15:45 2013 by
+  Generated on Tue Oct  8 10:13:58 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7 (ruby-1.9.3).
 </div>

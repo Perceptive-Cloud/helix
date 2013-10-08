@@ -1,13 +1,13 @@
 lib/helix.rb 42b999eba4ef58525d0b7fc9832ccc4b95737a53
 lib/helix/tag.rb 7dd860f8e7b5c965a130f169a8b058798f8984f5
 lib/helix/user.rb e71125c845cedd1369a2283c258642b1356626d6
-lib/helix/base.rb a8cbc151127910dabf69671831a7b9968bf99643
+lib/helix/base.rb 44d42795f4129a359beef45186da620637fe3dff
 lib/helix/media.rb b7cf3f37a58231f1e05c2bf1abc8e9d8d6579cbd
 lib/helix/album.rb 780f5f34dff819e081855df808ca67761f0d886e
 lib/helix/video.rb 9cb3a76b503003c35902854b74d9fd55700e60cb
 lib/helix/image.rb 88e2fb1248dd74a08295c27fef63163f628d7c54
 lib/helix/track.rb f4a269afceb40deb98d19a5f4bdb30f366fef1aa
-lib/helix/config.rb 74a4a93beeabeee3653894879c2ed7eb9b76b5ce
+lib/helix/config.rb d940525d1fbc1b0093783eb125e946594f5b0ad5
 lib/helix/restful.rb 698f6f4fc88e61488023be25d20d9c334c7cc32d
 lib/helix/library.rb 371c7db54cff4cb132f821fd6e952cdbb08f3d92
 lib/helix/playlist.rb 245ddd194a8aacad63347148d64f820a3b58ab80
@@ -21,5 +21,5 @@ lib/helix/uploadable.rb 254da94f401b8b2c5f0f8dcb1531315d6e27674a
 lib/helix/object_ext.rb d11804c2503dfc554a28473824f03ccc2f4ee6c5
 lib/helix/builds_urls.rb 7e0dfe2e535a2b5c2b8f7f821332d3a1077d79e3
 lib/helix/video_playlist.rb abd1b0aaa7823a406c8c8b945237421b1fcd82f0
-lib/helix/has_signatures.rb 72cdd81f8b5abe624c468c8f10ff7209e7731c97
+lib/helix/has_signatures.rb 8d781015b074941865975b90e3f3a268ca7b79ad
 lib/helix/audio_playlist.rb 34040aeba7eb5e5de0ddc092b0f93cec657348f6
