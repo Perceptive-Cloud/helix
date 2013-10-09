@@ -38,6 +38,7 @@ module Helix
     # @return [Helix::Config] config returns singleton of Helix::Config
     def self.load_from_hash(desired_credentials)
       config = self.instance
+      desired_credentials = desired_credentials.symbolize_keys
       config.instance_variable_set(:@credentials, desired_credentials)
       RestClient.proxy = config.proxy
       config
@@ -58,7 +59,7 @@ module Helix
     # @param [String] yaml_file_location the yaml file used for config
     # @return [Helix::Config] config returns singleton of Helix::Config
     def self.load_yaml_file(yaml_file_location = DEFAULT_FILENAME)
-      creds  = YAML.load(File.open(yaml_file_location)).symbolize_keys
+      creds  = YAML.load(File.open(yaml_file_location))
       config = load_from_hash(creds)
       config.instance_variable_set(:@filename, yaml_file_location)
       config
