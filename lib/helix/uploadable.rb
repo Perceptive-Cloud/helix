@@ -15,7 +15,7 @@ module Helix
       end
 
       def upload_server_name(http_open_opts={})
-        upload_get(:http_open, ingest_sig_opts, http_open_opts)
+        upload_get(:http_open, upload_sig_opts, http_open_opts)
       end
 
       def http_open(opts={})
@@ -48,17 +48,17 @@ module Helix
         "#{url}?#{query_string}"
       end
 
-      def ingest_sig_opts
+      def upload_sig_opts
         cc = config.credentials
-        ingest_sig_opts = {
+        upload_sig_opts = {
           contributor: cc[:contributor],
           company_id:  cc[:company],
           library_id:  cc[:library],
         }
       end
 
-      def upload_get(action, ingest_sig_opts={}, http_open_opts={})
-        guid     = config.signature(:ingest, ingest_sig_opts)
+      def upload_get(action, upload_sig_opts={}, http_open_opts={})
+        guid     = config.signature(:upload, upload_sig_opts)
         url_opts = {
           resource_label: "upload_sessions",
           guid:           guid,

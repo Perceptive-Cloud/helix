@@ -27,6 +27,10 @@ describe Helix::Config do
       subject { klass::ITEMS_PER_PAGE }
       it { should eq(100) }
     end
+    describe "REQUIRES_CONTRIBUTOR" do
+      subject { klass::REQUIRES_CONTRIBUTOR }
+      it { should eq(Set.new([:ingest, :upload])) }
+    end
     describe "SCOPES" do
       subject { klass::SCOPES }
       it { should eq([:reseller, :company, :library]) }
@@ -45,7 +49,7 @@ describe Helix::Config do
     end
     describe "VALID_SIG_TYPES" do
       subject { klass::VALID_SIG_TYPES }
-      it { should eq([:ingest, :update, :view]) }
+      it { should eq(Set.new([:ingest, :update, :upload, :view])) }
     end
   end
 

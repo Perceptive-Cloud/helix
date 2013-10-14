@@ -29,8 +29,8 @@ describe Helix::Document do
 
   ### CLASS METHODS
 
-  describe ".ingest_sig_opts" do
-    let(:meth)        { :ingest_sig_opts }
+  describe ".upload_sig_opts" do
+    let(:meth)        { :upload_sig_opts }
     let(:mock_config) { double(Helix::Config, credentials: {}) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }
@@ -61,7 +61,7 @@ describe Helix::Document do
     end
   end
 
-  it_behaves_like "ingest_sig_opts", Helix::Document
+  it_behaves_like "upload_sig_opts", Helix::Document
   it_behaves_like "uploads",         Helix::Document
 
 end

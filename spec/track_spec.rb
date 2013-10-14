@@ -31,7 +31,7 @@ describe Helix::Track do
 
   ### CLASS METHODS
 
-  it_behaves_like "ingest_sig_opts", Helix::Track
+  it_behaves_like "upload_sig_opts", Helix::Track
   it_behaves_like "uploads",         Helix::Track
 
 end

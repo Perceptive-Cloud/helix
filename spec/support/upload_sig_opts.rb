@@ -1,6 +1,6 @@
-shared_examples_for "ingest_sig_opts" do |klass|
-  describe ".ingest_sig_opts" do
-    let(:meth)        { :ingest_sig_opts }
+shared_examples_for "upload_sig_opts" do |klass|
+  describe ".upload_sig_opts" do
+    let(:meth)        { :upload_sig_opts }
     let(:mock_config) { double(Helix::Config, credentials: {}) }
     subject           { klass.method(meth) }
     its(:arity)       { should eq(0) }

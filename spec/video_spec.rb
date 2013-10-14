@@ -123,7 +123,7 @@ describe Helix::Video do
 
   ### CLASS METHODS
 
-  it_behaves_like "ingest_sig_opts", Helix::Video
+  it_behaves_like "upload_sig_opts", Helix::Video
   it_behaves_like "uploads",         Helix::Video
 
   describe ".slice" do
