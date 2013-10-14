@@ -93,6 +93,11 @@
   
     <dl class="constants">
       
+        <dt id="REQUIRES_CONTRIBUTOR-constant" class="">REQUIRES_CONTRIBUTOR =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'>Set</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='symbol'>:ingest</span><span class='comma'>,</span> <span class='symbol'>:upload</span> <span class='rbracket'>]</span><span class='rparen'>)</span></pre></dd>
+      
         <dt id="SIG_DURATION-constant" class="">SIG_DURATION =
           <div class="docstring">
   <div class="discussion">
@@ -126,7 +131,7 @@
         <dt id="VALID_SIG_TYPES-constant" class="">VALID_SIG_TYPES =
           
         </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span> <span class='symbol'>:ingest</span><span class='comma'>,</span> <span class='symbol'>:update</span><span class='comma'>,</span> <span class='symbol'>:view</span> <span class='rbracket'>]</span></pre></dd>
+        <dd><pre class="code"><span class='const'>Set</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='lbracket'>[</span> <span class='symbol'>:ingest</span><span class='comma'>,</span> <span class='symbol'>:update</span><span class='comma'>,</span> <span class='symbol'>:upload</span><span class='comma'>,</span> <span class='symbol'>:view</span> <span class='rbracket'>]</span><span class='rparen'>)</span></pre></dd>
       
     </dl>
   
@@ -214,13 +219,13 @@
       <pre class="lines">
 
 
-11
 12
 13
-14</pre>
+14
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/has_signatures.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/has_signatures.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_clear_signatures!'>clear_signatures!</span>
   <span class='ivar'>@signature_for</span>            <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -309,7 +314,6 @@
       <pre class="lines">
 
 
-21
 22
 23
 24
@@ -321,10 +325,11 @@
 30
 31
 32
-33</pre>
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/helix/has_signatures.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/helix/has_signatures.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_signature'>signature</span><span class='lparen'>(</span><span class='id identifier rubyid_sig_type'>sig_type</span><span class='comma'>,</span> <span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_prepare_signature_memoization'>prepare_signature_memoization</span>
@@ -349,7 +354,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Oct  8 10:13:58 2013 by
+  Generated on Mon Oct 14 14:01:33 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7 (ruby-1.9.3).
 </div>
