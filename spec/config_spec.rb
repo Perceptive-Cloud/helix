@@ -62,9 +62,11 @@ describe Helix::Config do
     end
     meths.each do |meth|
       context "when given a Hash" do
-        it "should set the instance's credentials to that Hash arg" do
-          mock_obj.should_receive(:instance_variable_set).with(:@credentials, :the_hash_arg)
-          klass.send(meth, :the_hash_arg)
+        let(:the_hash_arg) { double('Hash') }
+        it "should set the instance's credentials to the key-symbolized version of that Hash arg" do
+          the_hash_arg.should_receive(:symbolize_keys) { :symbolized }
+          mock_obj.should_receive(:instance_variable_set).with(:@credentials, :symbolized)
+          klass.send(meth, the_hash_arg)
         end
       end
     end
