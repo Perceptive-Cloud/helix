@@ -7,7 +7,7 @@ SimpleCov.start do
 end
 
 require 'support/downloads'
-require 'support/ingest_sig_opts'
+require 'support/upload_sig_opts'
 require 'support/plays'
 require 'support/uploads'
 
