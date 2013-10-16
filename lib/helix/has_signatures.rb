@@ -1,5 +1,6 @@
 module Helix
 
+  require 'set'
   module HasSignatures
 
     unless defined?(self::VALID_SIG_TYPES)
