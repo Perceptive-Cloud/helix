@@ -26,7 +26,7 @@ describe Helix::Document do
       it { should respond_to(crud_call) }
     end
     it_behaves_like "downloads", obj
-#it_behaves_like "plays",     obj
+    it_behaves_like "plays",     obj
   end
 
   ### CLASS METHODS
