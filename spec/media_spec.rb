@@ -31,7 +31,7 @@ describe Helix::Media do
       Helix::Video    => :video,
     }
 
-    mods = [ Helix::RESTful, Helix::Uploadable ]
+    mods = [ Helix::RESTful, Helix::Uploadable, Helix::Downloadable ]
     mods.each { |mod| its(:ancestors) { should include(mod) } }
 
     describe ".create" do

@@ -1,5 +1,6 @@
 require 'helix/restful'
 require 'helix/uploadable'
+require 'helix/downloadable'
 require 'helix/durationed'
 require 'helix/video'
 require 'helix/track'
