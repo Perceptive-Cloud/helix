@@ -4,7 +4,7 @@ module Helix
 
   class Media < Base
 
-    include RESTful, Uploadable
+    include RESTful, Uploadable, Downloadable
 
   end
 

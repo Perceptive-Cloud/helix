@@ -43,7 +43,7 @@ describe Helix::Paginates do
           non_final_response = double(String, headers: {is_last_page: 'false'})
           RestClient.should_receive(:get).once { non_final_response }
           @klass.stub(:parse_response_by_url_format).with(non_final_response, :a_url) { {label => [:non_final]} }
-          @klass.send(meth, :a_url, label, opts)  
+          @klass.send(meth, :a_url, label, opts)
         end
       end
     end
