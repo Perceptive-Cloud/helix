@@ -2,14 +2,14 @@ require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
 describe Helix::Document do
-  let(:klass) { Helix::Document }
 
+  klass = Helix::Document
   subject { klass }
   mods = [ Helix::Base, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
-  its(:guid_name) { should eq('document_id') }
-  its(:resource_label_sym)    { should be(:document)   }
-  its(:plural_resource_label) { should eq('documents') }
+  its(:guid_name)             { should eq('document_id') }
+  its(:resource_label_sym)    { should be(:document)     }
+  its(:plural_resource_label) { should eq('documents')   }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
     it { should respond_to(crud_call) }
   end
@@ -19,12 +19,14 @@ describe Helix::Document do
   ### INSTANCE METHODS
 
   describe "an instance" do
-    let(:obj) { klass.new({'document_id' => 'some_document_guid'}) }
+    obj = klass.new({'document_id' => 'some_document_guid'})
     subject { obj }
     its(:resource_label_sym) { should be(:document) }
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }
     end
+    it_behaves_like "downloads", obj
+#it_behaves_like "plays",     obj
   end
 
   ### CLASS METHODS
