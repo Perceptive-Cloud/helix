@@ -121,8 +121,9 @@ describe Helix::Media do
             klass.stub(:attributes) { mock_attrs }
             klass.stub(:guid_name)  { guid_name  }
             klass.stub(:new)        { mock_obj   }
+            klass.stub(:process_opts) { {content_type: :xml} } if klass_sym[klass] == :library
           end
-          context "and the guid is nil" do
+          context "and the guid is nil" do 
             it "should raise an ArgumentError complaining about a nil guid" do
               msg = 'find requires a non-nil guid argument - received a nil argument.'
               lambda { klass.send(meth, nil) }.should raise_error(ArgumentError, msg)
@@ -145,6 +146,7 @@ describe Helix::Media do
             klass.stub(:attributes) { mock_attrs }
             klass.stub(:guid_name)  { guid_name  }
             klass.stub(:new)        { mock_obj }
+            klass.stub(:process_opts) { {content_type: :xml} } if klass_sym[klass] == :library
           end
           context "and the guid is nil" do
             it "should raise an ArgumentError complaining about a nil guid" do

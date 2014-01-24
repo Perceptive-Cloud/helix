@@ -26,6 +26,16 @@ describe Helix::Library do
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }
     end
+    
+    describe "#process_opts" do
+      context "opts has a key of content_type" do
+        it { subject.process_opts({content_type: :json}).should == {content_type: :json } }
+      end
+      context"when opts does not have a key of content type" do
+        it { subject.process_opts({}).should == {content_type: :xml } }       
+      end
+    end
+    
   end
 
 end
