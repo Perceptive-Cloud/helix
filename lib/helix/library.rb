@@ -25,7 +25,7 @@ module Helix
     end
     
     def process_opts(opts)
-      opts.has_key?(:content_type) ? opts : opts.merge({content_type: :xml})
+      {content_type: :xml}.merge(opts)
     end
 
     # The class name, to be used by supporting classes. Such as Config which uses
