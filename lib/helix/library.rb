@@ -10,7 +10,8 @@ module Helix
     def self.create(attrs={}); super; end
 
     def self.find(nickname, opts={})
-      super(nickname, opts.merge(content_type: :xml))
+      default_opts = process_opts(opts) 
+      super(nickname, opts.merge(default_opts))
     end
 
     # Creates a string that associates to the class id.
@@ -21,6 +22,10 @@ module Helix
     # @return [String] The guid name for a specific class.
     def self.guid_name
       "name"
+    end
+    
+    def process_opts(opts)
+      opts.has_key?(:content_type) ? opts : opts.merge({content_type: :xml})
     end
 
     # The class name, to be used by supporting classes. Such as Config which uses

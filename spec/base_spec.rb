@@ -294,6 +294,11 @@ describe Helix::Base do
           subject { obj.send(meth, raw_attrs) }
           it { should eq(:site_contents) }
         end
+        context "when given {'library' => :library_contents}" do
+          let(:raw_attrs) { {'library' => :library_contents} }
+          subject { obj.send(meth, raw_attrs) }
+          it { should eq(:library_contents) }
+        end
         context "when given { guid_name => :the_val }" do
           let(:raw_attrs) { { guid_name => :the_val } }
           subject { obj.send(meth, raw_attrs) }
