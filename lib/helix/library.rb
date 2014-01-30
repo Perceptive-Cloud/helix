@@ -24,7 +24,7 @@ module Helix
       "name"
     end
     
-    def process_opts(opts)
+    def self.process_opts(opts)
       {content_type: :xml}.merge(opts)
     end
 
