@@ -6,6 +6,8 @@ module Helix
 
     include RESTful
 
+    def self.guid_name; 'id'; end
+
     # The class name, to be used by supporting classes. Such as Config which uses
     # this method as a way to build URLs.
     #

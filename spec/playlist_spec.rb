@@ -7,7 +7,7 @@ describe Helix::Playlist do
   subject     { klass }
   mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
-  its(:guid_name)             { should eq('playlist_id') }
+  its(:guid_name)             { should eq('id') }
   its(:resource_label_sym)    { should be(:playlist)     }
   its(:plural_resource_label) { should eq('playlists')   }
   [:find, :create, :all, :find_all, :where].each do |crud_call|
