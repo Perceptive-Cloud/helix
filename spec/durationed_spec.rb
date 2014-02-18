@@ -9,7 +9,7 @@ describe Helix::Durationed do
 
   klasses = [ Helix::Video, Helix::Track ]
   klasses.each do |klass|
-    subject         { klass }
+    subject { klass }
     mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
     mods.each { |mod| its(:ancestors) { should include(mod) } }
 

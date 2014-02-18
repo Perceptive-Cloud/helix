@@ -3,8 +3,7 @@ require 'helix'
 
 describe Helix::Playlist do
 
-  let(:klass) { Helix::Playlist }
-  subject     { klass }
+  subject { described_class }
   mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name)             { should eq('id') }
@@ -19,7 +18,7 @@ describe Helix::Playlist do
   ### INSTANCE METHODS
 
   describe "an instance" do
-    let(:obj) { klass.new({playlist_id: 'some_playlist_guid'}) }
+    let(:obj) { described_class.new({playlist_id: 'some_playlist_guid'}) }
     subject   { obj }
     its(:resource_label_sym) { should be(:playlist) }
 

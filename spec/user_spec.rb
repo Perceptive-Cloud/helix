@@ -3,8 +3,7 @@ require 'helix'
 
 describe Helix::User do
 
-  let(:klass) { Helix::User }
-  subject     { klass }
+  subject { described_class }
 
   mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
@@ -20,8 +19,8 @@ describe Helix::User do
   describe "Constants"
 
   describe "an instance" do
-    let(:obj)            { klass.new({}) }
-    subject              { obj }
+    let(:obj) { described_class.new({}) }
+    subject   { obj }
     its(:resource_label_sym) { should be(:user) }
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }
