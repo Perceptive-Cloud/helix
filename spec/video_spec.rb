@@ -7,8 +7,7 @@ describe Helix::Video do
     { list: { entry: values[:url_params] || {} } }.to_xml(root: :add)
   end
 
-  klass = described_class
-  subject { klass }
+  subject { described_class }
   mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name)             { should eq('video_id') }
@@ -23,7 +22,7 @@ describe Helix::Video do
   ### INSTANCE METHODS
 
   describe "an instance" do
-    obj = klass.new({video_id: 'some_video_guid'})
+    obj = described_class.new({video_id: 'some_video_guid'})
     subject   { obj }
     its(:resource_label_sym) { should be(:video) }
 
@@ -37,7 +36,7 @@ describe Helix::Video do
       its(:arity)       { should eq(-1) }
       it "should call self.class.get_stillframe" do
         obj.stub(:guid) { :some_guid }
-        klass.should_receive(:stillframe_for)
+        described_class.should_receive(:stillframe_for)
         obj.send(meth)
       end
     end
@@ -129,7 +128,7 @@ describe Helix::Video do
   describe ".slice" do
     let(:meth)        { :slice }
     let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
+    subject           { described_class.method(meth) }
     its(:arity)       { should eq(-1) }
     let(:params)      { { params:       { signature: :some_sig },
                           content_type: "text/xml" } }
@@ -146,14 +145,14 @@ describe Helix::Video do
       mock_config.should_receive(:build_url).with(url_opts)
       mock_config.should_receive(:signature).with(:ingest, sig_opts) { :some_sig }
       RestClient.should_receive(:post).with(nil, import_xml, params)
-      klass.send(meth, {formats: :some_format})
+      described_class.send(meth, {formats: :some_format})
     end
   end
 
   describe ".stillframe_for" do
     let(:meth)        { :stillframe_for }
     let(:mock_config) { double(Helix::Config) }
-    subject           { klass.method(meth) }
+    subject           { described_class.method(meth) }
     its(:arity)       { should eq(-2) }
     let(:image_data)  { :some_image_data }
     let(:guid)        { :some_guid }
@@ -163,7 +162,7 @@ describe Helix::Video do
       let(:full_url) { "#{base_url}original.jpg" }
       it "should build the correct url and return data" do
         RestClient.should_receive(:get).with(full_url) { image_data }
-        expect(klass.send(meth, guid)).to eq(image_data)
+        expect(described_class.send(meth, guid)).to eq(image_data)
       end
     end
     [:height, :width].each do |dimension|
@@ -175,11 +174,11 @@ describe Helix::Video do
         it "should clone the opts arg" do
           RestClient.stub(:get).with(full_url) { image_data }
           opts.should_receive(:clone) { opts }
-          klass.send(meth, guid, opts)
+          described_class.send(meth, guid, opts)
         end
         it "should build the correct url and return data" do
           RestClient.should_receive(:get).with(full_url) { image_data }
-          expect(klass.send(meth, guid, opts)).to eq(image_data)
+          expect(described_class.send(meth, guid, opts)).to eq(image_data)
         end
       end
     end
@@ -190,11 +189,11 @@ describe Helix::Video do
       it "should clone the opts arg" do
         RestClient.stub(:get).with(full_url) { image_data }
         opts.should_receive(:clone) { opts }
-        klass.send(meth, guid, opts)
+        described_class.send(meth, guid, opts)
       end
       it "should build the correct url and return data" do
         RestClient.should_receive(:get).with(full_url) { image_data }
-        expect(klass.send(meth, guid, opts)).to eq(image_data)
+        expect(described_class.send(meth, guid, opts)).to eq(image_data)
       end
     end
   end

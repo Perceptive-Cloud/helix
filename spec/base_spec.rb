@@ -3,13 +3,11 @@ require 'helix'
 
 describe Helix::Base do
 
-  let(:klass) { described_class }
-
-  subject { klass }
+  subject { described_class }
 
   describe "Constants" do
     describe "METHODS_DELEGATED_TO_CLASS" do
-      subject { klass::METHODS_DELEGATED_TO_CLASS }
+      subject { described_class::METHODS_DELEGATED_TO_CLASS }
       it { should eq([:guid_name, :resource_label_sym, :plural_resource_label]) }
     end
   end
@@ -18,21 +16,21 @@ describe Helix::Base do
 
   describe ".config" do
     let(:meth)  { :config }
-    subject     { klass.method(meth) }
+    subject     { described_class.method(meth) }
     its(:arity) { should eq(0) }
     describe "when called" do
-      subject     { klass.send(meth) }
+      subject     { described_class.send(meth) }
       it { should eq(Helix::Config.instance) }
     end
   end
 
   shared_examples_for "a search all with opts" do
-    subject           { klass.method(meth) }
+    subject           { described_class.method(meth) }
     its(:arity)       { should eq(-1) }
     context "when there is NOT a config instance" do
       before(:each) do Helix::Config.stub(:instance) { nil } end
       it "should raise a NoConfigurationLoaded exception" do
-        lambda { klass.send(meth) }.should raise_error(Helix::NoConfigurationLoaded)
+        lambda { described_class.send(meth) }.should raise_error(Helix::NoConfigurationLoaded)
       end
     end
     context "when there is a config instance" do
@@ -43,11 +41,11 @@ describe Helix::Base do
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
         let(:plural_resource_label) { :videos }
-        before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
+        before(:each) do described_class.stub(:plural_resource_label) { plural_resource_label } end
         it "should get_aggregated_data_sets(the_url, plural_resource_label, {sig_type: :view}" do
           opts = {sig_type: :view}
           mock_config.should_receive(:get_aggregated_data_sets).with(:built_url, plural_resource_label, opts) { [:expected] }
-          klass.send(meth, opts)
+          described_class.send(meth, opts)
         end
         [ Helix::Video ].each do |child|
           it "should should instantiate #{child.to_s} from each data_set" do
@@ -64,7 +62,7 @@ describe Helix::Base do
   end
 
   shared_examples_for "a search all without opts" do
-    subject { klass.method(meth) }
+    subject { described_class.method(meth) }
     context "when there is a config instance" do
       let(:mock_config) do
         dss = (0..2).map { |x| :"attrs_#{x}" }
@@ -73,11 +71,11 @@ describe Helix::Base do
       before(:each) do Helix::Config.stub(:instance) { mock_config } end
       context "and NOT given an opts Hash" do
         let(:plural_resource_label) { :videos }
-        before(:each) do klass.stub(:plural_resource_label) { plural_resource_label } end
+        before(:each) do described_class.stub(:plural_resource_label) { plural_resource_label } end
         it "should get_aggregated_data_sets(the_url, plural_resource_label, {sig_type: :view}" do
           opts = {sig_type: :view}
           mock_config.should_receive(:get_aggregated_data_sets).with(:built_url, plural_resource_label, opts) { [:expected] }
-          klass.send(meth)
+          described_class.send(meth)
         end
         [ Helix::Video ].each do |child|
           it "should should instantiate #{child.to_s} from each data_set" do
@@ -101,7 +99,7 @@ describe Helix::Base do
 
   describe ".all" do
     let(:meth)  { :all }
-    subject     { klass.method(meth) }
+    subject     { described_class.method(meth) }
     its(:arity) { should eq(0) }
     it_behaves_like "a search all without opts"
   end
@@ -114,44 +112,44 @@ describe Helix::Base do
 
   describe ".massage_attrs" do
     let(:meth)  { :massage_attrs }
-    subject     { klass.method(meth) }
+    subject     { described_class.method(meth) }
     its(:arity) { should eq(1) }
     let(:attrs) { Hash.new }
     it "should call massage_custom_field_attrs and massage_time_attrs" do
-      klass.should_receive(:massage_time_attrs) { attrs }
-      klass.should_receive(:massage_custom_field_attrs) { attrs }
-      klass.send(meth, attrs)
+      described_class.should_receive(:massage_time_attrs) { attrs }
+      described_class.should_receive(:massage_custom_field_attrs) { attrs }
+      described_class.send(meth, attrs)
     end
   end
 
   describe ".massage_time_attrs" do
     let(:meth)      { :massage_time_attrs }
-    subject         { klass.method(meth) }
+    subject         { described_class.method(meth) }
     its(:arity)     { should eq(1) }
     let(:time)      { Time.new(2013) }
     let(:attrs)     { { key_one: time.to_s, key_two: { key_three: time, key_four: { key_five: time.to_s } } } }
     let(:expected)  { { key_one: time, key_two: { key_three: time, key_four: { key_five: time } } } }
     it "should turn stringified time values into time objects" do
-      expect(klass.send(meth, attrs)).to eq(expected)
+      expect(described_class.send(meth, attrs)).to eq(expected)
     end
   end
 
   describe ".massage_custom_field_attrs" do
     let(:meth)        { :massage_custom_field_attrs }
-    subject           { klass.method(meth) }
+    subject           { described_class.method(meth) }
     its(:arity)       { should eq(1) }
     let(:custom_hash) { { "custom_fields" => {"boole"=>[nil, nil], "@type"=>"hash"} } }
     let(:expected)    { { "custom_fields" => [{"name"=>"boole", "value"=>""}, {"name"=>"boole", "value"=>""}] } }
     it "should turn custom_hash into expected" do
-      expect(klass.send(meth, custom_hash)).to eq(expected)
+      expect(described_class.send(meth, custom_hash)).to eq(expected)
     end
     it "should return the custom_hash in its form" do
-      expect(klass.send(meth, expected)).to eq(expected)
+      expect(described_class.send(meth, expected)).to eq(expected)
     end
     let(:custom_hash_with_false)  { { "custom_fields" => {"boole"=>false, "@type"=>"hash"} } }
     let(:expected_with_false)     { { "custom_fields" => [{"name"=>"boole", "value"=>"false"}] } }
     it "should turn custom_hash into expected" do
-      expect(klass.send(meth, custom_hash_with_false)).to eq(expected_with_false)
+      expect(described_class.send(meth, custom_hash_with_false)).to eq(expected_with_false)
     end
   end
 
@@ -167,11 +165,11 @@ describe Helix::Base do
     end
   end
 
-  klasses = [ Helix::Album, Helix::Image, Helix::Playlist, Helix::Track, Helix::Video ]
-  klasses.each do |klass|
+  described_classes = [ Helix::Album, Helix::Image, Helix::Playlist, Helix::Track, Helix::Video ]
+  described_classes.each do |described_class|
 
-    describe "an instance of class #{klass.to_s}" do
-      let(:obj) { klass.new({}) }
+    describe "an instance of class #{described_class.to_s}" do
+      let(:obj) { described_class.new({}) }
 
     ### INSTANCE METHODS
 
@@ -232,7 +230,7 @@ describe Helix::Base do
       describe "#guid_name" do
         let(:meth) { :guid_name }
         it "should delegate to the class" do
-          klass.should_receive(meth) { :expected }
+          described_class.should_receive(meth) { :expected }
           expect(obj.send(meth)).to be(:expected)
         end
       end
@@ -249,13 +247,13 @@ describe Helix::Base do
           obj.stub(:massage_raw_attrs)    { :massaged_attrs }
           mock_config.stub(:build_url)    { :expected_url   }
           mock_config.stub(:get_response) { :raw_attrs      }
-          klass.stub(:resource_label_sym) { :video          }
+          described_class.stub(:resource_label_sym) { :video          }
         end
         context "when given no argument" do
           it_behaves_like "builds URL for load"
-          it "should call klass.get_response(output_of_build_url, {sig_type: :view}) and return instance of klass" do
+          it "should call described_class.get_response(output_of_build_url, {sig_type: :view}) and return instance of described_class" do
             mock_config.should_receive(:get_response).with(:expected_url, {sig_type: :view})
-            expect(obj.send(meth)).to be_an_instance_of(klass)
+            expect(obj.send(meth)).to be_an_instance_of(described_class)
           end
           it "should massage the raw_attrs" do
             obj.should_receive(:massage_raw_attrs).with(:raw_attrs)
@@ -265,9 +263,9 @@ describe Helix::Base do
         context "when given an opts argument of {key1: :value1}" do
           let(:opts)  { {key1: :value1} }
           it_behaves_like "builds URL for load"
-          it "should call klass.get_response(output_of_build_url, opts.merge(sig_type: :view)) and return instance of klass" do
+          it "should call described_class.get_response(output_of_build_url, opts.merge(sig_type: :view)) and return instance of described_class" do
             mock_config.should_receive(:get_response).with(:expected_url, opts.merge(sig_type: :view))
-            expect(obj.send(meth, opts)).to be_an_instance_of(klass)
+            expect(obj.send(meth, opts)).to be_an_instance_of(described_class)
           end
           it "should massage the raw_attrs" do
             obj.should_receive(:massage_raw_attrs).with(:raw_attrs)
@@ -322,7 +320,7 @@ describe Helix::Base do
           context "and @attributes[method_sym.to_s] raises an exception" do
             before(:each) do mock_attributes.should_receive(:[]).with(method_sym.to_s).and_raise("some exception") end
             it "should raise a NoMethodError" do
-              msg = "#{method_sym} is not recognized within #{klass}'s methods or @attributes"
+              msg = "#{method_sym} is not recognized within #{described_class}'s methods or @attributes"
               expect(lambda { obj.send(meth, method_sym) }).to raise_error(msg)
             end
           end

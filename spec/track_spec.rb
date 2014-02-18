@@ -3,8 +3,7 @@ require 'helix'
 
 describe Helix::Track do
 
-  klass = described_class
-  subject { klass }
+  subject { described_class }
   mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name)             { should eq('track_id') }
@@ -19,7 +18,7 @@ describe Helix::Track do
   ### INSTANCE METHODS
 
   describe "an instance" do
-    obj = klass.new({'track_id' => 'some_track_guid'})
+    obj = described_class.new({'track_id' => 'some_track_guid'})
     subject { obj }
     its(:resource_label_sym) { should be(:track) }
     [:destroy, :update].each do |crud_call|

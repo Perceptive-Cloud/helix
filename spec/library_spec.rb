@@ -3,8 +3,7 @@ require 'helix'
 
 describe Helix::Library do
 
-  let(:klass) { described_class }
-  subject     { klass }
+  subject { described_class }
 
   mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
@@ -21,19 +20,19 @@ describe Helix::Library do
 
   describe ".process_opts" do
     context "opts is {content_type: :json}" do
-      it { klass.process_opts({content_type: :json}).should eq({ content_type: :json }) }
+      it { described_class.process_opts({content_type: :json}).should eq({ content_type: :json }) }
     end
     context "opts is {content_type: :xml}" do
-      it { klass.process_opts({content_type: :xml}).should eq({ content_type: :xml }) }
+      it { described_class.process_opts({content_type: :xml}).should eq({ content_type: :xml }) }
     end
     context "when opts is {k: :v}" do
-      it { klass.process_opts({k: :v}).should eq({ k: :v, content_type: :xml }) }
+      it { described_class.process_opts({k: :v}).should eq({ k: :v, content_type: :xml }) }
     end
   end
 
   describe "an instance" do
-    let(:obj)            { klass.new({'library_id' => 'some_library_id'}) }
-    subject              { obj }
+    let(:obj) { described_class.new({'library_id' => 'some_library_id'}) }
+    subject   { obj }
     its(:resource_label_sym) { should be(:library) }
     [:destroy, :update].each do |crud_call|
       it { should respond_to(crud_call) }

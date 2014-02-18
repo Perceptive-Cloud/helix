@@ -2,9 +2,8 @@ require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
 describe Helix::Image do
-  let(:klass) { described_class }
 
-  subject { klass }
+  subject { described_class }
   mods = [ Helix::Base, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
   its(:guid_name) { should eq('image_id') }
@@ -17,7 +16,7 @@ describe Helix::Image do
   describe "Constants"
 
   describe "an instance" do
-    let(:obj) { klass.new({'image_id' => 'some_image_guid'}) }
+    let(:obj) { described_class.new({'image_id' => 'some_image_guid'}) }
     subject { obj }
     its(:resource_label_sym) { should be(:image) }
     [:destroy, :update].each do |crud_call|

@@ -11,56 +11,55 @@ describe Helix::Config do
     obj.stub(:signature)             { 'some_sig'  } if even_sig
   end
 
-  let(:klass) { described_class }
-  let(:obj)   { klass.instance  }
+  let(:obj) { described_class.instance }
 
-  subject { klass }
+  subject { described_class }
 
   its(:ancestors) { should include(Singleton) }
 
   describe "Constants" do
     describe "DEFAULT_FILENAME" do
-      subject { klass::DEFAULT_FILENAME }
+      subject { described_class::DEFAULT_FILENAME }
       it { should eq('./helix.yml') }
     end
     describe "ITEMS_PER_PAGE" do
-      subject { klass::ITEMS_PER_PAGE }
+      subject { described_class::ITEMS_PER_PAGE }
       it { should eq(100) }
     end
     describe "REQUIRES_CONTRIBUTOR" do
-      subject { klass::REQUIRES_CONTRIBUTOR }
+      subject { described_class::REQUIRES_CONTRIBUTOR }
       it { should eq(Set.new([:ingest, :upload])) }
     end
     describe "SCOPES" do
-      subject { klass::SCOPES }
+      subject { described_class::SCOPES }
       it { should eq([:reseller, :company, :library]) }
     end
     describe "SIG_DURATION" do
-      subject { klass::SIG_DURATION }
+      subject { described_class::SIG_DURATION }
       it { should eq(1200) } # in minutes
     end
     describe "STARTING_PAGE" do
-      subject { klass::STARTING_PAGE }
+      subject { described_class::STARTING_PAGE }
       it { should eq(1) }
     end
     describe "TIME_OFFSET" do
-      subject { klass::TIME_OFFSET }
+      subject { described_class::TIME_OFFSET }
       it { should eq(1000 * 60) } # 1000 minutes
     end
     describe "VALID_SIG_TYPES" do
-      subject { klass::VALID_SIG_TYPES }
+      subject { described_class::VALID_SIG_TYPES }
       it { should eq(Set.new([:ingest, :update, :upload, :view])) }
     end
   end
 
   describe ".load_from_hash & from_hash alias" do
     meths = [ :load_from_hash, :from_hash ]
-    let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
+    let(:mock_obj)  { double(described_class, proxy: :stubbed_proxy) }
     let(:mock_file) { double(File)  }
     let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
     let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
     before(:each) do
-      klass.stub(:instance) { mock_obj  }
+      described_class.stub(:instance) { mock_obj  }
       File.stub(:open)      { mock_file }
       YAML.stub(:load)      { mock_cred }
     end
@@ -70,7 +69,7 @@ describe Helix::Config do
         it "should set the instance's credentials to the key-symbolized version of that Hash arg" do
           the_hash_arg.should_receive(:symbolize_keys) { :symbolized }
           mock_obj.should_receive(:instance_variable_set).with(:@credentials, :symbolized)
-          klass.send(meth, the_hash_arg)
+          described_class.send(meth, the_hash_arg)
         end
       end
     end
@@ -78,76 +77,76 @@ describe Helix::Config do
 
   describe ".load_yaml_file & load alias" do
     meths = [ :load_yaml_file, :load ]
-    let(:mock_obj)  { double(klass, proxy: :stubbed_proxy) }
+    let(:mock_obj)  { double(described_class, proxy: :stubbed_proxy) }
     let(:mock_file) { double(File)  }
     let(:mock_cred) { {key1: 'value1', 'key2' => 'value2'} }
     let(:symbolized_cred) { {key1: 'value1', key2: 'value2'} }
     before(:each) do
-      klass.stub(:instance) { mock_obj  }
+      described_class.stub(:instance) { mock_obj  }
       File.stub(:open)      { mock_file }
       YAML.stub(:load)      { mock_cred }
       mock_obj.stub(:instance_variable_set).with(:@credentials, anything)
     end
     meths.each do |meth|
       context "when given no arg" do
-        before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME) end
+        before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, described_class::DEFAULT_FILENAME) end
         it "should get the instance" do
-          klass.should_receive(:instance) { mock_obj }
-          klass.send(meth)
+          described_class.should_receive(:instance) { mock_obj }
+          described_class.send(meth)
         end
         it "should set @filename to DEFAULT_FILENAME" do
-          mock_obj.should_receive(:instance_variable_set).with(:@filename, klass::DEFAULT_FILENAME)
-          klass.send(meth)
+          mock_obj.should_receive(:instance_variable_set).with(:@filename, described_class::DEFAULT_FILENAME)
+          described_class.send(meth)
         end
         it "should File.open(@filename) -> f" do
-          File.should_receive(:open).with(klass::DEFAULT_FILENAME) { mock_file }
-          klass.send(meth)
+          File.should_receive(:open).with(described_class::DEFAULT_FILENAME) { mock_file }
+          described_class.send(meth)
         end
         it "should YAML.load(f) -> cred" do
           YAML.should_receive(:load).with(mock_file) { mock_cred }
-          klass.send(meth)
+          described_class.send(meth)
         end
         it "should set @credentials to cred with symbol keys" do
-          File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
+          File.stub(:open).with(described_class::DEFAULT_FILENAME) { mock_file }
           YAML.stub(:load).with(mock_file) { mock_cred }
           mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
-          klass.send(meth)
+          described_class.send(meth)
         end
         it "should set the proxy" do
           mock_obj.should_receive(:proxy) { :mock_proxy }
-          klass.send(meth)
+          described_class.send(meth)
         end
         it "should return the instance" do
-          expect(klass.send(meth)).to be(mock_obj)
+          expect(described_class.send(meth)).to be(mock_obj)
         end
       end
       context "when given the arg 'some_file.yml'" do
         let(:yaml_arg) { 'some_file.yml' }
         before(:each) do mock_obj.stub(:instance_variable_set).with(:@filename, yaml_arg) end
         it "should get the instance" do
-          klass.should_receive(:instance) { mock_obj }
-          klass.send(meth, yaml_arg)
+          described_class.should_receive(:instance) { mock_obj }
+          described_class.send(meth, yaml_arg)
         end
         it "should set @filename to DEFAULT_FILENAME" do
           mock_obj.should_receive(:instance_variable_set).with(:@filename, yaml_arg)
-          klass.send(meth, yaml_arg)
+          described_class.send(meth, yaml_arg)
         end
         it "should File.open(@filename) -> f" do
           File.should_receive(:open).with(yaml_arg) { mock_file }
-          klass.send(meth, yaml_arg)
+          described_class.send(meth, yaml_arg)
         end
         it "should YAML.load(f) -> cred" do
           YAML.should_receive(:load).with(mock_file) { mock_cred }
-          klass.send(meth, yaml_arg)
+          described_class.send(meth, yaml_arg)
         end
         it "should set @credentials to cred with symbol keys" do
-          File.stub(:open).with(klass::DEFAULT_FILENAME) { mock_file }
+          File.stub(:open).with(described_class::DEFAULT_FILENAME) { mock_file }
           YAML.stub(:load).with(mock_file) { mock_cred }
           mock_obj.should_receive(:instance_variable_set).with(:@credentials, symbolized_cred)
-          klass.send(meth, yaml_arg)
+          described_class.send(meth, yaml_arg)
         end
         it "should return the instance" do
-          expect(klass.send(meth, yaml_arg)).to be(mock_obj)
+          expect(described_class.send(meth, yaml_arg)).to be(mock_obj)
         end
       end
     end
@@ -583,7 +582,7 @@ describe Helix::Config do
       it "sets a new sig expiration time" do
         mock_time = double(Time)
         Time.should_receive(:now) { mock_time }
-        mock_time.should_receive(:+).with(klass::TIME_OFFSET) { :new_time }
+        mock_time.should_receive(:+).with(described_class::TIME_OFFSET) { :new_time }
         obj.send(meth, sig_type)
         expect(obj.instance_variable_get(:@signature_expiration_for)[license_key][sig_type]).to eq(:new_time)
       end
