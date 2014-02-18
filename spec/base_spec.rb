@@ -3,7 +3,7 @@ require 'helix'
 
 describe Helix::Base do
 
-  let(:klass) { Helix::Base }
+  let(:klass) { described_class }
 
   subject { klass }
 

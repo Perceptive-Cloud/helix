@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
 describe Helix::Image do
-  let(:klass) { Helix::Image }
+  let(:klass) { described_class }
 
   subject { klass }
   mods = [ Helix::Base, Helix::Media ]

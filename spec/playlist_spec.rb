@@ -3,7 +3,7 @@ require 'helix'
 
 describe Helix::Playlist do
 
-  let(:klass) { Helix::Playlist }
+  let(:klass) { described_class }
   subject     { klass }
   mods = [ Helix::Base, Helix::RESTful ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }

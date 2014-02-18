@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', __FILE__)
 require 'helix'
 
 describe Helix do
-  let(:klass) { Helix }
+  let(:klass) { described_class }
 
   describe "Constants"
 

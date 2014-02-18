@@ -3,7 +3,7 @@ require 'helix'
 
 describe Helix::Tag do
 
-  let(:klass) { Helix::Tag }
+  let(:klass) { described_class }
   subject     { klass }
   its(:resource_label_sym)    { should be(:tag)   }
   its(:plural_resource_label) { should eq('tags') }

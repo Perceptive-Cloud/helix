@@ -3,7 +3,7 @@ require 'helix'
 
 describe Helix::Track do
 
-  klass = Helix::Track
+  klass = described_class
   subject { klass }
   mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }

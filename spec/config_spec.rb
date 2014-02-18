@@ -11,8 +11,8 @@ describe Helix::Config do
     obj.stub(:signature)             { 'some_sig'  } if even_sig
   end
 
-  let(:klass) { Helix::Config  }
-  let(:obj)   { klass.instance }
+  let(:klass) { described_class }
+  let(:obj)   { klass.instance  }
 
   subject { klass }
 

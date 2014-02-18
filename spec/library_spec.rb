@@ -3,7 +3,7 @@ require 'helix'
 
 describe Helix::Library do
 
-  let(:klass) { Helix::Library }
+  let(:klass) { described_class }
   subject     { klass }
 
   mods = [ Helix::Base, Helix::RESTful ]

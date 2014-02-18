@@ -7,7 +7,7 @@ describe Helix::Video do
     { list: { entry: values[:url_params] || {} } }.to_xml(root: :add)
   end
 
-  klass = Helix::Video
+  klass = described_class
   subject { klass }
   mods = [ Helix::Base, Helix::Durationed, Helix::Media ]
   mods.each { |mod| its(:ancestors) { should include(mod) } }
