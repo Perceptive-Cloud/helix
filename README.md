@@ -61,7 +61,7 @@ How To
 site: 'http://service.twistage.com'
 company: 'my_company'
 license_key: '141a86b5c4091'
-library_id: 'development'
+library: 'development'
 ```
 Boot up IRB in your console
 ```shell
