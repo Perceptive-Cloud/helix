@@ -24,14 +24,14 @@ Install From Repo
 -----------------
 Using sudo:
 ```shell
-git clone git@github.com:Twistage/helix.git 
+git clone git@github.com:Perceptive-Cloud/helix.git 
 gem build helix.gemspec  
 sudo gem i helix-*.gem
 ```
 
 RVM or root support:
 ```shell
-git clone git@github.com:Twistage/helix.git
+git clone git@github.com:Perceptive-Cloud/helix.git
 gem build helix.gemspec
 gem i helix-*.gem
 ```
@@ -44,7 +44,7 @@ rake reinstall_helix_rvm
 
 Using gem in a Gemfile  
 ```shell
-gem 'helix', :git => 'git@github.com:Twistage/helix.git'
+gem 'helix', :git => 'git@github.com:Perceptive-Cloud/helix.git'
 ```
 
 
