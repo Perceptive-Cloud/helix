@@ -93,11 +93,11 @@ Credits
 
 Helix was written by Kevin Baird and Michael Wood.
 
-Helix is maintained and funded by [Twistage, Inc](http://twistage.com)
+Helix is maintained and funded by [Perceptive Software](http://www.perceptivesoftware.com)
 
-The names and logos for twistage are trademarks of Twistage, Inc.
+The names and logos for twistage are trademarks of Perceptive Software.
 
 License
 -------
 
-Helix is Copyright © 2008-2012 Twistage, Inc.
+Helix is Copyright © 2008-2014 Perceptive Software.
