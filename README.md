@@ -1,6 +1,6 @@
-# Helix [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/Twistage/helix)
+# Helix [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/Perceptive-Cloud/helix)
 
-The Helix gem allows developers to easily connect to and manipulate the Twistage API.
+The Helix gem allows developers to easily connect to and manipulate the Perceptive Media API.
 
 Documentation
 -------------
