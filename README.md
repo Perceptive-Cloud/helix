@@ -95,7 +95,7 @@ Helix was written by Kevin Baird and Michael Wood.
 
 Helix is maintained and funded by [Perceptive Software](http://www.perceptivesoftware.com)
 
-The names and logos for twistage are trademarks of Perceptive Software.
+The names and logos for Perceptive Media are trademarks of Perceptive Software.
 
 License
 -------
