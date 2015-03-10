@@ -2,7 +2,7 @@ require "rake"
 
 spec = Gem::Specification.new do |s|
   s.name        = "helix"
-  s.version     = "0.0.5.1.pre"
+  s.version     = "0.0.5.2.pre"
   s.summary     = "Wrapper library for the video API"
   s.description = "Provides helper libraries for Ruby access to the Twistage API"
   s.authors     = ["Twistage, Inc"]
@@ -13,8 +13,11 @@ spec = Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.license     = "3-Clause BSD"
   s.homepage    = 'https://github.com/Twistage/helix/'
-  s.add_dependency "json",          ">= 1.5.4"
-  s.add_dependency "rest-client",   "1.6.7"
-  s.add_dependency "nori",          "1.1.3"
+  s.add_dependency 'json', '~> 1.8.2'
+  s.add_dependency 'rest-client', '~> 1.7.3'
+  s.add_dependency 'nori', '~> 2.4.0'
+  s.add_development_dependency 'rspec', '~> 3.2.0'
+  s.add_development_dependency 'rspec-its', '~> 1.2.0'
+  s.add_development_dependency 'simplecov', '~> 0.9.2'
 end
 

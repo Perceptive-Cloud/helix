@@ -645,7 +645,7 @@ describe Helix::Config do
         let(:not_expired_time) { Time.now + 10 }
         before do obj.instance_variable_set(:@signature_expiration_for, {license_key => {:ingest => not_expired_time}}) end
         it "should return true" do
-          expect(obj.send(meth, :ingest)).to be_true
+          expect(obj.send(meth, :ingest)).to eq(true)
         end
       end
     end

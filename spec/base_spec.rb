@@ -427,7 +427,7 @@ describe Helix::Base do
         subject     { obj.method(meth) }
         its(:arity) { should eq(0) }
         it "should return the response from config" do
-          obj.config.stub!(:response).and_return :some_response
+          allow(obj.config).to receive(:response).and_return(:some_response)
           expect(obj.send(meth)).to eq(obj.config.response)
         end
       end

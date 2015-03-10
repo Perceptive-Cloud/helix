@@ -1,8 +1,3 @@
-require 'rest-client'
-require 'json'
-require 'yaml'
-require 'nori'
-
 module Helix
   class Tag < Base
     # The class name, to be used by supporting classes. Such as Config which uses

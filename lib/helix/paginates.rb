@@ -80,9 +80,9 @@ module Helix
 
     def parse_xml_response(response, url)
       #TODO: Cleanup Nori and response gsub.
-      Nori.parser = :nokogiri
+      parser = Nori.new(parser: :nokogiri)
       xml = response.gsub(/<custom-fields type='array'>/, "<custom-fields type='hash'>")
-      Nori.parse(xml)
+      parser.parse(xml)
     end
 
   end

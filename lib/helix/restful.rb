@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module Helix
 
   # Mixed-in to ORM classes to provide basic RESTful CRUD operations.

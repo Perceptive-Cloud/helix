@@ -10,4 +10,4 @@ require 'support/downloads'
 require 'support/upload_sig_opts'
 require 'support/plays'
 require 'support/uploads'
-
+require 'rspec/its'
