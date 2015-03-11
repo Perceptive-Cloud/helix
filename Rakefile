@@ -24,7 +24,7 @@ task :push_rvm do
   `yard doc`
   `rm helix-*.pre.gem`
   `gem build helix.gemspec`
-  `sudo gem i helix-*.gem`
+  `gem i helix-*.gem`
   `gem push helix-*.pre.gem`
 end
 
