@@ -93,11 +93,11 @@ Credits
 
 Helix was written by Kevin Baird and Michael Wood.
 
-Helix is maintained and funded by [Perceptive Software](http://www.perceptivesoftware.com)
+Helix is maintained and funded by [Lexmark](http://www.lexmark.com)
 
-The names and logos for Perceptive Media are trademarks of Perceptive Software.
+The names and logos for Lexmark are trademarks of Lexmark.
 
 License
 -------
 
-Helix is Copyright © 2008-2014 Perceptive Software.
+Helix is Copyright © 2008-2015 Lexmark.
